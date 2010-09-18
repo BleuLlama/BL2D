@@ -12,11 +12,26 @@ It should work on all current iOS devices (iPad, iPod Touch, iPhone)
 
 It should work on all iOS versions from 3.0 to 4.2.
 
+This is shared under an MIT License.
+
+
+--------------------------------------------------------------------------------
+The basic engine is in the BL2DClasses folder.  Drop this into your project
+Be sure to add the CoreGraphics framework.
+
+It is currently set in BLGLInterface.h for 16 graphics textures, in 16 layers.
+This should be plenty for most projects.
+
+BL2D.h defines two layers for use; one for tilemaps, one for sprites. This may 
+be more flexible in the future.
+
+BL2DDemo is a project showing its use.
+
 
 ----------------------------------------
 NOTES:
 
-- Look in the ..ViewController.m file for the actual tilemap/sprite code added.
+- Look in the ..ViewController.m and .h file for the actual tilemap/sprite code added.
 
 - This is OpenGLES 1 *ONLY* (No GLES2 support is planned)
 
@@ -24,14 +39,11 @@ NOTES:
 
 
 ----------------------------------------
-Changes needed to be made to an iOS 4.x template GL project:
+Changes needed to be made to use this in your project:
 
 - In EAGLView, the color format needs to be changed from kEAGLColorFormatRGBA8 to kEAGLColorFormatRGB565
 
-- all source should be Objective-C++ .mm (since the core engine is C++)
-  (for now.)
-
-- added CoreGraphics framework - for loading png and sticking it in a texture
+- add CoreGraphics framework - for loading png files
 
 
 ----------------------------------------

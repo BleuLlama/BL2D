@@ -1,0 +1,8 @@
+build/
+sdl.*
+*bak.*
+*.swp
+.DS_Store
+*.zip
+*.o
+a.out
