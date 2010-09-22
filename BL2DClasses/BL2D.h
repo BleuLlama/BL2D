@@ -68,21 +68,33 @@
 #define kGraphicsBank_Sprite	(1)
 
 // start rendering a frame (just screen clear for now)
+// do this first before any of the other things below
 - (void) renderFrameStart;
 
 // render a tilemap to the screen
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt usingOrdering:(int*)layout;
+// buffer points to an array of ints containing xt*yt values.
 - (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt;
 
+// the Ordering parameter is an offset layout array of ints that specify,
+// for each X,Y position, the index into the buffer to pull from
+// this is handy for rendering tilemaps that have non-contiguous or oddly 
+// ordered content in memory.  (for example, Pac-Man arcade video is the right
+// column, top to bottom, then the second column from the right, etc.
+- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt usingOrdering:(int*)layout;
 
-// apply the rendered tilemaps
+
+// apply the rendered tilemaps 
+//  - this actually forces the tilemaps to be rendered to the video buffer
 - (void) renderTilemapApply;
 
 
 // draw a sprite at a specific location
 - (void) renderSprite:(int)spid x:(float)x y:(float)y;
+
+// draw a sprite but optionally flip it along the X or Y axis
 - (void) renderSprite:(int)spid x:(float)x y:(float)y xFlip:(BOOL)xf yFlip:(BOOL)yf;
 
 // apply the rendered sprites
+//  - this actually forces the sprites to be rendered to the video buffer
 - (void) renderSpriteApply;
 @end
