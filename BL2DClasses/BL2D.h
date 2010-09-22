@@ -71,8 +71,9 @@
 - (void) renderFrameStart;
 
 // render a tilemap to the screen
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt;
 - (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt usingOrdering:(int*)layout;
+- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt;
+
 
 // apply the rendered tilemaps
 - (void) renderTilemapApply;
@@ -80,6 +81,7 @@
 
 // draw a sprite at a specific location
 - (void) renderSprite:(int)spid x:(float)x y:(float)y;
+- (void) renderSprite:(int)spid x:(float)x y:(float)y xFlip:(BOOL)xf yFlip:(BOOL)yf;
 
 // apply the rendered sprites
 - (void) renderSpriteApply;

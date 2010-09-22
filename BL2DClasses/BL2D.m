@@ -80,11 +80,6 @@
 #pragma mark -
 #pragma mark Tilemap
 
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt
-{
-	[self renderTilemap:buffer xTiles:xt yTiles:yt usingOrdering:NULL];
-}
-
 - (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt usingOrdering:(int*)ordering
 {
 	// no proper tilemap stuff...
@@ -113,16 +108,16 @@
 							   x:txO + kFixedOffset + (x * kSpriteSize * tsc)
 							   y:tyO + kFixedOffset + (y * kSpriteSize * tsc)
 						  hscale:tsc vscale:tsc angle:0.0 colour:NULL];
-/*			
-			interface->DrawImage( tileLayer, SIZE_8x8, 
-								 spriteIndex, 
-								 txO + kFixedOffset + (x * kSpriteSize * tsc), 
-								 tyO + kFixedOffset + (y * kSpriteSize * tsc), 
-								 tsc, tsc );
- */
 		}
 	}
 }
+
+
+- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt
+{
+	[self renderTilemap:buffer xTiles:xt yTiles:yt usingOrdering:NULL];
+}
+
 
 - (void) renderTilemapApply
 {
@@ -139,7 +134,13 @@
 - (void) renderSprite:(int)spid x:(float)x y:(float)y
 {
 	[interface drawImage:spriteLayer size:SIZE_16x16 frame:spid
-					   x:x y:y hscale:2.0 vscale:2.0 angle:0.0 colour:NULL];
+					   x:x y:y hscale:1.0 vscale:1.0 angle:0.0 colour:NULL];
+}
+
+- (void) renderSprite:(int)spid x:(float)x y:(float)y xFlip:(BOOL)xf yFlip:(BOOL)yf
+{
+	[interface drawImage:spriteLayer size:SIZE_16x16 frame:spid
+					   x:x y:y hscale:xf?-1.0:1.0 vscale:yf?-1.0:1.0 angle:0.0 colour:NULL];
 }
 
 - (void) renderSpriteApply
