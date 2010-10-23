@@ -1,6 +1,6 @@
 ----------------------------------------
-BleuLlama2D Engine (BL2D) version 1.0
-2010-September-17
+BleuLlama2D Engine (BL2D) version 2.0
+2010-October-22
 yorgle@gmail.com
 
 
@@ -19,14 +19,18 @@ This is shared under an MIT License.
 The basic engine is in the BL2DClasses folder.  Drop this into your project
 Be sure to add the CoreGraphics framework.
 
-It is currently set in BLGLInterface.h for 16 graphics textures, in 16 layers.
-This should be plenty for most projects.
+When layers (tilemaps, sprites) are instantiated through the BL2D engine class,
+they are added to an internal list which is rendered when the engine instance's
+render method is called.  This means that all you have to do is:
 
-BL2D.h defines two layers for use; one for tilemaps, one for sprites. This may 
-be more flexible in the future.
+1. instantiate the BL2DGraphics objects per each tileset
+2. instantiate the tilemaps you want to define
+3. instantiate the sprite you want to define
 
-BL2DDemo is a project showing its use.
-
+Then in your frame update code, just set the parameters as you need 
+to (sprite position, flip, tile index, etc.) and call the engine's render,
+and it'll take care of setting up the GL settings, and getting each layer
+rendered.
 
 ----------------------------------------
 NOTES:
