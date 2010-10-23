@@ -28,7 +28,8 @@
     // The OpenGL ES names for the framebuffer and renderbuffer used to render to this view.
     GLuint defaultFramebuffer, colorRenderbuffer;
 }
-
+@property (nonatomic) GLint framebufferWidth;
+@property (nonatomic) GLint framebufferHeight;
 @property (nonatomic, retain) EAGLContext *context;
 
 - (void)setFramebuffer;

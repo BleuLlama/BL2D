@@ -35,10 +35,28 @@
 	
 	// BL2D stuff
 	BL2D * bl2de;
+	BL2DGraphics * tilegfx;
+	BL2DGraphics * spritegfx;
+	
+	BL2DTilemap * backgroundTiles;
+	BL2DTilemap * backgroundTiles2;
+	BL2DSprite * sprite0;
+	BL2DSprite * sprite1;
+	BL2DSprite * sprite2;
+	BL2DSprite * sprite3;
 }
 
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 @property (nonatomic) NSInteger animationFrameInterval;
+
+@property (nonatomic, retain) BL2DGraphics * tilegfx;
+@property (nonatomic, retain) BL2DGraphics * spritegfx;
+@property (nonatomic, retain) BL2DTilemap * backgroundTiles;
+@property (nonatomic, retain) BL2DTilemap * backgroundTiles2;
+@property (nonatomic, retain) BL2DSprite * sprite0;
+@property (nonatomic, retain) BL2DSprite * sprite1;
+@property (nonatomic, retain) BL2DSprite * sprite2;
+@property (nonatomic, retain) BL2DSprite * sprite3;
 
 - (void)startAnimation;
 - (void)stopAnimation;

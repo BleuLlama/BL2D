@@ -27,74 +27,59 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
- */ 
+ */
+
+/*
+ Basic architecture:
+ 
+ This file contains the wrappers you'll usually use.
+ Use this to load graphics, initialize tilemaps and sprites.
+ It's your responsibility to store aside the pointers to these to change them
+ You also will be able to render from this class
+ 
+ This will instantiate BL2DGraphics objects containing info about the GL Texturemaps
+ This will instantiate BL2DSprite objects to manage/render sprites
+ This will instantiate BL2DTilemap objects to manage/render tilemaps
+ 
+ Sprite and Tilemaps both implement BL2DRenderable, (adding -render; )
+ 
+ A Sprite or a Tilemap can only reference one graphic (could be the same one)
+ 
+ Layers will be drawn in the order they're allocated. (via BL2D:render)
+ */
 
 #import <Foundation/Foundation.h>
-#import "BLGLInterface.h"
+#import <OpenGLES/ES1/gl.h>
+#import <OpenGLES/ES1/glext.h>
 
+#import "BL2DRenderable.h"
 
-#define kMaxTileLayers	(8)
-#define kMaxSprites		(32)
-
-// Version 1: Two banks
-// bank 0 is 8x8 tiles for the tilemap, stored in a 256x256 png
-// bank 1 is 16x16 tiles for the sprites, stored in a 256x256 png
-// future versions may have arbitrary banks of graphics
+#import "BL2DGraphics.h"
+#import "BL2DSprite.h"
+#import "BL2DTilemap.h"
 
 
 @interface BL2D : NSObject {
-	BLGLInterface* interface;
-	unsigned int tileLayer;
-	unsigned int spriteLayer;
-	
-	float txO;	// tilemap position on screen X
-	float tyO;	// tilemap position on screen Y
-	float tsc;	// tilemap scale
+	NSMutableArray * renderLayers;
+	// id <BL2DRenderable> aRenderableLayer
+	float  screenW, screenH;
 }
+@property (nonatomic, retain) NSMutableArray * renderLayers;
 
-@property (nonatomic) float txO;
-@property (nonatomic) float tyO;
-@property (nonatomic) float tsc;
+- (id) initWithEffectiveScreenWidth:(float)w Height:(float)h;
 
+// load in a graphics source, returns a handle to the graphics
+- (BL2DGraphics *) addPNGGraphics:(NSString *)filenameWithoutPNGExtenstion tilesWide:(int)acrs tilesHigh:(int)slurp;
+- (BL2DTilemap *) addTilemapLayerUsingGraphics:(BL2DGraphics *)gfx 
+									 tilesWide:(int)w 
+									 tilesHigh:(int)h;
 
-// Version 1: Two banks
-// bank 0 is 8x8 tiles for the tilemap, stored in a 256x256 png
-// bank 1 is 16x16 tiles for the sprites, stored in a 256x256 png
+- (BL2DSprite *) addSprite:(BL2DGraphics *)gfx;
 
-- (id) init;
+- (void) renderPrep;	// per-frame prep
+- (void) renderStart;	// sets up GL stuff (clear screen - optional)
+- (void) renderStuff;	// draws all of the stuff
+- (void) renderEnd;		// ends the GL stuff
 
-- (void) loadGraphicsBank:(int)bnk withPng:(NSString *)fileInBundle;
-#define kGraphicsBank_Tilemap	(0)
-#define kGraphicsBank_Sprite	(1)
-
-// start rendering a frame (just screen clear for now)
-// do this first before any of the other things below
-- (void) renderFrameStart;
-
-// render a tilemap to the screen
-// buffer points to an array of ints containing xt*yt values.
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt;
-
-// the Ordering parameter is an offset layout array of ints that specify,
-// for each X,Y position, the index into the buffer to pull from
-// this is handy for rendering tilemaps that have non-contiguous or oddly 
-// ordered content in memory.  (for example, Pac-Man arcade video is the right
-// column, top to bottom, then the second column from the right, etc.
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt usingOrdering:(int*)layout;
-
-
-// apply the rendered tilemaps 
-//  - this actually forces the tilemaps to be rendered to the video buffer
-- (void) renderTilemapApply;
-
-
-// draw a sprite at a specific location
-- (void) renderSprite:(int)spid x:(float)x y:(float)y;
-
-// draw a sprite but optionally flip it along the X or Y axis
-- (void) renderSprite:(int)spid x:(float)x y:(float)y xFlip:(BOOL)xf yFlip:(BOOL)yf;
-
-// apply the rendered sprites
-//  - this actually forces the sprites to be rendered to the video buffer
-- (void) renderSpriteApply;
+- (void) render;		// calls the above four, for simplicity
 @end

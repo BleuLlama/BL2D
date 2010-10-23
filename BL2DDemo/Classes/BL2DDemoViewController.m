@@ -53,6 +53,7 @@ static int tilemapArray[4 * 5] =
 	18,   19,  20,  21
 };
 
+#ifdef NEVER
 static int tilemapOrdering[ 4 * 5 ] = 
 {
 	// this is how the memory gets mapped to the screen
@@ -63,106 +64,43 @@ static int tilemapOrdering[ 4 * 5 ] =
 	3,	15,	9,	3,
 	0,	 1,	2,	4
 };
+#endif
 
 
 #pragma mark -
 #pragma mark BL2D interface stuff
 
+@synthesize tilegfx, spritegfx;
+@synthesize backgroundTiles, backgroundTiles2, sprite0, sprite1, sprite2, sprite3; 
+
 - (void)startupBL2DEngine
 {
 	// BL2D addition - create our BL2D instance
-	bl2de = [[BL2D alloc] init];
+	EAGLView * v = (EAGLView *)self.view;
+	bl2de = [[BL2D alloc] initWithEffectiveScreenWidth:v.framebufferWidth
+												Height:v.framebufferHeight];
 	[bl2de retain];
 	
 	// load the two graphics banks.  (only two banks for now.)
-	[bl2de loadGraphicsBank:kGraphicsBank_Tilemap withPng:@"graphics1.png"];
-	[bl2de loadGraphicsBank:kGraphicsBank_Sprite withPng:@"graphics2.png"];
+	self.tilegfx = [bl2de addPNGGraphics:@"graphics1" tilesWide:32 tilesHigh:8];
+	self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
+	
+	// now load the tilemap to be used
+	self.backgroundTiles2 = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
+													  tilesWide:30 
+													  tilesHigh:60];
+	
+	self.backgroundTiles = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
+													 tilesWide:tilemapWidth 
+													 tilesHigh:tilemapHeight];
+
+	// and the sprite to be used
+	self.sprite0 = [bl2de addSprite:self.spritegfx];
+	self.sprite1 = [bl2de addSprite:self.spritegfx];
+	self.sprite2 = [bl2de addSprite:self.spritegfx];
+	self.sprite3 = [bl2de addSprite:self.spritegfx];
 }
 
-
-- (void) renderTilemap
-{
-	// there's a lot in here, but it's mostly just being silly
-	
-	// junk to make the middle one get bigger and smaller for fun
-	static BOOL bigger = YES;
-	static float scale = 1.0;
-	
-	if( bigger ) {
-		scale += 0.02;
-		
-		if( scale > 10.0 ) {
-			bigger = NO;
-		}
-	} else {
-		scale -= 0.02;
-		if( scale < 0.2 ) {
-			bigger = YES;
-		}
-	}
-	
-	// draw the top left one
-	// this one uses the 'tilemapOrdering' to determine placement of the tiles.
-	bl2de.tsc = 1.0; // scale
-	bl2de.txO = 0.0; // x start pos
-	bl2de.tyO = 0.0; // y start pos
-	[bl2de renderTilemap:tilemapArray xTiles:tilemapWidth yTiles:tilemapHeight usingOrdering:tilemapOrdering];
-	
-	// draw the random one, spinning around the center.
-	bl2de.txO = 160 + 100 * sin( scale );
-	bl2de.tyO = 240 + 100 * cos( scale );
-	[bl2de renderTilemap:NULL /* NULL for random tiles */ xTiles:10 yTiles:10];
-	
-	// draw the scaling one, which uses the raw memory as if it was the buffer itself.
-	bl2de.tsc = scale;
-	bl2de.txO = 50.0;
-	bl2de.tyO = 50.0;
-	[bl2de renderTilemap:tilemapArray xTiles:tilemapWidth yTiles:tilemapHeight];
-	
-	// apply the tilemap
-	[bl2de renderTilemapApply];
-}
-
-
-- (void) renderSprites
-{
-	// increasingly larger sprites
-	static int xx = 0; // junk counter to fly through sprites
-	
-	[bl2de renderSprite:1 x:50 y:50];
-	[bl2de renderSprite:3 x:100 y:100];
-	[bl2de renderSprite:4 x:150 y:150];
-	[bl2de renderSprite:5 x:200 y:200];
-	[bl2de renderSprite:(xx++)&0x01f x:300 y:300];
-	
-	
-	// stupid brute force animation
-	static int crocFrameTimer = 3;
-	static unsigned int crocframe = 21;
-	static float crocX = -16.0, crocY = 240;
-	if( crocFrameTimer-- <= 0 ) {
-		crocframe++; if ( crocframe > 23 ) { crocframe = 21; }
-		crocFrameTimer = 3;
-	}
-	crocX += 3; if ( crocX > 336 ) { crocX = -16; }
-	crocY += -2 + rand() % 5;
-	
-	// keep the crocodile on screen
-	if( crocY < 140 ) crocY = 140;
-	if( crocY > 340 ) crocY = 340;
-	
-	// draw the crocodile to the buffer
-	[bl2de renderSprite:crocframe x:crocX y:crocY];
-	
-	// swarm of things around him
-	[bl2de renderSprite:crocframe+1 x:crocX-32+rand()%64 y:crocY-32+rand()%64];
-	[bl2de renderSprite:crocframe+2 x:crocX-32+rand()%64 y:crocY-32+rand()%64];
-	[bl2de renderSprite:crocframe+3 x:crocX-32+rand()%64 y:crocY-32+rand()%64];
-	[bl2de renderSprite:crocframe+4 x:crocX-32+rand()%64 y:crocY-32+rand()%64];
-	
-	// render the sprite layer
-	[bl2de renderSpriteApply];
-}
 
 
 #pragma mark -
@@ -340,17 +278,64 @@ static int tilemapOrdering[ 4 * 5 ] =
 #pragma mark -
 #pragma mark render graphics to the screen and stuff
 
+
+
 - (void)drawFrame
 {	
+	static float an;
+	static long index = 0;
+	
+	index++;
+	an+= 0.5;
+	
     [(EAGLView *)self.view setFramebuffer];
 	
-	// start a new frame (clear the screen)
-	[bl2de renderFrameStart];
+	// draw the tilemaps and sprites
+	[self.sprite0 setSpriteIndex:index>>3];
+	self.sprite0.spx = 100;
+	self.sprite0.spy = 100;
+	self.sprite0.scale = 1.0 + 2.0 + (2.0 * cos( an/8 ));
+	self.sprite0.active = YES;
 	
-	// BL2D addition
-	[self renderTilemap];
-	[self renderSprites];
-    
+	
+	// draw the walking crocodile
+	static int crocFrameTimer = 3;
+	static unsigned int crocframe = 21;
+	static float crocX = -16.0, crocY = 240;
+	if( crocFrameTimer-- <= 0 ) {
+		crocframe++; if ( crocframe > 23 ) { crocframe = 21; }
+		crocFrameTimer = 3;
+	}
+	crocX += 3; if ( crocX > 336 ) { crocX = -16; }
+	crocY += -2 + rand() % 5;
+	
+	// keep the crocodile on screen
+	if( crocY < 140 ) crocY = 140;
+	if( crocY > 340 ) crocY = 340;
+
+	[self.sprite1 setSpriteIndex:crocframe];
+	self.sprite1.spy = crocY;
+	self.sprite1.spx = crocX;
+	self.sprite1.scale = 2.0;
+	self.sprite1.active = YES;
+	
+	// sprite 2 will be the croc going the other way
+	[self.sprite2 setSpriteIndex:crocframe];
+	self.sprite2.spy = crocY + 50;
+	self.sprite2.spx = self.view.frame.size.width - crocX;
+	self.sprite2.scale = 1.0;
+	self.sprite2.flipX = YES;
+	self.sprite2.active = YES;
+	
+	// set up the background tilemap
+	[self.backgroundTiles copyNewTilesBuffer:tilemapArray];
+	[self.backgroundTiles commitChanges];	// regenerate the tilemap
+	self.backgroundTiles.scale = 4.0;
+	
+	[self.backgroundTiles2 fillWithRandom];
+	[self.backgroundTiles2 commitChanges];
+	
+	[bl2de render];
     [(EAGLView *)self.view presentFramebuffer];
 }
 

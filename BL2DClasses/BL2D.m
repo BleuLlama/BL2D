@@ -33,119 +33,89 @@
 
 @implementation BL2D
 
-@synthesize txO, tyO, tsc;
+@synthesize renderLayers;
 
-- (id) init
+- (id) initWithEffectiveScreenWidth:(float)w Height:(float)h
 {
-	if ((self = [super init]))
-	{
-		interface = [[BLGLInterface alloc] init];
-		[interface initGLWithWidth:320 andHeight:480];
-
-		self.txO = 0.0;
-		self.tyO = 0.0;
-		self.tsc = 1.0;
+	self = [super init];
+	if (self)
+    {
+		screenW = w;
+		screenH	= h;
+		self.renderLayers = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[interface release];
+	self.renderLayers = nil;
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark Graphics banks
-
-- (void) loadGraphicsBank:(int)bnk withPng:(NSString *)fileInBundle
+// load in a graphics source, returns a handle to the graphics
+- (BL2DGraphics *) addPNGGraphics:(NSString *)filenameWithoutPNGExtenstion
+						tilesWide:(int)acrs
+						tilesHigh:(int)slurp
 {
-	// hardcode 2 banks for now.
-	if( bnk == 0 ) {
-		tileLayer = [interface addLayer:[interface loadTexture:fileInBundle]];
-	} else if( bnk == 1 ) {
-		spriteLayer = [interface addLayer:[interface loadTexture:fileInBundle]];
-	}
-}
-
-#pragma mark -
-#pragma mark render bits
-
-- (void) renderFrameStart
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-}
-
-
-#pragma mark -
-#pragma mark Tilemap
-
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt usingOrdering:(int*)ordering
-{
-	// no proper tilemap stuff...
-	// brute force placing/drawing each tile every frame
+	BL2DGraphics * gfx = [[BL2DGraphics alloc] initWithPNG:filenameWithoutPNGExtenstion 
+												 tilesWide:acrs
+												 tilesHigh:slurp];
 	
-#define kSpriteSize 8
-#define kFixedOffset 5
-	int spriteIndex;
-	
-	for( unsigned int y=0 ; y<yt; y++ )
-	{
-		for( unsigned int x=0; x<xt ; x++ )
-		{
-			if( buffer == NULL ) {
-				spriteIndex = rand()%256;
-			} else {
-				if( ordering == NULL ) {
-					spriteIndex = buffer[ (y * xt) + x ];
-				} else {
-					spriteIndex = buffer[ ordering[ (y * xt) + x ]];
-				}
-			}
-			
-			[interface drawImage:tileLayer size:SIZE_8x8
-						   frame:spriteIndex 
-							   x:txO + kFixedOffset + (x * kSpriteSize * tsc)
-							   y:tyO + kFixedOffset + (y * kSpriteSize * tsc)
-						  hscale:tsc vscale:tsc angle:0.0 colour:NULL];
-		}
-	}
+	return gfx;
 }
 
-
-- (void) renderTilemap:(int *)buffer xTiles:(int)xt yTiles:(int)yt
+- (BL2DTilemap *) addTilemapLayerUsingGraphics:(BL2DGraphics *)gfx
+									 tilesWide:(int)w
+									 tilesHigh:(int)h
 {
-	[self renderTilemap:buffer xTiles:xt yTiles:yt usingOrdering:NULL];
+	BL2DTilemap *tmap = [[BL2DTilemap alloc] initWithGraphics:gfx];
+	[tmap setTilesWide:w tilesHigh:h];
+	[self.renderLayers addObject:tmap];
+	return tmap;
 }
 
-
-- (void) renderTilemapApply
+- (BL2DSprite *) addSprite:(BL2DGraphics *)gfx
 {
-	// i guess you'd ideally want to do all the updating & DrawImage()ing for tiles+sprites,
-	// and then only do the Render()ing for both afterwards, so it all happens at once. 
-	
-	[interface render:tileLayer];
+	BL2DSprite *sp = [[BL2DSprite alloc] initWithGraphics:gfx];
+	[self.renderLayers addObject:sp];
+	return sp;
 }
 
 #pragma mark -
-#pragma mark Sprites
+#pragma mark rendering
 
-// draw a sprite at a specific location
-- (void) renderSprite:(int)spid x:(float)x y:(float)y
+- (void) renderPrep
 {
-	[interface drawImage:spriteLayer size:SIZE_16x16 frame:spid
-					   x:x y:y hscale:1.0 vscale:1.0 angle:0.0 colour:NULL];
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrthof( 0.0f, screenW, screenH, 0.0f, -1.0f, 1.0f);
+	glMatrixMode(GL_MODELVIEW);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	
+	// just in case
+	glDisable(GL_DEPTH_TEST);
 }
 
-- (void) renderSprite:(int)spid x:(float)x y:(float)y xFlip:(BOOL)xf yFlip:(BOOL)yf
+- (void) renderStart
 {
-	[interface drawImage:spriteLayer size:SIZE_16x16 frame:spid
-					   x:x y:y hscale:xf?-1.0:1.0 vscale:yf?-1.0:1.0 angle:0.0 colour:NULL];
+	glClear( GL_COLOR_BUFFER_BIT );
 }
 
-- (void) renderSpriteApply
+- (void) renderStuff
 {
-	[interface render:spriteLayer];
+	[renderLayers makeObjectsPerformSelector:@selector( render )];
 }
 
+- (void) renderEnd
+{
+}
+
+- (void) render
+{
+	[self renderPrep];
+	[self renderStart];
+	[self renderStuff];
+	[self renderEnd];
+}
 @end

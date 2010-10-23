@@ -17,6 +17,7 @@
 
 @implementation EAGLView
 
+@synthesize framebufferWidth, framebufferHeight;
 @dynamic context;
 
 // You must implement this method

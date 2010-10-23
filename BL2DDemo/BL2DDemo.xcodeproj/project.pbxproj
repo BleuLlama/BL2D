@@ -25,11 +25,13 @@
 		5E60DFF912454BD80008595F /* graphics2c.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E60DFF512454BD80008595F /* graphics2c.png */; };
 		5E60DFFB12454BDD0008595F /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E60DFFA12454BDD0008595F /* Icon.png */; };
 		5E60E00512454C210008595F /* BL2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E60E00012454C210008595F /* BL2D.m */; };
-		5E60E00612454C210008595F /* BLGLInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E60E00212454C210008595F /* BLGLInterface.m */; };
-		5E60E00712454C210008595F /* BLRenderBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E60E00412454C210008595F /* BLRenderBuffer.m */; };
 		5E60E01612454C460008595F /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5E60E01412454C460008595F /* LICENSE.txt */; };
 		5E60E01712454C460008595F /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5E60E01512454C460008595F /* README.txt */; };
 		5E60E03E12454CD50008595F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E60E03D12454CD50008595F /* CoreGraphics.framework */; };
+		5EA3C30B126B900800E1F300 /* BL2DGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA3C30A126B900800E1F300 /* BL2DGraphics.m */; };
+		5EA3C342126BEF6900E1F300 /* BL2DSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA3C341126BEF6900E1F300 /* BL2DSprite.m */; };
+		5EA3C344126BEF6E00E1F300 /* BL2DTilemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA3C343126BEF6E00E1F300 /* BL2DTilemap.m */; };
+		5EE84ADD127202E1000CBCAE /* BL2DRenderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE84ADC127202E0000CBCAE /* BL2DRenderable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,13 +59,17 @@
 		5E60DFFA12454BDD0008595F /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../../Icon.png; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E60DFFF12454C210008595F /* BL2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BL2D.h; path = ../../../BL2DClasses/BL2D.h; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E60E00012454C210008595F /* BL2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BL2D.m; path = ../../../BL2DClasses/BL2D.m; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E60E00112454C210008595F /* BLGLInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLGLInterface.h; path = ../../../BL2DClasses/BLGLInterface.h; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E60E00212454C210008595F /* BLGLInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLGLInterface.m; path = ../../../BL2DClasses/BLGLInterface.m; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E60E00312454C210008595F /* BLRenderBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLRenderBuffer.h; path = ../../../BL2DClasses/BLRenderBuffer.h; sourceTree = BUILT_PRODUCTS_DIR; };
-		5E60E00412454C210008595F /* BLRenderBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLRenderBuffer.m; path = ../../../BL2DClasses/BLRenderBuffer.m; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E60E01412454C460008595F /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = ../../../LICENSE.txt; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E60E01512454C460008595F /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = ../../../README.txt; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E60E03D12454CD50008595F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = ../../../../../../../../Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EA3C2C0126B88FB00E1F300 /* BL2DGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DGraphics.h; sourceTree = "<group>"; };
+		5EA3C2C1126B88FB00E1F300 /* BL2DRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DRenderable.h; sourceTree = "<group>"; };
+		5EA3C2C2126B88FB00E1F300 /* BL2DSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DSprite.h; sourceTree = "<group>"; };
+		5EA3C2C3126B88FB00E1F300 /* BL2DTilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DTilemap.h; sourceTree = "<group>"; };
+		5EA3C30A126B900800E1F300 /* BL2DGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DGraphics.m; sourceTree = "<group>"; };
+		5EA3C341126BEF6900E1F300 /* BL2DSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DSprite.m; sourceTree = "<group>"; };
+		5EA3C343126BEF6E00E1F300 /* BL2DTilemap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DTilemap.m; sourceTree = "<group>"; };
+		5EE84ADC127202E0000CBCAE /* BL2DRenderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DRenderable.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* BL2DDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "BL2DDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -177,12 +183,16 @@
 		5E60DFFE12454C210008595F /* BL2DClasses */ = {
 			isa = PBXGroup;
 			children = (
+				5EA3C2C0126B88FB00E1F300 /* BL2DGraphics.h */,
+				5EA3C30A126B900800E1F300 /* BL2DGraphics.m */,
+				5EA3C2C1126B88FB00E1F300 /* BL2DRenderable.h */,
+				5EE84ADC127202E0000CBCAE /* BL2DRenderable.m */,
+				5EA3C2C2126B88FB00E1F300 /* BL2DSprite.h */,
+				5EA3C341126BEF6900E1F300 /* BL2DSprite.m */,
+				5EA3C2C3126B88FB00E1F300 /* BL2DTilemap.h */,
+				5EA3C343126BEF6E00E1F300 /* BL2DTilemap.m */,
 				5E60DFFF12454C210008595F /* BL2D.h */,
 				5E60E00012454C210008595F /* BL2D.m */,
-				5E60E00112454C210008595F /* BLGLInterface.h */,
-				5E60E00212454C210008595F /* BLGLInterface.m */,
-				5E60E00312454C210008595F /* BLRenderBuffer.h */,
-				5E60E00412454C210008595F /* BLRenderBuffer.m */,
 			);
 			name = BL2DClasses;
 			path = ../../../BL2DClasses;
@@ -263,8 +273,10 @@
 				28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */,
 				28EC4C5911D54ECE0027AA9F /* BL2DDemoViewController.m in Sources */,
 				5E60E00512454C210008595F /* BL2D.m in Sources */,
-				5E60E00612454C210008595F /* BLGLInterface.m in Sources */,
-				5E60E00712454C210008595F /* BLRenderBuffer.m in Sources */,
+				5EA3C30B126B900800E1F300 /* BL2DGraphics.m in Sources */,
+				5EA3C342126BEF6900E1F300 /* BL2DSprite.m in Sources */,
+				5EA3C344126BEF6E00E1F300 /* BL2DTilemap.m in Sources */,
+				5EE84ADD127202E1000CBCAE /* BL2DRenderable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
