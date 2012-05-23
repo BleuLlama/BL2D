@@ -86,9 +86,25 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
 	
 	// now load the tilemap to be used
-	self.backgroundTiles2 = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
-													  tilesWide:30 
-													  tilesHigh:60];
+
+    int tw, th;
+    float sp;
+    if( v.contentScaleFactor < 2.0 ) {
+        // old
+        tw = v.framebufferWidth/8;
+        th = v.framebufferHeight/8;
+        sp = 0.0;
+    } else {
+        // retina
+        tw = 20;
+        th = 20;
+        sp = 200.0;
+    }
+    self.backgroundTiles2 = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
+													  tilesWide:tw
+													  tilesHigh:th];
+    self.backgroundTiles2.spx = sp; // adjust start point
+    self.backgroundTiles2.spy = sp; // adjust start point
 	
 	self.backgroundTiles = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
 													 tilesWide:tilemapWidth 
@@ -297,6 +313,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.sprite0.scale = 1.0 + 2.0 + (2.0 * cos( an/8 ));
 	self.sprite0.active = YES;
 	
+    EAGLView * v = (EAGLView *)self.view;
 	
 	// draw the walking crocodile
 	static int crocFrameTimer = 3;
@@ -306,7 +323,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 		crocframe++; if ( crocframe > 23 ) { crocframe = 21; }
 		crocFrameTimer = 3;
 	}
-	crocX += 3; if ( crocX > 336 ) { crocX = -16; }
+	crocX += 3; if ( crocX > v.framebufferWidth + 20 ) { crocX = -16; }
 	crocY += -2 + rand() % 5;
 	
 	// keep the crocodile on screen
@@ -322,7 +339,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 	// sprite 2 will be the croc going the other way
 	[self.sprite2 setSpriteIndex:crocframe];
 	self.sprite2.spy = crocY + 50;
-	self.sprite2.spx = self.view.frame.size.width - crocX;
+	self.sprite2.spx = v.framebufferWidth - crocX;
 	self.sprite2.scale = 1.0;
 	self.sprite2.flipX = YES;
 	self.sprite2.active = YES;
