@@ -42,6 +42,7 @@
 @synthesize glHandle;
 @synthesize pxHeight, pxWidth;
 @synthesize tilesWide, tilesHigh;
+@synthesize sourceWidthP, sourceHeightP;
 
 #pragma mark -
 #pragma mark classy stuff
@@ -85,6 +86,26 @@
 #pragma mark -
 #pragma mark the important stuff
 
+
+- (BOOL)isPowerOfTwo:(int)value
+{
+	return (value & -value) == value;
+}
+
+- (int)nextPowerOfTwo:(int)value
+{
+	int next_pow = value;
+	next_pow--;
+	next_pow = (next_pow >> 1) | next_pow;
+	next_pow = (next_pow >> 2) | next_pow;
+	next_pow = (next_pow >> 4) | next_pow;
+	next_pow = (next_pow >> 8) | next_pow;
+	next_pow = (next_pow >> 16) | next_pow;
+	next_pow++; // Val is now the next highest power of 2.
+	return next_pow;
+}
+
+
 - (void)loadPng:(NSString *)fn
 {
 	// ref http://iphonedevelopment.blogspot.com/2009/05/opengl-es-from-ground-up-part-6_25.html
@@ -112,17 +133,51 @@
 	// load image
 	NSString *path = [[NSBundle mainBundle] pathForResource:fn ofType:@"png"];
     NSData *texData = [[NSData alloc] initWithContentsOfFile:path];
-    UIImage *image = [[UIImage alloc] initWithData:texData];
-    if (image == nil) {
-        NSLog(@"Failed load!");
+    UIImage *originalImage = [[UIImage alloc] initWithData:texData]; // from disk.
+	UIImage *image; // to be used...
+	
+	// make sure it loaded
+    if (originalImage == nil) {
+        NSLog(@"Failed load of %@!", fn);
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 		glBindTexture(GL_TEXTURE_2D, 0);		
 		return;
 	}
 	
-    GLuint width = CGImageGetWidth(image.CGImage);
-    GLuint height = CGImageGetHeight(image.CGImage);
+	
+	// doublecheck that it's a power of two in dimensions
+	sourceWidth = CGImageGetWidth(originalImage.CGImage);
+	sourceHeight = CGImageGetHeight(originalImage.CGImage);
+	
+	GLuint width = sourceWidth;
+	GLuint height = sourceHeight;
+	
+	if( ![self isPowerOfTwo:sourceWidth] || ![self isPowerOfTwo:sourceHeight] )
+	{
+		// it's not.  Lets now create a power-of-2 canvas and draw the image onto it.
+		width = [self nextPowerOfTwo:sourceWidth];
+		height = [self nextPowerOfTwo:sourceHeight];
+		
+		// shove it into a larger image.
+		CGSize newSize = CGSizeMake(width, height); // power of 2 new size
+		UIGraphicsBeginImageContext(newSize);
+		[originalImage drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+		
+		UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		
+		[originalImage release];
+		[newImage retain];
+		
+		image = newImage;
+	} else {
+		image = originalImage;
+	}
+	sourceWidthP = (float)sourceWidth/(float)width;
+	sourceHeightP = (float)sourceHeight/(float)height;
+	
+	// okay.  now, let's load that in to a GL Texture
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     void *imageData = malloc( height * width * 4 );
     CGContextRef context = CGBitmapContextCreate( imageData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );

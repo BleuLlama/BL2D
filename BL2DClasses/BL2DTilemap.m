@@ -36,6 +36,8 @@
 
 @implementation BL2DTilemap
 
+@synthesize fillScreen;
+
 #pragma mark -
 #pragma mark classy stuff
 
@@ -100,12 +102,28 @@
 
 #pragma mark -
 #pragma mark the important stuff
+- (int) width
+{
+    return nWide;
+}
 
-- (void) setCharacterAt:(int)px atY:(int)py to:(int)value
+- (int) height
+{
+    return nHigh;
+}
+
+- (void) setCharacterAtX:(int)px atY:(int)py to:(int)value
 {
 	if( !tilesBuffer ) return;
 	
 	tilesBuffer[ (py*nWide) + px ] = value;
+}
+
+- (int) getCharacterAtX:(int)px atY:(int)py
+{
+	if( !tilesBuffer ) return -1;
+	
+	return tilesBuffer[ (py*nWide) + px ];
 }
 
 - (void) fillWithRandom
@@ -116,6 +134,7 @@
 	}
 }
 
+#define kNumberOfPoints     (5)
 #define kScreenQuadCount	(15)	/* 5 points - x, y z in screen - last one repeated for now */
 #define kTextureQuadCount	(10)	/* 5 points - x, y in source texture */
 
@@ -280,7 +299,6 @@
 - (void) render
 {
 	if( !tilesBuffer ) return;
-	
 	[gfx glActivate];
 
 	glEnable(GL_TEXTURE_2D);
@@ -300,10 +318,14 @@
 	
 	glPushMatrix();
 	glTranslatef( self.spx, self.spy, 0.0 );
-	glScalef( scale, scale, 1.0 );
+	if( self.fillScreen ) {
+		glScalef( viewW/gfx.pxWidth, viewH/gfx.pxHeight, 1.0 );// gfx.pxHeight * gfx.sourceHeightP, 1.0 );
+	} else {
+		glScalef( scale, scale, 1.0 );
+	}
 	glRotatef( angle, 0.0, 0.0, 1.0 );
 	
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4 * nWide * nHigh);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, kNumberOfPoints * nWide * nHigh);
 	glPopMatrix();
 	
 	glDisable(GL_BLEND);

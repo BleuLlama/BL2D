@@ -10,7 +10,7 @@ This is a simple GLES1-based tilemap and sprite engine for iOS.
 
 It should work on all current iOS devices (iPad, iPod Touch, iPhone) 
 
-It should work on all iOS versions from 3.0 to 4.2.
+It should work on all iOS versions from 3.0 to 5.1
 
 This is shared under an MIT License.
 

@@ -36,7 +36,7 @@
 
 @implementation BL2DRenderable
 
-@synthesize spx, spy, angle, scale, flipX, flipY, active;
+@synthesize spx, spy, angle, scale, flipX, flipY, viewW, viewH, active;
 
 #pragma mark -
 #pragma mark classy stuff

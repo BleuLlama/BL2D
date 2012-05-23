@@ -72,6 +72,8 @@
 	BL2DTilemap *tmap = [[BL2DTilemap alloc] initWithGraphics:gfx];
 	[tmap setTilesWide:w tilesHigh:h];
 	[self.renderLayers addObject:tmap];
+	tmap.viewH = screenH;
+	tmap.viewW = screenW;
 	return tmap;
 }
 
@@ -79,6 +81,8 @@
 {
 	BL2DSprite *sp = [[BL2DSprite alloc] initWithGraphics:gfx];
 	[self.renderLayers addObject:sp];
+	sp.viewH = screenH;
+	sp.viewW = screenW;
 	return sp;
 }
 
@@ -104,7 +108,7 @@
 
 - (void) renderStuff
 {
-	[renderLayers makeObjectsPerformSelector:@selector( render )];
+	[renderLayers makeObjectsPerformSelector:@selector( render ) withObject:self];
 }
 
 - (void) renderEnd

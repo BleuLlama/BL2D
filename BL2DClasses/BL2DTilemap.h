@@ -45,13 +45,18 @@
 	int nWide;
 	int nHigh;
 }
+@property BOOL fillScreen;
 
 - (id) initWithGraphics:(BL2DGraphics *)gfx;
 
 - (void) setTilesWide:(int)w tilesHigh:(int)h;
 
 // change tiles (one at a time)
-- (void) setCharacterAt:(int)x atY:(int)y to:(int)value;
+- (int) width;
+- (int) height;
+
+- (void) setCharacterAtX:(int)x atY:(int)y to:(int)value;
+- (int) getCharacterAtX:(int)x atY:(int)y;
 - (void) commitChanges;
 
 // change in bulk

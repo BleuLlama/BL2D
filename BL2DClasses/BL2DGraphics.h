@@ -44,6 +44,11 @@
 	int tilesWide;			// number of tiles wide in the source image
 	int tilesHigh;			// number of tiles high in the source image
 	
+	GLuint sourceWidth;
+	GLuint sourceHeight;
+	float sourceWidthP;		// percentage of the width of the final image that is from the file loaded
+	float sourceHeightP;	// percentage of the height of the final image that is from the file loaded
+	
 	GLuint glHandle;		// GL handle for the sprite sheet
 	
 	float *percentsW;		// precomputed percentages across
@@ -57,6 +62,8 @@
 @property (nonatomic, readonly) int pxWidth;
 @property (nonatomic, readonly) int tilesWide;
 @property (nonatomic, readonly) int tilesHigh;
+@property (nonatomic, readonly) float sourceWidthP;
+@property (nonatomic, readonly) float sourceHeightP;
 
 // create a new instance, with the PNG selected. (needs to be pow2 x pow2
 - (id) initWithPNG:(NSString *)filenameWithoutPNGExtenstion 
@@ -73,6 +80,6 @@
 - (void) setupBufferForTile:(int)index into:(GLfloat *)buffer;	/* [12] */
 - (void) renderSingle:(int)index flipX:(BOOL)fx flipY:(BOOL)fy;
 
-- (void)renderSolidAlpha:(GLfloat)alpha  R:(GLfloat)r G:(GLfloat)g B:(GLfloat)b;
+- (void) renderSolidAlpha:(GLfloat)alpha  R:(GLfloat)r G:(GLfloat)g B:(GLfloat)b;
 
 @end

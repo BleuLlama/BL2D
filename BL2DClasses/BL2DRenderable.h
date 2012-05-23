@@ -43,6 +43,9 @@
 	BOOL active;
 	
 	BL2DGraphics * gfx;	
+	
+	float viewW;
+	float viewH;
 }
 
 @property (nonatomic) GLfloat spx;
@@ -52,6 +55,8 @@
 @property (nonatomic) BOOL flipX;
 @property (nonatomic) BOOL flipY;
 @property (nonatomic) BOOL active;
+@property (nonatomic) float viewW;
+@property (nonatomic) float viewH;
 
 - (id) initWithGraphics:(BL2DGraphics *)gfx;
 - (void) render;
