@@ -7,70 +7,70 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* BL2DDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* BL2DDemoAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		2514C27B10084DCA00A42282 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 2514C27910084DCA00A42282 /* Shader.fsh */; };
 		2514C27C10084DCA00A42282 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 2514C27A10084DCA00A42282 /* Shader.vsh */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		28EC4C5911D54ECE0027AA9F /* BL2DDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EC4C5711D54ECE0027AA9F /* BL2DDemoViewController.m */; };
-		28EC4C5A11D54ECE0027AA9F /* BL2DDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28EC4C5811D54ECE0027AA9F /* BL2DDemoViewController.xib */; };
+		28EC4C5911D54ECE0027AA9F /* ___PACKAGENAME___ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EC4C5711D54ECE0027AA9F /* ___PACKAGENAME___ViewController.m */; };
+		28EC4C5A11D54ECE0027AA9F /* ___PACKAGENAME___ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28EC4C5811D54ECE0027AA9F /* ___PACKAGENAME___ViewController.xib */; };
 		28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.m */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		5E120310156ABF490090BD41 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E12030F156ABF490090BD41 /* Icon.png */; };
-		5E12031B156ABF7E0090BD41 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5E120319156ABF7E0090BD41 /* LICENSE.txt */; };
-		5E12031C156ABF7E0090BD41 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5E12031A156ABF7E0090BD41 /* README.txt */; };
-		5E1AA626156ADB2E00CC1D87 /* BL2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1AA61D156ADB2E00CC1D87 /* BL2D.m */; };
-		5E1AA627156ADB2E00CC1D87 /* BL2DGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1AA61F156ADB2E00CC1D87 /* BL2DGraphics.m */; };
-		5E1AA628156ADB2E00CC1D87 /* BL2DRenderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1AA621156ADB2E00CC1D87 /* BL2DRenderable.m */; };
-		5E1AA629156ADB2E00CC1D87 /* BL2DSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1AA623156ADB2E00CC1D87 /* BL2DSprite.m */; };
-		5E1AA62A156ADB2E00CC1D87 /* BL2DTilemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E1AA625156ADB2E00CC1D87 /* BL2DTilemap.m */; };
 		5E1AA630156ADB9A00CC1D87 /* graphics1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62C156ADB9A00CC1D87 /* graphics1.png */; };
 		5E1AA631156ADB9A00CC1D87 /* graphics1c.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62D156ADB9A00CC1D87 /* graphics1c.png */; };
 		5E1AA632156ADB9A00CC1D87 /* graphics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62E156ADB9A00CC1D87 /* graphics2.png */; };
 		5E1AA633156ADB9A00CC1D87 /* graphics2c.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62F156ADB9A00CC1D87 /* graphics2c.png */; };
+		5EC73E2B156EC72B0085B731 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5EC73E29156EC72B0085B731 /* LICENSE.txt */; };
+		5EC73E2C156EC72B0085B731 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5EC73E2A156EC72B0085B731 /* README.txt */; };
+		5EC73E38156EC8E60085B731 /* BL2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E2F156EC8E60085B731 /* BL2D.m */; };
+		5EC73E39156EC8E60085B731 /* BL2DGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E31156EC8E60085B731 /* BL2DGraphics.m */; };
+		5EC73E3A156EC8E60085B731 /* BL2DRenderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E33156EC8E60085B731 /* BL2DRenderable.m */; };
+		5EC73E3B156EC8E60085B731 /* BL2DSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E35156EC8E60085B731 /* BL2DSprite.m */; };
+		5EC73E3C156EC8E60085B731 /* BL2DTilemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E37156EC8E60085B731 /* BL2DTilemap.m */; };
 		5EDBFD1E12834F5F0070976E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* BL2DDemoAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DDemoAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* BL2DDemoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DDemoAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* BL2DDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BL2DDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D3623240D0F684500981E51 /* ___PACKAGENAME___AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "___PACKAGENAME___AppDelegate.h"; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "___PACKAGENAME___AppDelegate.m"; sourceTree = "<group>"; };
+		1D6058910D05DD3D006BFB54 /* ___PACKAGENAME___.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "___PACKAGENAME___.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2514C27910084DCA00A42282 /* Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
 		2514C27A10084DCA00A42282 /* Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		28EC4C5611D54ECE0027AA9F /* BL2DDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DDemoViewController.h; sourceTree = "<group>"; };
-		28EC4C5711D54ECE0027AA9F /* BL2DDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DDemoViewController.m; sourceTree = "<group>"; };
-		28EC4C5811D54ECE0027AA9F /* BL2DDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BL2DDemoViewController.xib; path = ../BL2DDemoViewController.xib; sourceTree = "<group>"; };
+		28EC4C5611D54ECE0027AA9F /* ___PACKAGENAME___ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "___PACKAGENAME___ViewController.h"; sourceTree = "<group>"; };
+		28EC4C5711D54ECE0027AA9F /* ___PACKAGENAME___ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "___PACKAGENAME___ViewController.m"; sourceTree = "<group>"; };
+		28EC4C5811D54ECE0027AA9F /* ___PACKAGENAME___ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "___PACKAGENAME___ViewController.xib"; path = "../___PACKAGENAME___ViewController.xib"; sourceTree = "<group>"; };
 		28FD14FC0DC6FC130079059D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		28FD14FD0DC6FC130079059D /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLView.m; sourceTree = "<group>"; };
 		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* BL2DDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DDemo_Prefix.pch; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* ___PACKAGENAME____Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "___PACKAGENAME____Prefix.pch"; sourceTree = "<group>"; };
 		5E12030F156ABF490090BD41 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		5E120319156ABF7E0090BD41 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = ../LICENSE.txt; sourceTree = "<group>"; };
-		5E12031A156ABF7E0090BD41 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = ../README.txt; sourceTree = "<group>"; };
-		5E1AA61C156ADB2E00CC1D87 /* BL2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2D.h; sourceTree = "<group>"; };
-		5E1AA61D156ADB2E00CC1D87 /* BL2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2D.m; sourceTree = "<group>"; };
-		5E1AA61E156ADB2E00CC1D87 /* BL2DGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DGraphics.h; sourceTree = "<group>"; };
-		5E1AA61F156ADB2E00CC1D87 /* BL2DGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DGraphics.m; sourceTree = "<group>"; };
-		5E1AA620156ADB2E00CC1D87 /* BL2DRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DRenderable.h; sourceTree = "<group>"; };
-		5E1AA621156ADB2E00CC1D87 /* BL2DRenderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DRenderable.m; sourceTree = "<group>"; };
-		5E1AA622156ADB2E00CC1D87 /* BL2DSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DSprite.h; sourceTree = "<group>"; };
-		5E1AA623156ADB2E00CC1D87 /* BL2DSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DSprite.m; sourceTree = "<group>"; };
-		5E1AA624156ADB2E00CC1D87 /* BL2DTilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DTilemap.h; sourceTree = "<group>"; };
-		5E1AA625156ADB2E00CC1D87 /* BL2DTilemap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DTilemap.m; sourceTree = "<group>"; };
 		5E1AA62C156ADB9A00CC1D87 /* graphics1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics1.png; sourceTree = "<group>"; };
 		5E1AA62D156ADB9A00CC1D87 /* graphics1c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics1c.png; sourceTree = "<group>"; };
 		5E1AA62E156ADB9A00CC1D87 /* graphics2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics2.png; sourceTree = "<group>"; };
 		5E1AA62F156ADB9A00CC1D87 /* graphics2c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics2c.png; sourceTree = "<group>"; };
+		5EC73E29156EC72B0085B731 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = ../../../../LICENSE.txt; sourceTree = "<group>"; };
+		5EC73E2A156EC72B0085B731 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = ../../../../README.txt; sourceTree = "<group>"; };
+		5EC73E2E156EC8E60085B731 /* BL2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2D.h; sourceTree = "<group>"; };
+		5EC73E2F156EC8E60085B731 /* BL2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2D.m; sourceTree = "<group>"; };
+		5EC73E30156EC8E60085B731 /* BL2DGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DGraphics.h; sourceTree = "<group>"; };
+		5EC73E31156EC8E60085B731 /* BL2DGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DGraphics.m; sourceTree = "<group>"; };
+		5EC73E32156EC8E60085B731 /* BL2DRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DRenderable.h; sourceTree = "<group>"; };
+		5EC73E33156EC8E60085B731 /* BL2DRenderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DRenderable.m; sourceTree = "<group>"; };
+		5EC73E34156EC8E60085B731 /* BL2DSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DSprite.h; sourceTree = "<group>"; };
+		5EC73E35156EC8E60085B731 /* BL2DSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DSprite.m; sourceTree = "<group>"; };
+		5EC73E36156EC8E60085B731 /* BL2DTilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DTilemap.h; sourceTree = "<group>"; };
+		5EC73E37156EC8E60085B731 /* BL2DTilemap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DTilemap.m; sourceTree = "<group>"; };
 		5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		8D1107310486CEB800E47090 /* BL2DDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "BL2DDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* ___PACKAGENAME___-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "___PACKAGENAME___-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,11 +94,11 @@
 			children = (
 				28FD14FC0DC6FC130079059D /* EAGLView.h */,
 				28FD14FD0DC6FC130079059D /* EAGLView.m */,
-				1D3623240D0F684500981E51 /* BL2DDemoAppDelegate.h */,
-				1D3623250D0F684500981E51 /* BL2DDemoAppDelegate.m */,
-				28EC4C5611D54ECE0027AA9F /* BL2DDemoViewController.h */,
-				28EC4C5711D54ECE0027AA9F /* BL2DDemoViewController.m */,
-				28EC4C5811D54ECE0027AA9F /* BL2DDemoViewController.xib */,
+				1D3623240D0F684500981E51 /* ___PACKAGENAME___AppDelegate.h */,
+				1D3623250D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m */,
+				28EC4C5611D54ECE0027AA9F /* ___PACKAGENAME___ViewController.h */,
+				28EC4C5711D54ECE0027AA9F /* ___PACKAGENAME___ViewController.m */,
+				28EC4C5811D54ECE0027AA9F /* ___PACKAGENAME___ViewController.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -106,7 +106,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* BL2DDemo.app */,
+				1D6058910D05DD3D006BFB54 /* ___PACKAGENAME___.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -123,9 +123,9 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				5E120319156ABF7E0090BD41 /* LICENSE.txt */,
-				5E12031A156ABF7E0090BD41 /* README.txt */,
-				5E1AA61B156ADB2E00CC1D87 /* BL2DClasses */,
+				5EC73E29156EC72B0085B731 /* LICENSE.txt */,
+				5EC73E2A156EC72B0085B731 /* README.txt */,
+				5EC73E2D156EC8E60085B731 /* BL2DClasses */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				2514C27610084DB600A42282 /* Shaders */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -139,7 +139,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				32CA4F630368D1EE00C91783 /* BL2DDemo_Prefix.pch */,
+				32CA4F630368D1EE00C91783 /* ___PACKAGENAME____Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -151,7 +151,7 @@
 				5E12030F156ABF490090BD41 /* Icon.png */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				5E1AA62B156ADB9A00CC1D87 /* Graphics */,
-				8D1107310486CEB800E47090 /* BL2DDemo-Info.plist */,
+				8D1107310486CEB800E47090 /* ___PACKAGENAME___-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -168,24 +168,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5E1AA61B156ADB2E00CC1D87 /* BL2DClasses */ = {
-			isa = PBXGroup;
-			children = (
-				5E1AA61C156ADB2E00CC1D87 /* BL2D.h */,
-				5E1AA61D156ADB2E00CC1D87 /* BL2D.m */,
-				5E1AA61E156ADB2E00CC1D87 /* BL2DGraphics.h */,
-				5E1AA61F156ADB2E00CC1D87 /* BL2DGraphics.m */,
-				5E1AA620156ADB2E00CC1D87 /* BL2DRenderable.h */,
-				5E1AA621156ADB2E00CC1D87 /* BL2DRenderable.m */,
-				5E1AA622156ADB2E00CC1D87 /* BL2DSprite.h */,
-				5E1AA623156ADB2E00CC1D87 /* BL2DSprite.m */,
-				5E1AA624156ADB2E00CC1D87 /* BL2DTilemap.h */,
-				5E1AA625156ADB2E00CC1D87 /* BL2DTilemap.m */,
-			);
-			name = BL2DClasses;
-			path = ../BL2DClasses;
-			sourceTree = "<group>";
-		};
 		5E1AA62B156ADB9A00CC1D87 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,12 +179,30 @@
 			path = Graphics;
 			sourceTree = "<group>";
 		};
+		5EC73E2D156EC8E60085B731 /* BL2DClasses */ = {
+			isa = PBXGroup;
+			children = (
+				5EC73E2E156EC8E60085B731 /* BL2D.h */,
+				5EC73E2F156EC8E60085B731 /* BL2D.m */,
+				5EC73E30156EC8E60085B731 /* BL2DGraphics.h */,
+				5EC73E31156EC8E60085B731 /* BL2DGraphics.m */,
+				5EC73E32156EC8E60085B731 /* BL2DRenderable.h */,
+				5EC73E33156EC8E60085B731 /* BL2DRenderable.m */,
+				5EC73E34156EC8E60085B731 /* BL2DSprite.h */,
+				5EC73E35156EC8E60085B731 /* BL2DSprite.m */,
+				5EC73E36156EC8E60085B731 /* BL2DTilemap.h */,
+				5EC73E37156EC8E60085B731 /* BL2DTilemap.m */,
+			);
+			name = BL2DClasses;
+			path = ../../../../BL2DClasses;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* BL2DDemo */ = {
+		1D6058900D05DD3D006BFB54 /* ___PACKAGENAME___ */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "BL2DDemo" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "___PACKAGENAME___" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -212,9 +212,9 @@
 			);
 			dependencies = (
 			);
-			name = BL2DDemo;
-			productName = BL2DDemo;
-			productReference = 1D6058910D05DD3D006BFB54 /* BL2DDemo.app */;
+			name = "___PACKAGENAME___";
+			productName = "___PACKAGENAME___";
+			productReference = 1D6058910D05DD3D006BFB54 /* ___PACKAGENAME___.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -225,7 +225,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "BL2DDemo" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "___PACKAGENAME___" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -239,7 +239,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* BL2DDemo */,
+				1D6058900D05DD3D006BFB54 /* ___PACKAGENAME___ */,
 			);
 		};
 /* End PBXProject section */
@@ -252,14 +252,14 @@
 				2514C27B10084DCA00A42282 /* Shader.fsh in Resources */,
 				2514C27C10084DCA00A42282 /* Shader.vsh in Resources */,
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				28EC4C5A11D54ECE0027AA9F /* BL2DDemoViewController.xib in Resources */,
+				28EC4C5A11D54ECE0027AA9F /* ___PACKAGENAME___ViewController.xib in Resources */,
 				5E120310156ABF490090BD41 /* Icon.png in Resources */,
-				5E12031B156ABF7E0090BD41 /* LICENSE.txt in Resources */,
-				5E12031C156ABF7E0090BD41 /* README.txt in Resources */,
 				5E1AA630156ADB9A00CC1D87 /* graphics1.png in Resources */,
 				5E1AA631156ADB9A00CC1D87 /* graphics1c.png in Resources */,
 				5E1AA632156ADB9A00CC1D87 /* graphics2.png in Resources */,
 				5E1AA633156ADB9A00CC1D87 /* graphics2c.png in Resources */,
+				5EC73E2B156EC72B0085B731 /* LICENSE.txt in Resources */,
+				5EC73E2C156EC72B0085B731 /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,14 +271,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* BL2DDemoAppDelegate.m in Sources */,
+				1D3623260D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m in Sources */,
 				28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */,
-				28EC4C5911D54ECE0027AA9F /* BL2DDemoViewController.m in Sources */,
-				5E1AA626156ADB2E00CC1D87 /* BL2D.m in Sources */,
-				5E1AA627156ADB2E00CC1D87 /* BL2DGraphics.m in Sources */,
-				5E1AA628156ADB2E00CC1D87 /* BL2DRenderable.m in Sources */,
-				5E1AA629156ADB2E00CC1D87 /* BL2DSprite.m in Sources */,
-				5E1AA62A156ADB2E00CC1D87 /* BL2DTilemap.m in Sources */,
+				28EC4C5911D54ECE0027AA9F /* ___PACKAGENAME___ViewController.m in Sources */,
+				5EC73E38156EC8E60085B731 /* BL2D.m in Sources */,
+				5EC73E39156EC8E60085B731 /* BL2DGraphics.m in Sources */,
+				5EC73E3A156EC8E60085B731 /* BL2DRenderable.m in Sources */,
+				5EC73E3B156EC8E60085B731 /* BL2DSprite.m in Sources */,
+				5EC73E3C156EC8E60085B731 /* BL2DTilemap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,29 +288,31 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = BL2DDemo_Prefix.pch;
+				GCC_PREFIX_HEADER = "___PACKAGENAME____Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
-				"HEADER_SEARCH_PATHS[arch=*]" = ../../BL2DClasses;
-				INFOPLIST_FILE = "BL2DDemo-Info.plist";
-				PRODUCT_NAME = BL2DDemo;
+				HEADER_SEARCH_PATHS = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = "";
+				INFOPLIST_FILE = "___PACKAGENAME___-Info.plist";
+				PRODUCT_NAME = "___PACKAGENAME___";
 			};
 			name = Debug;
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = BL2DDemo_Prefix.pch;
+				GCC_PREFIX_HEADER = "___PACKAGENAME____Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
-				INFOPLIST_FILE = "BL2DDemo-Info.plist";
-				PRODUCT_NAME = BL2DDemo;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "___PACKAGENAME___-Info.plist";
+				PRODUCT_NAME = "___PACKAGENAME___";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -324,6 +326,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
 			};
@@ -337,6 +340,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -346,7 +350,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "BL2DDemo" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "___PACKAGENAME___" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -355,7 +359,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "BL2DDemo" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "___PACKAGENAME___" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

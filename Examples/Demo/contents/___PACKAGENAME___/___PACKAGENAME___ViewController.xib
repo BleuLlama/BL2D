@@ -102,7 +102,7 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>BL2DDemoViewController</string>
+					<string>___PACKAGENAME___ViewController</string>
 					<string>UIResponder</string>
 					<string>EAGLView</string>
 					<string>{{401, 662}, {320, 460}}</string>
@@ -182,7 +182,7 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">BL2DDemoViewController</string>
+					<string key="className">___PACKAGENAME___ViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>

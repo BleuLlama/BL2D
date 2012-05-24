@@ -14,6 +14,11 @@ It should work on all iOS versions from 3.0 to 5.1
 
 This is shared under an MIT License.
 
+--------------------------------------------------------------------------------
+
+NOTE: if the BL2DClasses files are red, delete the "BL2DClasses" yellow folder
+from this project, and re-drag in the BL2DClasses folder over, "[x] create groups"
+and it should work fine.
 
 --------------------------------------------------------------------------------
 The basic engine is in the BL2DClasses folder.  Drop this into your project

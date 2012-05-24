@@ -1,0 +1,25 @@
+
+########################################
+# project info
+
+# name
+#	this is the name to be displayed to the user for the 
+#	template selection
+name==Basic BL2D Project (x)
+
+# description
+#	A brief description of what the template project is.
+description==Bare minimum changes from the iOS 4.0 GL template
+
+
+########################################
+# replacement stuff
+
+# basename
+#       this is the name of the project in the source tree, that
+#	will get replaced with the user specified name.  In Apple
+#	templates, it is "___PACKAGENAME___", although it can just
+#	be whatever the name of the app you created and are
+#	turning into a template.
+basename==___PACKAGENAME___
+

@@ -1,6 +1,6 @@
 //
-//  BL2DDemoViewController.h
-//  BL2DDemo
+//  ___PACKAGENAME___ViewController.h
+//  ___PACKAGENAME___
 //
 //  Created by Scott Lawrence on 9/18/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
@@ -17,7 +17,7 @@
 
 #import "BL2D.h"
 
-@interface BL2DDemoViewController : UIViewController
+@interface ___PACKAGENAME___ViewController : UIViewController
 {
     EAGLContext *context;
     GLuint program;

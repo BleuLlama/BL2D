@@ -1,6 +1,6 @@
 //
 //  main.m
-//  BL2DDemo
+//  ___PACKAGENAME___
 //
 //  Created by Scott Lawrence on 9/18/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.

@@ -1,6 +1,6 @@
 //
-//  BL2DDemoViewController.m
-//  BL2DDemo
+//  ___PACKAGENAME___ViewController.m
+//  ___PACKAGENAME___
 //
 //  Created by Scott Lawrence on 9/18/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "BL2DDemoViewController.h"
+#import "___PACKAGENAME___ViewController.h"
 #import "EAGLView.h"
 
 // Uniform index.
@@ -25,7 +25,7 @@ enum {
     NUM_ATTRIBUTES
 };
 
-@interface BL2DDemoViewController ()
+@interface ___PACKAGENAME___ViewController ()
 @property (nonatomic, retain) EAGLContext *context;
 - (BOOL)loadShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
@@ -33,7 +33,7 @@ enum {
 - (BOOL)validateProgram:(GLuint)prog;
 @end
 
-@implementation BL2DDemoViewController
+@implementation ___PACKAGENAME___ViewController
 
 @synthesize animating, context;
 
@@ -150,7 +150,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 	[self startupBL2DEngine];
     
     animating = FALSE;
-    displayLinkSupported = FALSE;
+    displayLinkSupported = FALSE; // probably unnecessary aince we're 3.1+
     animationFrameInterval = 1;
     displayLink = nil;
     animationTimer = nil;

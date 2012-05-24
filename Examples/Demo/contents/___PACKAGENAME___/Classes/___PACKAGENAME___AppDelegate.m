@@ -1,15 +1,15 @@
 //
-//  BL2DDemoAppDelegate.m
-//  BL2DDemo
+//  ___PACKAGENAME___AppDelegate.m
+//  ___PACKAGENAME___
 //
 //  Created by Scott Lawrence on 9/18/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "BL2DDemoAppDelegate.h"
-#import "BL2DDemoViewController.h"
+#import "___PACKAGENAME___AppDelegate.h"
+#import "___PACKAGENAME___ViewController.h"
 
-@implementation BL2DDemoAppDelegate
+@implementation ___PACKAGENAME___AppDelegate
 
 @synthesize window;
 @synthesize viewController;
