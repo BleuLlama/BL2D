@@ -5,11 +5,11 @@
 # name
 #	this is the name to be displayed to the user for the 
 #	template selection
-name==Basic BL2D Project (x)
+name==Basic BL2D Project
 
 # description
 #	A brief description of what the template project is.
-description==Bare minimum changes from the iOS 4.0 GL template
+description==Bare minimum changes from the iOS 4.0 GLES template
 
 
 ########################################

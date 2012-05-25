@@ -103,7 +103,7 @@ sub getNumberSelection
 {
 	$v = getTextSelection( shift );
 
-	if ($var =~ /^[+-]?\d+$/ ) {
+	if ($v =~ /^[+-]?\d+$/ ) {
 		return int( $v );
 	}
 
