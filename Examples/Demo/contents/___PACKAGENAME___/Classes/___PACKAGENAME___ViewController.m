@@ -349,7 +349,16 @@ static int tilemapOrdering[ 4 * 5 ] =
 	[self.backgroundTiles commitChanges];	// regenerate the tilemap
 	self.backgroundTiles.scale = 4.0;
 	
+    // random chars
 	[self.backgroundTiles2 fillWithRandom];
+    // render text
+    [self.backgroundTiles2 drawTextAtX:1 atY:1 txt:@"Hello!"];
+    [self.backgroundTiles2 drawTextAtX:2 atY:30 txt:@"Hello!"];
+    
+    [self.backgroundTiles2 drawCenteredTextAt:3 txt:@"Centered."];
+
+    [self.backgroundTiles2 drawLeftTextAtX:1 atY:5 txt:@"Left!"];
+
 	[self.backgroundTiles2 commitChanges];
 	
 	[bl2de render];

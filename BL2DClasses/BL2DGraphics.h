@@ -30,7 +30,7 @@
  */ 
 
 /*
-    NOTE: PNG graphic files loaded in must be (power of 2)x(power of 2) resolution
+    NOTE: PNG graphic files loaded in should be (power of 2)x(power of 2) resolution
 			PNG files may have transparency
  */
 

@@ -65,4 +65,8 @@
 
 // random
 - (void) fillWithRandom;
+- (void)drawTextAtX:(int)x atY:(int)y txt:(NSString *)txt;
+- (void)drawCenteredTextAt:(int)y txt:(NSString *)txt;
+- (void)drawLeftTextAtX:(int)x atY:(int)y txt:(NSString *)txt;
+
 @end

@@ -100,8 +100,7 @@
 	memset( tilesBuffer, 0, (w*h) * sizeof( int ));
 }
 
-#pragma mark -
-#pragma mark the important stuff
+#pragma mark - accessors
 - (int) width
 {
     return nWide;
@@ -112,9 +111,14 @@
     return nHigh;
 }
 
+#pragma mark - get/set characters
+
 - (void) setCharacterAtX:(int)px atY:(int)py to:(int)value
 {
 	if( !tilesBuffer ) return;
+    
+    if( px >= nWide ) return;
+    if( py >= nHigh ) return;
 	
 	tilesBuffer[ (py*nWide) + px ] = value;
 }
@@ -133,6 +137,32 @@
 		tilesBuffer[ item ] = rand() % ( gfx.tilesWide * gfx.tilesHigh );
 	}
 }
+
+#pragma mark - get/set characters - text rendering
+
+
+- (void)drawTextAtX:(int)x atY:(int)y txt:(NSString *)txt
+{
+    for( int xx = 0 ; xx<[txt length] ; xx++ )
+    {
+        [self setCharacterAtX:x+xx atY:y to:[txt characterAtIndex:xx]];
+    }
+}
+
+- (void)drawCenteredTextAt:(int)y txt:(NSString *)txt
+{
+
+    int x = (nWide/2) - ([txt length]/2);
+    [self drawTextAtX:x atY:y txt:txt]; // XXXXX FIX
+}
+
+- (void)drawLeftTextAtX:(int)x atY:(int)y txt:(NSString *)txt
+{
+    [self drawTextAtX:(nWide - [txt length] - x) atY:y txt:txt];
+}
+
+
+#pragma mark - buffer stuff
 
 #define kNumberOfPoints     (5)
 #define kScreenQuadCount	(15)	/* 5 points - x, y z in screen - last one repeated for now */
@@ -247,29 +277,6 @@
 	}
 }
 
-- (NSString *)description
-{
-	NSMutableString * str = [[NSMutableString alloc] init];
-	
-	int ai = 0;
-	
-	[str appendFormat:@"{\n"];
-	for( int i = 0 ; i < nHigh*nWide ; i ++ )
-	{
-		
-		for( int j=0 ; j<4 ; j++ )
-		{
-			[str appendFormat:@" {%3.0f, %3.0f, %3.0f} ", 
-			 screenMesh[ai], 
-			 screenMesh[ai+1], 
-			 screenMesh[ai+2] ];
-			ai += 3;
-		}
-		[str appendFormat:@"\n"];
-	}
-	[str appendFormat:@"}\n" ];
-	return str;
-}
 
 
 // change in bulk
@@ -295,6 +302,7 @@
 	}	
 }
 
+#pragma mark - render routines
 
 - (void) render
 {
@@ -336,6 +344,32 @@
 	
 	// unbind
 	[gfx glDeactivate];
+}
+
+#pragma mark - debug
+
+- (NSString *)description
+{
+	NSMutableString * str = [[NSMutableString alloc] init];
+	
+	int ai = 0;
+	
+	[str appendFormat:@"{\n"];
+	for( int i = 0 ; i < nHigh*nWide ; i ++ )
+	{
+		
+		for( int j=0 ; j<4 ; j++ )
+		{
+			[str appendFormat:@" {%3.0f, %3.0f, %3.0f} ", 
+			 screenMesh[ai], 
+			 screenMesh[ai+1], 
+			 screenMesh[ai+2] ];
+			ai += 3;
+		}
+		[str appendFormat:@"\n"];
+	}
+	[str appendFormat:@"}\n" ];
+	return str;
 }
 
 @end

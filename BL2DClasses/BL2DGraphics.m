@@ -35,7 +35,7 @@
 - (void) loadPng:(NSString *)fn;
 @end
 
-#define kPixellyScaleups	(1)
+#define kPixellyScaleups	(1)  /* use nearest neighbor scaling */
 
 @implementation BL2DGraphics
 
