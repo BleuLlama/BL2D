@@ -45,6 +45,10 @@
 	BL2DSprite * sprite1;
 	BL2DSprite * sprite2;
 	BL2DSprite * sprite3;
+    
+    long startTime;
+    long frameCount;
+    IBOutlet UILabel * fpsLabel;
 }
 
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;

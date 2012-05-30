@@ -163,6 +163,10 @@ static int tilemapOrdering[ 4 * 5 ] =
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
     if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
         displayLinkSupported = TRUE;
+    
+    // fps display
+    startTime = 0l;
+    frameCount = 0l;
 }
 
 - (void)dealloc
@@ -383,6 +387,16 @@ static int tilemapOrdering[ 4 * 5 ] =
 	
 	[bl2de render];
     [(EAGLView *)self.view presentFramebuffer];
+    
+    
+    // update the FPS display
+    long currentTime = time( NULL );
+    if( frameCount == 0 || currentTime == startTime ) {
+        startTime = currentTime;
+    } else {
+        fpsLabel.text = [NSString stringWithFormat:@"%0.1f fps", (float)frameCount/(float)(currentTime - startTime ) ];
+    }
+    frameCount++;
 }
 
 
