@@ -38,11 +38,24 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 
+// for the PLIST version, we need this lookup table item
+
+typedef struct BL2D_tilegeom {
+    int idx;
+    int x,y,w,h;
+} BL2D_tilegeom;
+
 @interface BL2DGraphics : NSObject {
 	size_t image_width;		// width in pixels of the source image
 	size_t image_height;	// height in pixels of the source image
+    
+    // for gridded graphics
+    bool isTiled;
 	int tilesWide;			// number of tiles wide in the source image
 	int tilesHigh;			// number of tiles high in the source image
+    
+    // for non-tiled
+    BL2D_tilegeom * geom;
 	
 	GLuint sourceWidth;
 	GLuint sourceHeight;
@@ -69,6 +82,11 @@
 - (id) initWithPNG:(NSString *)filenameWithoutPNGExtenstion 
 		 tilesWide:(int)across
 		 tilesHigh:(int)slurp;
+
+// create a new instance, with the PLIST selected.
+//  the plist specifies a plist and sprite geometries
+- (id) initWithPlist:(NSString *)plist;
+
 
 // enable our texture with GL.
 - (void) glActivate;

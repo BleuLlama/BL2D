@@ -65,6 +65,14 @@
 	return gfx;
 }
 
+
+- (BL2DGraphics *) addPlistGraphics:(NSString *)filenameWithoutPlistExtenstion
+{
+    BL2DGraphics * gfx  = [[BL2DGraphics alloc] initWithPlist:filenameWithoutPlistExtenstion];
+    return gfx;
+}
+
+
 - (BL2DTilemap *) addTilemapLayerUsingGraphics:(BL2DGraphics *)gfx
 									 tilesWide:(int)w
 									 tilesHigh:(int)h

@@ -37,6 +37,7 @@
 	BL2D * bl2de;
 	BL2DGraphics * tilegfx;
 	BL2DGraphics * spritegfx;
+    BL2DGraphics * builtgfx;
 	
 	BL2DTilemap * backgroundTiles;
 	BL2DTilemap * backgroundTiles2;
@@ -51,6 +52,7 @@
 
 @property (nonatomic, retain) BL2DGraphics * tilegfx;
 @property (nonatomic, retain) BL2DGraphics * spritegfx;
+@property (nonatomic, retain) BL2DGraphics * builtgfx;
 @property (nonatomic, retain) BL2DTilemap * backgroundTiles;
 @property (nonatomic, retain) BL2DTilemap * backgroundTiles2;
 @property (nonatomic, retain) BL2DSprite * sprite0;

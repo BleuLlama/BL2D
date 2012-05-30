@@ -70,6 +70,9 @@
 
 // load in a graphics source, returns a handle to the graphics
 - (BL2DGraphics *) addPNGGraphics:(NSString *)filenameWithoutPNGExtenstion tilesWide:(int)acrs tilesHigh:(int)slurp;
+- (BL2DGraphics *) addPlistGraphics:(NSString *)filenameWithoutPlistExtenstion;
+
+
 - (BL2DTilemap *) addTilemapLayerUsingGraphics:(BL2DGraphics *)gfx 
 									 tilesWide:(int)w 
 									 tilesHigh:(int)h;

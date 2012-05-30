@@ -70,7 +70,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 #pragma mark -
 #pragma mark BL2D interface stuff
 
-@synthesize tilegfx, spritegfx;
+@synthesize tilegfx, spritegfx, builtgfx;
 @synthesize backgroundTiles, backgroundTiles2, sprite0, sprite1, sprite2, sprite3; 
 
 - (void)startupBL2DEngine
@@ -84,7 +84,8 @@ static int tilemapOrdering[ 4 * 5 ] =
 	// load the two graphics banks.  (only two banks for now.)
 	self.tilegfx = [bl2de addPNGGraphics:@"graphics1" tilesWide:32 tilesHigh:8];
 	self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
-	
+    self.builtgfx = [bl2de addPlistGraphics:@"test_sprites"];
+
 	// now load the tilemap to be used
 
     int tw, th;
@@ -114,7 +115,8 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.sprite0 = [bl2de addSprite:self.spritegfx];
 	self.sprite1 = [bl2de addSprite:self.spritegfx];
 	self.sprite2 = [bl2de addSprite:self.spritegfx];
-	self.sprite3 = [bl2de addSprite:self.spritegfx];
+    
+	self.sprite3 = [bl2de addSprite:self.builtgfx];
 }
 
 
@@ -343,10 +345,28 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.sprite2.scale = 1.0;
 	self.sprite2.flipX = YES;
 	self.sprite2.active = YES;
+    
+    
+    // sprite 3 will show off the plist-based graphics
+    static int s3frame = 0;
+    static int s3FrameTimer = 4;
+    if( s3FrameTimer-- <= 0 ) {
+        s3frame++;
+        if( s3frame > 19 ) s3frame = 0;
+        s3FrameTimer = 4;
+    }
+    
+    [self.sprite3 setSpriteIndex:s3frame];
+    self.sprite3.spx = 200;
+    self.sprite3.spy = 100;
+    self.sprite3.scale = 2.0;
+    self.sprite3.active = YES;
+    
 	
 	// set up the background tilemap
 	[self.backgroundTiles copyNewTilesBuffer:tilemapArray];
-	[self.backgroundTiles commitChanges];	// regenerate the tilemap
+	
+    [self.backgroundTiles commitChanges];	// regenerate the tilemap
 	self.backgroundTiles.scale = 4.0;
 	
     // random chars

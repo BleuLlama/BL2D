@@ -61,6 +61,8 @@
 		glHandle = 0;
 		percentsW = NULL;
 		percentsH = NULL;
+        isTiled = true;
+        geom = NULL;
 		
 		[self loadPng:filename];
 		[self computePercentages];
@@ -71,11 +73,77 @@
 	return self;
 }
 
+- (id) initWithPlist:(NSString *)plist
+{
+    self = [super init];
+    if( self )
+    {
+        // do stuff here
+        image_width = 0;
+        image_height = 0;
+        
+        // instantiate the dict, extract out useful stuff
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:plist ofType:@"plist"];
+
+        NSDictionary *d = [[NSDictionary  alloc] initWithContentsOfFile:path];
+        
+/*
+        NSLog( @"%@", d );
+*/        
+        if( !d ) { NSLog( @"%@: ERROR: Unable to load plist file!", plist ); return( self ); }
+        
+        // 1. load image file
+        NSDictionary *td = [d objectForKey:@"Image"];
+        if( !td ) { NSLog( @"%@: ERROR: Unable to find Image section in plist file!", plist ); return( self ); }
+        
+        NSString *text = [td objectForKey:@"base"];
+        if( !text ) { NSLog( @"%@: ERROR: Unable to find Image!", plist ); return( self ); }
+
+        [self loadPng:text];
+		[self computePercentages];
+        
+        // 2. load the geometries
+        NSArray *ta = [d objectForKey:@"Sprites"];
+        if( [ta count] < 1 ) {
+            NSLog( @"%@: ERROR: NO SPRITES FOUND!", [td objectForKey:@"base"] );
+        }
+
+        int s=0;
+        geom = (BL2D_tilegeom *) calloc( [ta count]+1, sizeof(BL2D_tilegeom) );
+        for( s=0 ; s< [ta count] ; s++ )
+        {
+            NSDictionary * di = [ta objectAtIndex:s];
+            
+/*
+            NSLog( @"Item %d:  %d %d  %d %d",
+                  [[di valueForKey:@"idx"] intValue],
+                  [[di valueForKey:@"x"] intValue],
+                  [[di valueForKey:@"y"] intValue],
+                  [[di valueForKey:@"w"] intValue],
+                  [[di valueForKey:@"h"] intValue]
+                  );
+ */
+            
+            geom[s].idx = [[di valueForKey:@"idx"] intValue];
+            geom[s].x = [[di valueForKey:@"x"] intValue];
+            geom[s].y = [[di valueForKey:@"y"] intValue];
+            geom[s].w = [[di valueForKey:@"w"] intValue];
+            geom[s].h = [[di valueForKey:@"h"] intValue];
+        }
+        geom[s].idx = -1; // terminator
+        
+    }
+    return self;
+}
+
 - (void)dealloc
 {
 	// free up our allocated space
 	if( percentsW ) free( percentsW );
 	if( percentsH ) free( percentsH );
+    
+    if( geom ) free( geom );
 	
 	// and free the image texture
 	glDeleteTextures( 1, &glHandle );
@@ -203,11 +271,13 @@
 	image_width = width;
 	image_height = height;
 	
-	glHandle = texture[0];	
+	glHandle = texture[0];
 }
 
 - (void) computePercentages
 {
+    // for tiled use
+    
 	// horizontals/verticals: (this might be premature optimization.)
 	//  take image_width/tilesWide - this number +1 is the number of entries to alloc
 	percentsW = (float *)calloc( tilesWide+1, sizeof( float ));	
@@ -241,15 +311,23 @@
 
 - (int) getXTileForIndex:(int)index
 {
-	return index % tilesWide;
+    if( isTiled ) {
+        return index % tilesWide;
+    }
+    
+    return 0;
 }
 
 - (int) getYTileForIndex:(int)index
 {
-	int nTiles = tilesHigh * tilesWide;
-	if( index >= ( nTiles )) index = index % nTiles;
-	
-	return index / tilesWide;
+    if( isTiled ) {
+        int nTiles = tilesHigh * tilesWide;
+        if( index >= ( nTiles )) index = index % nTiles;
+        
+        return index / tilesWide;
+    }
+    
+    return 0;
 }
 
 
@@ -258,28 +336,71 @@
 
 - (void) fillQuadIn:(GLfloat *)buffer forTile:(int)index
 {
-	int xTile = [self getXTileForIndex:index];
-	int yTile = [self getYTileForIndex:index];
-	
-	// top left
-	buffer[0] = percentsW[xTile];
-	buffer[1] = percentsH[yTile];
-	
-	// bottom left
-	buffer[2] = percentsW[xTile];
-	buffer[3] = percentsH[yTile+1];
-	
-	// top right
-	buffer[4] = percentsW[xTile+1];
-	buffer[5] = percentsH[yTile];
-	
-	// bottom right
-	buffer[6] = percentsW[xTile+1];
-	buffer[7] = percentsH[yTile+1];
+	if( isTiled ) {
+        int xTile = [self getXTileForIndex:index];
+        int yTile = [self getYTileForIndex:index];
+        
+        // top left
+        buffer[0] = percentsW[xTile];
+        buffer[1] = percentsH[yTile];
+        
+        // bottom left
+        buffer[2] = percentsW[xTile];
+        buffer[3] = percentsH[yTile+1];
+        
+        // top right
+        buffer[4] = percentsW[xTile+1];
+        buffer[5] = percentsH[yTile];
+        
+        // bottom right
+        buffer[6] = percentsW[xTile+1];
+        buffer[7] = percentsH[yTile+1];
 
-	// bottom right (repeated)
-	buffer[8] = percentsW[xTile+1];
-	buffer[9] = percentsH[yTile+1];
+        // bottom right (repeated)
+        buffer[8] = percentsW[xTile+1];
+        buffer[9] = percentsH[yTile+1];
+    } else {
+        // compute the proper sizes based on the image and the sprite widths
+        
+        // 1. find the item
+        
+        BL2D_tilegeom * g = geom;
+        while( g && g->idx != -1 && g->idx != index ) {
+            g++;
+        }
+        if( !g || g->idx == -1 ) {
+            NSLog( @"ERROR: Sprite %d not found!", index );
+            return;
+        }
+        
+        // 2. get percents
+        float xs = (float)g->x / (float)image_width;
+        float ys = (float)g->y / (float)image_height;
+        
+        float xe = (float)(g->x + g->w) / (float)image_width;
+        float ye = (float)(g->y + g->h) / (float)image_height;
+                
+        // 3. fill the buffer
+        buffer[0] = xs;
+        buffer[1] = ys;
+        
+        buffer[2] = xs;
+        buffer[3] = ye;
+        
+        buffer[4] = xe;
+        buffer[5] = ys;
+
+        buffer[6] = xe;
+        buffer[7] = ye;
+        
+        buffer[8] = xe;
+        buffer[9] = ye;
+        
+        // hack for now
+        pxWidth = g->w;
+        pxHeight = g->h;
+
+    }
 	
 }
 

@@ -32,6 +32,8 @@
 		5EC73E3B156EC8E60085B731 /* BL2DSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E35156EC8E60085B731 /* BL2DSprite.m */; };
 		5EC73E3C156EC8E60085B731 /* BL2DTilemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E37156EC8E60085B731 /* BL2DTilemap.m */; };
 		5EDBFD1E12834F5F0070976E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */; };
+		5EE96A631576966000A7CCC8 /* test_sprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5EE96A611576966000A7CCC8 /* test_sprites.plist */; };
+		5EE96A641576966000A7CCC8 /* test_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE96A621576966000A7CCC8 /* test_sprites.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,8 @@
 		5EC73E36156EC8E60085B731 /* BL2DTilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DTilemap.h; sourceTree = "<group>"; };
 		5EC73E37156EC8E60085B731 /* BL2DTilemap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DTilemap.m; sourceTree = "<group>"; };
 		5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		5EE96A611576966000A7CCC8 /* test_sprites.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = test_sprites.plist; sourceTree = "<group>"; };
+		5EE96A621576966000A7CCC8 /* test_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_sprites.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ___PACKAGENAME___-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "___PACKAGENAME___-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,6 +175,8 @@
 		5E1AA62B156ADB9A00CC1D87 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				5EE96A611576966000A7CCC8 /* test_sprites.plist */,
+				5EE96A621576966000A7CCC8 /* test_sprites.png */,
 				5E1AA62C156ADB9A00CC1D87 /* graphics1.png */,
 				5E1AA62D156ADB9A00CC1D87 /* graphics1c.png */,
 				5E1AA62E156ADB9A00CC1D87 /* graphics2.png */,
@@ -260,6 +266,8 @@
 				5E1AA633156ADB9A00CC1D87 /* graphics2c.png in Resources */,
 				5EC73E2B156EC72B0085B731 /* LICENSE.txt in Resources */,
 				5EC73E2C156EC72B0085B731 /* README.txt in Resources */,
+				5EE96A631576966000A7CCC8 /* test_sprites.plist in Resources */,
+				5EE96A641576966000A7CCC8 /* test_sprites.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
