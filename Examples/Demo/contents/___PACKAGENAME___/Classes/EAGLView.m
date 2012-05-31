@@ -3,7 +3,7 @@
 //  ___PACKAGENAME___
 //
 //  Created by Scott Lawrence on 9/18/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010-2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <QuartzCore/QuartzCore.h>

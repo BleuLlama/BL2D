@@ -3,7 +3,7 @@
 //  ___PACKAGENAME___
 //
 //  Created by Scott Lawrence on 9/18/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010-2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <QuartzCore/QuartzCore.h>
@@ -101,12 +101,15 @@ static int tilemapOrdering[ 4 * 5 ] =
         th = 20;
         sp = 200.0;
     }
+    
+    // background tiles 2 is bottom layer
     self.backgroundTiles2 = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
 													  tilesWide:tw
 													  tilesHigh:th];
     self.backgroundTiles2.spx = sp; // adjust start point
     self.backgroundTiles2.spy = sp; // adjust start point
 	
+    // next is the tilemap above that
 	self.backgroundTiles = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
 													 tilesWide:tilemapWidth 
 													 tilesHigh:tilemapHeight];

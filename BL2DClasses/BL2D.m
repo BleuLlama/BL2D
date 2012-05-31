@@ -2,11 +2,11 @@
 //  BL2D.m
 //  Basic2DEngine
 //
-//  Copyright 2010 Scott Lawrence. All rights reserved.
+//  Copyright 2010-2012 Scott Lawrence. All rights reserved.
 //
 
 /*
- Copyright (c) 2010 Scott Lawrence
+ Copyright (c) 2010-2012 Scott Lawrence
  
  (MIT License)
  
