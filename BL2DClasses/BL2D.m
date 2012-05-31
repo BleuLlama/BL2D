@@ -94,6 +94,13 @@
 	return sp;
 }
 
+- (BL2DPoly *) addPoly:(int)maxVerts
+{
+    BL2DPoly * p = [[BL2DPoly alloc] initWithMaxVerts:maxVerts];
+    [self.renderLayers addObject:p];
+    return p;
+}
+
 #pragma mark -
 #pragma mark rendering
 

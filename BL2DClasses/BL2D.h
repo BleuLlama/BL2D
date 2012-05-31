@@ -57,6 +57,7 @@
 #import "BL2DGraphics.h"
 #import "BL2DSprite.h"
 #import "BL2DTilemap.h"
+#import "BL2DPoly.h"
 
 
 @interface BL2D : NSObject {
@@ -68,6 +69,8 @@
 
 - (id) initWithEffectiveScreenWidth:(float)w Height:(float)h;
 
+////////////////////////////////////////////
+
 // load in a graphics source, returns a handle to the graphics
 - (BL2DGraphics *) addPNGGraphics:(NSString *)filenameWithoutPNGExtenstion tilesWide:(int)acrs tilesHigh:(int)slurp;
 - (BL2DGraphics *) addPlistGraphics:(NSString *)filenameWithoutPlistExtenstion;
@@ -78,6 +81,10 @@
 									 tilesHigh:(int)h;
 
 - (BL2DSprite *) addSprite:(BL2DGraphics *)gfx;
+
+- (BL2DPoly *) addPoly:(int)maxVerts;
+
+////////////////////////////////////////////
 
 - (void) renderPrep;	// per-frame prep
 - (void) renderStart;	// sets up GL stuff (clear screen - optional)

@@ -1,5 +1,5 @@
 //
-//  BL2DRenderable.m
+//  BL2DPoly.h
 //  Basic2DEngine
 //
 //  Copyright 2010-2012 Scott Lawrence. All rights reserved.
@@ -29,67 +29,18 @@
  THE SOFTWARE.
  */ 
 
+#import <Foundation/Foundation.h>
+#import <OpenGLES/ES1/gl.h>
+#import <OpenGLES/ES1/glext.h>
+
 #import "BL2DRenderable.h"
 
-@interface BL2DRenderable()
-@end
-
-@implementation BL2DRenderable
-
-@synthesize spx, spy, angle, scale, flipX, flipY, viewW, viewH, active;
-
-#pragma mark -
-#pragma mark classy stuff
-
-- (id) initWithGraphics:(BL2DGraphics *)paramgfx
-{
-	self = [super init];
-	if (self)
-    {
-		gfx = paramgfx;
-		self.spx = 0.0;
-		self.spy = 0.0;
-		self.scale = 1.0;
-		self.angle = 0.0;
-		self.active = NO;
-	}
-	return self;
+@interface BL2DPoly: BL2DRenderable {
+    int maxVerts;
+	GLfloat * vertexMesh;
+	GLfloat * colorMesh;
+    int usedVerts;
 }
 
-- (id) init
-{
-	self = [super init];
-	if (self)
-    {
-		self.spx = 0.0;
-		self.spy = 0.0;
-		self.scale = 1.0;
-		self.angle = 0.0;
-		self.active = NO;
-	}
-	return self;
-}
-
-- (void)dealloc
-{
-	[super dealloc];
-}
-
-
-#pragma mark -
-#pragma mark the important stuff
-
-- (void) render
-{
-	if( !self.active  || !gfx ) return;
-	
-	glPushMatrix();
-	glTranslatef( self.spx, self.spy, 0.0 );
-	glScalef( scale, scale, 1.0 );
-	glRotatef( angle, 0.0, 0.0, 1.0 );
-	[gfx renderSingle:-1 flipX:self.flipX flipY:self.flipY];
-	glPopMatrix();
-}
-
-
+- (id) initWithMaxVerts:(int)max;
 @end

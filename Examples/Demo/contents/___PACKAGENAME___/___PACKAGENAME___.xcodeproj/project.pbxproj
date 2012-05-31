@@ -34,6 +34,7 @@
 		5EDBFD1E12834F5F0070976E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */; };
 		5EE96A631576966000A7CCC8 /* test_sprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5EE96A611576966000A7CCC8 /* test_sprites.plist */; };
 		5EE96A641576966000A7CCC8 /* test_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE96A621576966000A7CCC8 /* test_sprites.png */; };
+		5EE96A701578066C00A7CCC8 /* BL2DPoly.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EE96A6F1578029900A7CCC8 /* BL2DPoly.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,8 @@
 		5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5EE96A611576966000A7CCC8 /* test_sprites.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = test_sprites.plist; sourceTree = "<group>"; };
 		5EE96A621576966000A7CCC8 /* test_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_sprites.png; sourceTree = "<group>"; };
+		5EE96A6E1578029900A7CCC8 /* BL2DPoly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BL2DPoly.h; sourceTree = "<group>"; };
+		5EE96A6F1578029900A7CCC8 /* BL2DPoly.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BL2DPoly.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ___PACKAGENAME___-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "___PACKAGENAME___-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -198,6 +201,8 @@
 				5EC73E35156EC8E60085B731 /* BL2DSprite.m */,
 				5EC73E36156EC8E60085B731 /* BL2DTilemap.h */,
 				5EC73E37156EC8E60085B731 /* BL2DTilemap.m */,
+				5EE96A6E1578029900A7CCC8 /* BL2DPoly.h */,
+				5EE96A6F1578029900A7CCC8 /* BL2DPoly.m */,
 			);
 			name = BL2DClasses;
 			path = ../../../../BL2DClasses;
@@ -278,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EE96A701578066C00A7CCC8 /* BL2DPoly.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m in Sources */,
 				28FD14FE0DC6FC130079059D /* EAGLView.m in Sources */,
