@@ -44,12 +44,15 @@
 	GLubyte * colorMesh;
     int usedVerts;
     
+    GLenum drawMode;
+    
     float lastX,lastY;
     unsigned char lastR,lastG,lastB,lastA;
     
     bool useAlpha;
 }
 
+@property (nonatomic, assign) GLenum drawMode;
 @property (nonatomic, assign) bool useAlpha;
 
 - (id) initWithMaxVerts:(int)max;

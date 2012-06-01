@@ -27,7 +27,8 @@ enum {
 
 @interface ___PACKAGENAME___ViewController ()
 @property (nonatomic, retain) EAGLContext *context;
-- (void)setupPolyData;
+- (void)setupPoly0Data;
+- (void)setupPoly1Data;
 // GLES2 shader stuff we don't use
 - (BOOL)loadShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
@@ -75,7 +76,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 @synthesize tilegfx, spritegfx, builtgfx;
 @synthesize backgroundTiles, backgroundTiles2;
 @synthesize sprite0, sprite1, sprite2, sprite3;
-@synthesize poly0;
+@synthesize poly0, poly1;
 
 #define kTestNVerts 40
 
@@ -130,10 +131,13 @@ static int tilemapOrdering[ 4 * 5 ] =
     // and try out some polygon stuff
 
     self.poly0 = [bl2de addPoly:kTestNVerts];
-    [self setupPolyData];
+    [self setupPoly0Data];
+    
+    self.poly1 = [bl2de addPoly:kTestNVerts];
+    [self setupPoly1Data];
 }
 
-- (void)setupPolyData
+- (void)setupPoly0Data
 {
     // only do this every few frames.
     static int polyCountDown = 0;
@@ -186,6 +190,33 @@ static int tilemapOrdering[ 4 * 5 ] =
         [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
     }
  */
+}
+
+- (void)setupPoly1Data
+{
+    // only do this every few frames.
+    static int polyCountDown = 0;
+    
+    if( polyCountDown >= 0 ) {
+        polyCountDown--;
+        return;
+    }
+    
+    polyCountDown = 3;
+    
+    // okay! have at it!
+    EAGLView * v = (EAGLView *)self.view;
+    
+    [self.poly1 clearData];
+    [self.poly1 setUseAlpha:NO];
+    [self.poly1 setDrawMode:GL_LINES];
+    
+    self.poly1.spy = v.framebufferHeight/4;
+
+    do {
+        [self.poly1 setRandomColor];
+    } while ( [self.poly1 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2] > 0 );
+
 }
 
 
@@ -455,7 +486,8 @@ static int tilemapOrdering[ 4 * 5 ] =
 	[self.backgroundTiles2 commitChanges];
     
     // polygon data
-    [self setupPolyData];
+    [self setupPoly0Data];
+    [self setupPoly1Data];
     
     // and draw it all!
 	[bl2de render];

@@ -36,7 +36,7 @@
 
 @implementation BL2DPoly
 
-@synthesize useAlpha;
+@synthesize drawMode, useAlpha;
 
 #pragma mark - classy stuff
 
@@ -50,6 +50,7 @@
 		colorMesh = NULL;
         maxVerts = parammax;
         usedVerts = 0;
+        drawMode = GL_TRIANGLES;
         useAlpha = NO;
         
         vertexMesh = (GLfloat *) calloc( maxVerts * 2, sizeof( GLfloat ));  // X,Y
@@ -98,7 +99,10 @@
     glScalef( scale, scale, 1.0 );
 	glRotatef( angle, 0.0, 0.0, 1.0 );
 	
-	glDrawArrays(GL_TRIANGLES, 0, usedVerts);
+	glDrawArrays(drawMode, 0, usedVerts);
+    // ref: http://www3.ntu.edu.sg/home/ehchua/programming/opengl/images/GL_GeometricPrimitives.png
+    // ref: http://www3.ntu.edu.sg/home/ehchua/programming/opengl/GL2_Graphics3D.html
+    
     glPopMatrix();
 
 	if( useAlpha ) {

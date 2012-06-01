@@ -46,7 +46,8 @@
 	BL2DSprite * sprite2;
 	BL2DSprite * sprite3;
     
-    BL2DPoly * poly0;
+    BL2DPoly * poly0; // triangles
+    BL2DPoly * poly1; // lines
     
     long startTime;
     long frameCount;
@@ -66,6 +67,7 @@
 @property (nonatomic, retain) BL2DSprite * sprite2;
 @property (nonatomic, retain) BL2DSprite * sprite3;
 @property (nonatomic, retain) BL2DPoly * poly0;
+@property (nonatomic, retain) BL2DPoly * poly1;
 
 - (void)startAnimation;
 - (void)stopAnimation;
