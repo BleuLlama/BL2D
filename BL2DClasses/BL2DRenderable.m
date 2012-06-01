@@ -52,6 +52,7 @@
 		self.scale = 1.0;
 		self.angle = 0.0;
 		self.active = NO;
+        [self srandNormal];
 	}
 	return self;
 }
@@ -66,6 +67,7 @@
 		self.scale = 1.0;
 		self.angle = 0.0;
 		self.active = NO;
+        [self srandNormal];
 	}
 	return self;
 }
@@ -91,5 +93,25 @@
 	glPopMatrix();
 }
 
+#pragma mark - random stuff
+- (void)srandNormal
+{
+    srand( time(NULL) );
+}
+
+- (void)srandFixed
+{
+    srand( 0xDEADBEEF );
+}
+
+- (float)randNormalized
+{
+    return( (float)rand() / (float)RAND_MAX );
+}
+
+- (unsigned char)rand255
+{
+    return( rand() & 0x0ff );
+}
 
 @end

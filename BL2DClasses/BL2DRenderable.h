@@ -61,4 +61,10 @@
 - (id) initWithGraphics:(BL2DGraphics *)gfx;
 - (void) render;
 
+// some utility functions
+- (void)srandNormal;
+- (void)srandFixed;
+- (float)randNormalized;
+- (unsigned char)rand255;
+
 @end

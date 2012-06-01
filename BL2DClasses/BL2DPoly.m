@@ -36,6 +36,8 @@
 
 @implementation BL2DPoly
 
+@synthesize useAlpha;
+
 #pragma mark - classy stuff
 
 
@@ -48,6 +50,12 @@
 		colorMesh = NULL;
         maxVerts = parammax;
         usedVerts = 0;
+        useAlpha = NO;
+        
+        vertexMesh = (GLfloat *) calloc( maxVerts * 2, sizeof( GLfloat ));  // X,Y
+        colorMesh = (GLubyte *) calloc( maxVerts * 4, sizeof( GLubyte ));   // R,G,B,A
+        
+        [self clearData];
 	}
 	return self;
 }
@@ -71,46 +79,34 @@
 
 - (void) render
 {
-#ifdef NEVER
-	if( !tilesBuffer ) return;
-	[gfx glActivate];
-
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_DEPTH_TEST);
+    if( usedVerts < 3 ) return;
+    glDisable(GL_DEPTH_TEST);
 	
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_FLOAT, 0, texturePoints );
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, screenMesh );
+	glVertexPointer(2, GL_FLOAT, 0, vertexMesh );
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(4, GL_UNSIGNED_BYTE, 0, colorMesh);
 	
-	// set it up so we can do transparency
-	
-	glColor4f( 1.0, 1.0, 1.0, 1.0 );
-	glEnable(GL_BLEND);
-	//	glBlendFunc (GL_ONE, GL_SRC_COLOR);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+    if( useAlpha ) {
+        glEnable(GL_BLEND);
+        //	glBlendFunc (GL_ONE, GL_SRC_COLOR);
+        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+        
 	glPushMatrix();
 	glTranslatef( self.spx, self.spy, 0.0 );
-	if( self.fillScreen ) {
-		glScalef( viewW/gfx.pxWidth, viewH/gfx.pxHeight, 1.0 );// gfx.pxHeight * gfx.sourceHeightP, 1.0 );
-	} else {
-		glScalef( scale, scale, 1.0 );
-	}
+    glScalef( scale, scale, 1.0 );
 	glRotatef( angle, 0.0, 0.0, 1.0 );
 	
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, kNumberOfPoints * nWide * nHigh);
-	glPopMatrix();
-	
-	glDisable(GL_BLEND);
-	glColor4f( 1.0, 1.0, 1.0, 1.0 );
+	glDrawArrays(GL_TRIANGLES, 0, usedVerts);
+    glPopMatrix();
+
+	if( useAlpha ) {
+        glDisable(GL_BLEND);
+    }
 	
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	// unbind
-	[gfx glDeactivate];
-#endif
+	glDisableClientState(GL_COLOR_ARRAY);
 }
 
 #pragma mark - debug
@@ -118,29 +114,84 @@
 - (NSString *)description
 {
 	NSMutableString * str = [[NSMutableString alloc] init];
-
-    /*
-	int ai = 0;
-	
-	[str appendFormat:@"{\n"];
-	for( int i = 0 ; i < nHigh*nWide ; i ++ )
-	{
-		
-		for( int j=0 ; j<4 ; j++ )
-		{
-			[str appendFormat:@" {%3.0f, %3.0f, %3.0f} ", 
-			 screenMesh[ai], 
-			 screenMesh[ai+1], 
-			 screenMesh[ai+2] ];
-			ai += 3;
-		}
-		[str appendFormat:@"\n"];
-	}
-	[str appendFormat:@"}\n" ];
-     */
-    [str appendFormat:@"Wut?"];
+    [str appendFormat:@"%d of %d vertexen utilized.", usedVerts, maxVerts];
 	return str;
 }
+
+#pragma mark - primitives
+- (void)clearData
+{
+    usedVerts = 0;
+    
+    lastX = 0.0;
+    lastY = 0.0;
+    
+    lastR = 0.0;
+    lastG = 0.0;
+    lastB = 0.0;
+    
+    // does not kill the buffers, just resets draw stuff.
+}
+
+- (void)setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB
+{
+        // doesn't add a point or change the last point,
+        // this sets for the next point(s) added.
+    lastR = pR;
+    lastG = pG;
+    lastB = pB;
+    lastA = 255;
+}
+
+- (void)setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB A:(unsigned char )pA
+{
+    lastR = pR;
+    lastG = pG;
+    lastB = pB;
+    lastA = pA;
+}
+
+- (void) setRandomColor
+{
+    [self setColorR:[self rand255] G:[self rand255] B:[self rand255] A:[self rand255]];
+}
+
+- (void)setX:(float)pX Y:(float)pY
+{
+    if( usedVerts >= maxVerts ) {
+        NSLog( @"ERROR: Adding more than %d verts!", maxVerts );
+        NSLog( @"You should fix this before deploying." );
+        return;
+    }
+    
+    int vindex = usedVerts*2;
+    
+    // set the points, and the "last" item for them.
+    vertexMesh[vindex+0] = lastX = pX;
+    vertexMesh[vindex+1] = lastY = pY;
+    
+    
+    // set the colors
+    int cindex = usedVerts*4;
+    colorMesh[cindex+0] = lastR;
+    colorMesh[cindex+1] = lastG;
+    colorMesh[cindex+2] = lastB;
+    colorMesh[cindex+3] = 255;      // Alpha
+    
+    // move on to the next one
+    usedVerts ++;
+}
+
+- (void) repeatPoint
+{
+    [self setX:lastX Y:lastY];
+}
+
+- (void) setRandomPointW:(float)pWidth H:(float)pHeight
+{
+    [self setX:pWidth*[self randNormalized] Y:pHeight*[self randNormalized]];
+}
+
 
 @end
 

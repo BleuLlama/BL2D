@@ -27,6 +27,8 @@ enum {
 
 @interface ___PACKAGENAME___ViewController ()
 @property (nonatomic, retain) EAGLContext *context;
+- (void)setupPolyData;
+// GLES2 shader stuff we don't use
 - (BOOL)loadShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
 - (BOOL)linkProgram:(GLuint)prog;
@@ -71,7 +73,11 @@ static int tilemapOrdering[ 4 * 5 ] =
 #pragma mark BL2D interface stuff
 
 @synthesize tilegfx, spritegfx, builtgfx;
-@synthesize backgroundTiles, backgroundTiles2, sprite0, sprite1, sprite2, sprite3; 
+@synthesize backgroundTiles, backgroundTiles2;
+@synthesize sprite0, sprite1, sprite2, sprite3;
+@synthesize poly0;
+
+#define kTestNVerts 10
 
 - (void)startupBL2DEngine
 {
@@ -120,8 +126,60 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.sprite2 = [bl2de addSprite:self.spritegfx];
     
 	self.sprite3 = [bl2de addSprite:self.builtgfx];
+    
+    // and try out some polygon stuff
+
+    self.poly0 = [bl2de addPoly:kTestNVerts];
+    [self setupPolyData];
 }
 
+- (void)setupPolyData
+{
+    // only do this every few frames.
+    static int polyCountDown = 0;
+    
+    if( polyCountDown >= 0 ) {
+        polyCountDown--;
+        return;
+    }
+    
+    polyCountDown = 5;
+    
+    // okay! have at it!
+    EAGLView * v = (EAGLView *)self.view;
+    
+    [self.poly0 clearData];
+    [self.poly0 setUseAlpha:NO];
+    
+    self.poly0.spy = v.framebufferHeight/2;
+
+    // first, manually set a square
+#define kBoxSz  60
+    int p=0;
+    [self.poly0 setColorR:255 G:0 B:0];
+    [self.poly0 setX:20 Y:20];
+    [self.poly0 setColorR:255 G:255 B:0];
+    [self.poly0 setX:20 Y:20+kBoxSz];
+    [self.poly0 setColorR:0 G:0 B:255];
+    [self.poly0 setX:20+kBoxSz Y:20+kBoxSz];
+    p += 3;
+    
+    [self.poly0 setColorR:255 G:255 B:255];
+    [self.poly0 setX:20 Y:20];
+    [self.poly0 setX:20+kBoxSz Y:20+kBoxSz];
+    [self.poly0 setX:20+kBoxSz Y:20];
+    p += 3;
+    
+    // next, draw some random triangles.
+    for( ; p<=(kTestNVerts-4) ; p+= 3 ) {        
+        [self.poly0 setRandomColor];
+        [self.poly0 setColorR:255 G:255 B:0];
+        [self.poly0 setRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+        [self.poly0 setRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+        [self.poly0 setRandomColor];
+        [self.poly0 setRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+    }
+}
 
 
 #pragma mark -
@@ -314,6 +372,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 	an+= 0.5;
 	
     [(EAGLView *)self.view setFramebuffer];
+    
 	
 	// draw the tilemaps and sprites
 	[self.sprite0 setSpriteIndex:index>>3];
@@ -387,7 +446,11 @@ static int tilemapOrdering[ 4 * 5 ] =
     [self.backgroundTiles2 drawLeftTextAtX:1 atY:5 txt:@"Left!"];
 
 	[self.backgroundTiles2 commitChanges];
-	
+    
+    // polygon data
+    [self setupPolyData];
+    
+    // and draw it all!
 	[bl2de render];
     [(EAGLView *)self.view presentFramebuffer];
     

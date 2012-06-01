@@ -46,6 +46,8 @@
 	BL2DSprite * sprite2;
 	BL2DSprite * sprite3;
     
+    BL2DPoly * poly0;
+    
     long startTime;
     long frameCount;
     IBOutlet UILabel * fpsLabel;
@@ -63,6 +65,7 @@
 @property (nonatomic, retain) BL2DSprite * sprite1;
 @property (nonatomic, retain) BL2DSprite * sprite2;
 @property (nonatomic, retain) BL2DSprite * sprite3;
+@property (nonatomic, retain) BL2DPoly * poly0;
 
 - (void)startAnimation;
 - (void)stopAnimation;

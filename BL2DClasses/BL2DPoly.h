@@ -35,12 +35,36 @@
 
 #import "BL2DRenderable.h"
 
+// the basic unit of measure for this is a single triangle.
+// in the future, this will be settable as triangle, lines, triangle strip, points. etc.
+
 @interface BL2DPoly: BL2DRenderable {
     int maxVerts;
 	GLfloat * vertexMesh;
-	GLfloat * colorMesh;
+	GLubyte * colorMesh;
     int usedVerts;
+    
+    float lastX,lastY;
+    unsigned char lastR,lastG,lastB,lastA;
+    
+    bool useAlpha;
 }
 
+@property (nonatomic, assign) bool useAlpha;
+
 - (id) initWithMaxVerts:(int)max;
+
+// "primitives"
+- (void) clearData;
+
+// doesn't add a point or change the last point,
+// this sets for the next point(s) added. [0..255]
+- (void) setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB;
+- (void) setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB A:(unsigned char)pA;
+- (void) setRandomColor;
+
+- (void) setX:(float)pX Y:(float)pY;
+- (void) setRandomPointW:(float)pWidth H:(float)pHeight;
+- (void) repeatPoint;
+
 @end
