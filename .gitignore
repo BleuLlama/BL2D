@@ -6,3 +6,4 @@ sdl.*
 *.zip
 *.o
 a.out
+*~

@@ -50,10 +50,18 @@
     unsigned char lastR,lastG,lastB,lastA;
     
     bool useAlpha;
+    
+    // for text
+    float textKern;     // 255.0 = one 'em' (default is 32.0) (additional space between chars)
+    float textWidth;    // (default is 10.0)
+    float textHeight;   // (default is 20.0)
 }
 
 @property (nonatomic, assign) GLenum drawMode;
 @property (nonatomic, assign) bool useAlpha;
+@property (nonatomic, assign) float textKern;
+@property (nonatomic, assign) float textWidth;
+@property (nonatomic, assign) float textHeight;
 
 - (id) initWithMaxVerts:(int)max;
 
@@ -74,7 +82,20 @@
 - (int) repeatPoint;
 
 #pragma mark - shapes
+- (int) addLineX0:(float)x0 Y0:(float)y0  X1:(float)x1 Y1:(float)y1;
 - (int) addTriangleX0:(float)x0 Y0:(float)y0 X1:(float)x1 Y1:(float)y1 X2:(float)x2 Y2:(float)y2;
 - (int) addRectangleX0:(float)x0 Y0:(float)y0  X1:(float)x1 Y1:(float)y1;
+
+#pragma mark - vectorfont
+typedef struct BL2DVectorFontLines
+{
+    int nIndicies;
+    GLfloat i[40];
+} BL2DVectorFontLines;
+
+extern BL2DVectorFontLines * theVectorFont;
+-(int) addChar:(char)c atX:(float)px atY:(float)py;
+-(int) addText:(NSString *)txt atX:(float)px atY:(float)py;
+
 
 @end

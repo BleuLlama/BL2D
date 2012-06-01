@@ -78,7 +78,6 @@ static int tilemapOrdering[ 4 * 5 ] =
 @synthesize sprite0, sprite1, sprite2, sprite3;
 @synthesize poly0, poly1;
 
-#define kTestNVerts 40
 
 - (void)startupBL2DEngine
 {
@@ -130,10 +129,10 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     // and try out some polygon stuff
 
-    self.poly0 = [bl2de addPoly:kTestNVerts];
+    self.poly0 = [bl2de addPoly:30];
     [self setupPoly0Data];
     
-    self.poly1 = [bl2de addPoly:kTestNVerts];
+    self.poly1 = [bl2de addPoly:110];
     [self setupPoly1Data];
 }
 
@@ -212,6 +211,9 @@ static int tilemapOrdering[ 4 * 5 ] =
     [self.poly1 setDrawMode:GL_LINES];
     
     self.poly1.spy = v.framebufferHeight/4;
+    
+    [self.poly1 setColorR:255 G:255 B:0];
+    [self.poly1 addText:@"Hello, World!" atX:0 atY:0];
 
     do {
         [self.poly1 setRandomColor];
