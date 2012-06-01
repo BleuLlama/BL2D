@@ -109,16 +109,8 @@
 	glDisableClientState(GL_COLOR_ARRAY);
 }
 
-#pragma mark - debug
 
-- (NSString *)description
-{
-	NSMutableString * str = [[NSMutableString alloc] init];
-    [str appendFormat:@"%d of %d vertexen utilized.", usedVerts, maxVerts];
-	return str;
-}
-
-#pragma mark - primitives
+#pragma mark - utility
 - (void)clearData
 {
     usedVerts = 0;
@@ -132,6 +124,17 @@
     
     // does not kill the buffers, just resets draw stuff.
 }
+
+
+- (NSString *)description
+{
+	NSMutableString * str = [[NSMutableString alloc] init];
+    [str appendFormat:@"%d of %d vertexen utilized.", usedVerts, maxVerts];
+	return str;
+}
+
+
+#pragma mark - colors
 
 - (void)setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB
 {
@@ -156,12 +159,15 @@
     [self setColorR:[self rand255] G:[self rand255] B:[self rand255] A:[self rand255]];
 }
 
-- (void)setX:(float)pX Y:(float)pY
+
+#pragma mark - points and polys
+
+- (int)addX:(float)pX Y:(float)pY
 {
     if( usedVerts >= maxVerts ) {
-        NSLog( @"ERROR: Adding more than %d verts!", maxVerts );
-        NSLog( @"You should fix this before deploying." );
-        return;
+        //NSLog( @"ERROR: Adding more than %d verts!", maxVerts );
+        //NSLog( @"You should fix this before deploying." );
+        return 0;
     }
     
     int vindex = usedVerts*2;
@@ -180,16 +186,39 @@
     
     // move on to the next one
     usedVerts ++;
+    return 1;
 }
 
-- (void) repeatPoint
+- (int) repeatPoint
 {
-    [self setX:lastX Y:lastY];
+    return [self addX:lastX Y:lastY];
 }
 
-- (void) setRandomPointW:(float)pWidth H:(float)pHeight
+- (int) addRandomPointW:(float)pWidth H:(float)pHeight
 {
-    [self setX:pWidth*[self randNormalized] Y:pHeight*[self randNormalized]];
+    return [self addX:pWidth*[self randNormalized] Y:pHeight*[self randNormalized]];
+}
+
+
+
+#pragma mark - shapes
+
+- (int) addTriangleX0:(float)x0 Y0:(float)y0 X1:(float)x1 Y1:(float)y1 X2:(float)x2 Y2:(float)y2
+{
+    int r = 0;
+    r += [self addX:x0 Y:y0];
+    r += [self addX:x1 Y:y1];
+    r += [self addX:x2 Y:y2];
+    return r;
+}
+
+- (int) addRectangleX0:(float)x0 Y0:(float)y0  X1:(float)x1 Y1:(float)y1
+{
+    int r = 0;
+    
+    r+= [self addTriangleX0:x0 Y0:y0 X1:x0 Y1:y1 X2:x1 Y2:y1]; // not confusing at all!
+    r+= [self addTriangleX0:x0 Y0:y0 X1:x1 Y1:y1 X2:x1 Y2:y0];
+    return r;
 }
 
 

@@ -57,14 +57,21 @@
 // "primitives"
 - (void) clearData;
 
+#pragma mark - colors
+
 // doesn't add a point or change the last point,
 // this sets for the next point(s) added. [0..255]
 - (void) setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB;
 - (void) setColorR:(unsigned char)pR G:(unsigned char)pG B:(unsigned char)pB A:(unsigned char)pA;
 - (void) setRandomColor;
 
-- (void) setX:(float)pX Y:(float)pY;
-- (void) setRandomPointW:(float)pWidth H:(float)pHeight;
-- (void) repeatPoint;
+#pragma mark - points and polys
+- (int) addX:(float)pX Y:(float)pY;
+- (int) addRandomPointW:(float)pWidth H:(float)pHeight;
+- (int) repeatPoint;
+
+#pragma mark - shapes
+- (int) addTriangleX0:(float)x0 Y0:(float)y0 X1:(float)x1 Y1:(float)y1 X2:(float)x2 Y2:(float)y2;
+- (int) addRectangleX0:(float)x0 Y0:(float)y0  X1:(float)x1 Y1:(float)y1;
 
 @end

@@ -77,7 +77,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 @synthesize sprite0, sprite1, sprite2, sprite3;
 @synthesize poly0;
 
-#define kTestNVerts 10
+#define kTestNVerts 40
 
 - (void)startupBL2DEngine
 {
@@ -153,32 +153,39 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     self.poly0.spy = v.framebufferHeight/2;
 
-    // first, manually set a square
+    // first, manually add a square
 #define kBoxSz  60
     int p=0;
+    // use the point functions
     [self.poly0 setColorR:255 G:0 B:0];
-    [self.poly0 setX:20 Y:20];
+    p += [self.poly0 addX:20 Y:20];
     [self.poly0 setColorR:255 G:255 B:0];
-    [self.poly0 setX:20 Y:20+kBoxSz];
+    p += [self.poly0 addX:20 Y:20+kBoxSz];
     [self.poly0 setColorR:0 G:0 B:255];
-    [self.poly0 setX:20+kBoxSz Y:20+kBoxSz];
-    p += 3;
+    p += [self.poly0 addX:20+kBoxSz Y:20+kBoxSz];
     
+    // use the triangle function
     [self.poly0 setColorR:255 G:255 B:255];
-    [self.poly0 setX:20 Y:20];
-    [self.poly0 setX:20+kBoxSz Y:20+kBoxSz];
-    [self.poly0 setX:20+kBoxSz Y:20];
-    p += 3;
+    p += [self.poly0 addTriangleX0:20 Y0:20 X1:20+kBoxSz Y1:20+kBoxSz X2:20+kBoxSz Y2:20];
     
-    // next, draw some random triangles.
-    for( ; p<=(kTestNVerts-4) ; p+= 3 ) {        
+    // and the rect.  Why not!
+    [self.poly0 setColorR:0 G:255 B:255];
+    p += [self.poly0 addRectangleX0:120 Y0:20 X1:120+kBoxSz Y1:20+kBoxSz];
+    
+    // next, draw as many random triangles as we can
+    do {
+        [self.poly0 setRandomColor];
+    } while ( [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2] > 0 );
+/*
+     for( ; p<=(kTestNVerts-4) ; p+= 3 ) {        
         [self.poly0 setRandomColor];
         [self.poly0 setColorR:255 G:255 B:0];
-        [self.poly0 setRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
-        [self.poly0 setRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+        [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+        [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
         [self.poly0 setRandomColor];
-        [self.poly0 setRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+        [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
     }
+ */
 }
 
 
