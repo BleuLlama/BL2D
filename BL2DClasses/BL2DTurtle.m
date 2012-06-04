@@ -34,8 +34,6 @@
 #import "BL2DTurtle.h"
 #import "BL2DPoly.h"
 
-BL2DPoly * thePoly;
-
 
 // BEGIN SIN.C
 float _sine_table[SINLUT_MAX];
@@ -65,19 +63,21 @@ void init_sine_table(void)
     if (self)
     {
 		init_sine_table();
+        turtleStack = 0;
 		[self reset];
 	}
 	return self;	
 }
 
--(id)initWithPoly:(id)polyParam
+-(id)initWithRenderable:(id)renderableParam
 {
     
     self = [super init];
     if( self )
     {
         init_sine_table();
-        thePoly = polyParam;
+        theRenderable = renderableParam;
+        turtleStack = 0;
         [self reset];
     }
     return self;
@@ -296,7 +296,7 @@ void init_sine_table(void)
 
 -(int) applyPoint
 {
-    BL2DPoly * p = thePoly;
+    BL2DPoly * p = theRenderable;
     if( !p ) return 0;
     
     [p setColorR:(GLubyte) (turtle[turtleStack].r * 255.0) 
@@ -311,7 +311,7 @@ void init_sine_table(void)
 
 -(int) applyColor
 {
-    BL2DPoly * p = thePoly;
+    BL2DPoly * p = theRenderable;
     if( !p ) return 0;
     
     [p setColorR:(GLubyte) (turtle[turtleStack].r * 255.0) 

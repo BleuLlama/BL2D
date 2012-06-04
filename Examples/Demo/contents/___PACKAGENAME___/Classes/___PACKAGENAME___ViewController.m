@@ -242,6 +242,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     [self.poly1 clearData];
     [self.poly1 setUseAlpha:NO];
+    [self.poly1 setUseSmoothing:NO]; // doesn't look right anyway
     
     self.poly1.spy = v.framebufferHeight/4;
     
@@ -266,7 +267,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     }
     
     // and a "point north" for the heck of it
-    [self.poly1.turtle  reset];
+    [self.poly1.turtle reset];
     [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
     [self.poly1.turtle set_colorR:0.0 G:0.0 B:0.0];
     [self.poly1.turtle applyPoint];

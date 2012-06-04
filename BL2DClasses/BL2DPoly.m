@@ -36,7 +36,7 @@
 
 @implementation BL2DPoly
 
-@synthesize drawMode, useAlpha, turtle;
+@synthesize drawMode, useAlpha, useSmoothing, turtle;
 
 #pragma mark - classy stuff
 
@@ -52,7 +52,7 @@
     vertexMesh = (GLfloat *) calloc( maxVerts * 2, sizeof( GLfloat ));  // X,Y
     colorMesh = (GLubyte *) calloc( maxVerts * 4, sizeof( GLubyte ));   // R,G,B,A
     
-    self.turtle = [[BL2DTurtle alloc] initWithPoly:self];
+    self.turtle = [[BL2DTurtle alloc] initWithRenderable:self];
     [self clearData];
 }
 
@@ -115,6 +115,12 @@
         //	glBlendFunc (GL_ONE, GL_SRC_COLOR);
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
+
+    if( useSmoothing ) {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glEnable(GL_LINE_SMOOTH);
+    }
         
 	glPushMatrix();
 	glTranslatef( self.spx, self.spy, 0.0 );
@@ -128,6 +134,11 @@
     glPopMatrix();
 
 	if( useAlpha ) {
+        glDisable(GL_BLEND);
+    }
+    
+    if( useSmoothing ) {
+        glDisable(GL_LINE_SMOOTH);
         glDisable(GL_BLEND);
     }
 	

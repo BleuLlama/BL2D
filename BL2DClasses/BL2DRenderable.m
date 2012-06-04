@@ -37,6 +37,7 @@
 @implementation BL2DRenderable
 
 @synthesize spx, spy, angle, scale, flipX, flipY, viewW, viewH, active;
+//@synthesize turtle;
 
 #pragma mark -
 #pragma mark classy stuff
@@ -53,6 +54,7 @@
 		self.angle = 0.0;
 		self.active = NO;
         [self srandNormal];
+//        self.turtle = [[BL2DTurtle alloc] initWithRenderable:self];
 	}
 	return self;
 }
@@ -68,12 +70,14 @@
 		self.angle = 0.0;
 		self.active = NO;
         [self srandNormal];
+//        self.turtle = [[BL2DTurtle alloc] initWithRenderable:self];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
+//    self.turtle = nil;
 	[super dealloc];
 }
 

@@ -83,23 +83,23 @@ typedef struct
 	TURTLE_FLOAT r, g, b, a;
 }TURTLEDATA;
 
-#define kTurtleStackMax 128
+#define kTurtleStackMax 16
 
 @interface BL2DTurtle : NSObject {
 	TURTLEDATA turtle[kTurtleStackMax];
-    id thePoly;
+    id theRenderable;
     
     int turtleStack;
 }
 
 -(id)init;
--(id)initWithPoly:(id)polyParam;
+-(id)initWithRenderable:(id)renderableParam;
 
 
 -(void) home;			// return to 0,0, rotation 0, scale 1.0
 -(void) reset;			// same as home, but reset color too.
 
-#define kTurtleStackMax 128
+
 -(int) push;        // push the current turtle onto the stack, returns 0 if success
 -(void) pop;        // pop the current turtle off the stack
 

@@ -1,5 +1,5 @@
 
-Copyright (c) 2010 Scott Lawrence
+Copyright (c) 2010-2012 Scott Lawrence
  (MIT License)
 
  Permission is hereby granted, free of charge, to any person obtaining a copy

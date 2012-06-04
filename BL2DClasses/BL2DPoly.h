@@ -53,6 +53,7 @@
     BL2DTurtle * turtle;
     
     bool useAlpha;
+    bool useSmoothing;
     
     // for text
     float textKern;     // 255.0 = one 'em' (default is 32.0) (additional space between chars)
@@ -62,6 +63,7 @@
 
 @property (nonatomic, assign) GLenum drawMode;
 @property (nonatomic, assign) bool useAlpha;
+@property (nonatomic, assign) bool useSmoothing;
 @property (nonatomic, assign) float textKern;
 @property (nonatomic, assign) float textWidth;
 @property (nonatomic, assign) float textHeight;

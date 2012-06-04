@@ -33,6 +33,7 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 #import "BL2DGraphics.h"
+//#import "BL2DTurtle.h"
 
 @interface BL2DRenderable:NSObject {
 	GLfloat spx, spy;
@@ -46,6 +47,8 @@
 	
 	float viewW;
 	float viewH;
+    
+//    BL2DTurtle * turtle;
 }
 
 @property (nonatomic) GLfloat spx;
@@ -57,6 +60,7 @@
 @property (nonatomic) BOOL active;
 @property (nonatomic) float viewW;
 @property (nonatomic) float viewH;
+//@property (nonatomic, retain) BL2DTurtle * turtle;
 
 - (id) initWithGraphics:(BL2DGraphics *)gfx;
 - (void) render;
