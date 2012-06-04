@@ -101,6 +101,14 @@
     return p;
 }
 
+
+- (BL2DPoly *) addPoly:(int)maxVerts withDrawMode:(GLenum)pMode
+{
+    BL2DPoly * p = [[BL2DPoly alloc] initWithMaxVerts:maxVerts withDrawMode:pMode];
+    [self.renderLayers addObject:p];
+    return p;
+}
+
 #pragma mark -
 #pragma mark rendering
 

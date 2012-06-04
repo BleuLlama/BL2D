@@ -306,7 +306,7 @@
 
 - (void) render
 {
-	if( !tilesBuffer ) return;
+	if( !tilesBuffer || !active ) return;
 	[gfx glActivate];
 
 	glEnable(GL_TEXTURE_2D);

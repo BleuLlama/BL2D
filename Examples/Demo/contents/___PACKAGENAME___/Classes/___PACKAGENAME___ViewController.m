@@ -27,8 +27,8 @@ enum {
 
 @interface ___PACKAGENAME___ViewController ()
 @property (nonatomic, retain) EAGLContext *context;
-- (void)setupPoly0Data;
-- (void)setupPoly1Data;
+- (void)setupPoly0Data_FilledStuff;
+- (void)setupPoly1Data_LineDrawStuff;
 // GLES2 shader stuff we don't use
 - (BOOL)loadShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
@@ -130,13 +130,14 @@ static int tilemapOrdering[ 4 * 5 ] =
     // and try out some polygon stuff
 
     self.poly0 = [bl2de addPoly:30];
-    [self setupPoly0Data];
+    [self setupPoly0Data_FilledStuff];
     
-    self.poly1 = [bl2de addPoly:110];
-    [self setupPoly1Data];
+    self.poly1 = [bl2de addPoly:260 withDrawMode:GL_LINES];
+    [self setupPoly1Data_LineDrawStuff];
 }
 
-- (void)setupPoly0Data
+
+- (void)setupPoly0Data_FilledStuff
 {
     // only do this every few frames.
     static int polyCountDown = 0;
@@ -146,7 +147,7 @@ static int tilemapOrdering[ 4 * 5 ] =
         return;
     }
     
-    polyCountDown = 5;
+    polyCountDown = 2;
     
     // okay! have at it!
     EAGLView * v = (EAGLView *)self.view;
@@ -156,9 +157,22 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     self.poly0.spy = v.framebufferHeight/2;
 
-    // first, manually add a square
-#define kBoxSz  60
     int p=0;
+
+    // fill the background with a gradient.
+    [self.poly0 setColorR:0 G:0 B:0];
+    p += [self.poly0 addX:0 Y:0];
+    [self.poly0 setColorR:[self.poly0 rand255] G:[self.poly0 rand255] B:[self.poly0 rand255]];
+    p += [self.poly0 addX:0 Y:v.framebufferHeight];
+    p += [self.poly0 addX:v.framebufferWidth Y:v.framebufferHeight];
+    
+    p += [self.poly0 addX:v.framebufferWidth Y:v.framebufferHeight];
+    [self.poly0 setColorR:0 G:0 B:0];
+    p += [self.poly0 addX:v.framebufferWidth Y:0];
+    p += [self.poly0 addX:0 Y:0];
+    
+    // manually add a square
+#define kBoxSz  60
     // use the point functions
     [self.poly0 setColorR:255 G:0 B:0];
     p += [self.poly0 addX:20 Y:20];
@@ -174,6 +188,26 @@ static int tilemapOrdering[ 4 * 5 ] =
     // and the rect.  Why not!
     [self.poly0 setColorR:0 G:255 B:255];
     p += [self.poly0 addRectangleX0:120 Y0:20 X1:120+kBoxSz Y1:20+kBoxSz];
+
+        
+    // add in some turtle fanciness
+    
+    [self.poly0.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
+    [self.poly0.turtle set_angle:-frameCount/2]; // make the whole thing rotate
+    
+    [self.poly0.turtle push];  // store the center?
+    // we're making triangles, so we need 3 points
+    [self.poly0.turtle set_colorR:1.0 G:0.0 B:1.0];
+    [self.poly0.turtle applyPoint];
+    
+    [self.poly0.turtle move:200];
+    [self.poly0.turtle set_colorR:0.0 G:1.0 B:1.0];
+    [self.poly0.turtle applyPoint];
+    [self.poly0.turtle turn:78];
+    [self.poly0.turtle move:142];
+    [self.poly0.turtle set_colorR:0.0 G:1.0 B:0.0];
+    [self.poly0.turtle applyPoint];
+    
     
     // next, draw as many random triangles as we can
     do {
@@ -191,7 +225,7 @@ static int tilemapOrdering[ 4 * 5 ] =
  */
 }
 
-- (void)setupPoly1Data
+- (void)setupPoly1Data_LineDrawStuff
 {
     // only do this every few frames.
     static int polyCountDown = 0;
@@ -208,12 +242,55 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     [self.poly1 clearData];
     [self.poly1 setUseAlpha:NO];
-    [self.poly1 setDrawMode:GL_LINES];
     
     self.poly1.spy = v.framebufferHeight/4;
     
-    [self.poly1 setColorR:255 G:255 B:0];
-    [self.poly1 addText:@"Hello, World!" atX:0 atY:0];
+    // experiment with the turtle
+    
+    [self.poly1.turtle set_colorR:1.0 G:1.0 B:0.0 A:1.0];
+
+    
+    [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
+    for( int xx = 0; xx < 20 ; xx++ ) {
+        [self.poly1.turtle set_angle:frameCount]; // make the whole thing rotate
+        
+        [self.poly1.turtle applyPoint];
+        
+        [self.poly1.turtle push]; // use the stack here, for fun.
+        
+        [self.poly1.turtle turn:xx*(360/20)];
+        [self.poly1.turtle move:100.0];
+        [self.poly1.turtle applyPoint];
+        
+        [self.poly1.turtle pop];        
+    }
+    
+    // and a "point north" for the heck of it
+    [self.poly1.turtle  reset];
+    [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
+    [self.poly1.turtle set_colorR:0.0 G:0.0 B:0.0];
+    [self.poly1.turtle applyPoint];
+    [self.poly1.turtle set_colorR:1.0 G:1.0 B:1.0];
+    [self.poly1.turtle move:100];
+    [self.poly1.turtle applyPoint];
+    
+    // now do some direct stuff.
+    
+    [self.poly1 setColorR:255 G:frameCount&255 B:[self.poly1 rand255]];
+    
+    int ts = 30;
+    if( v.contentScaleFactor < 2.0 ) {
+        [self.poly1 setTextSize:20];
+        ts = 30;
+    } else {
+        // show that we can set this all by hand if we want to also
+        [self.poly1 setTextHeight:40];
+        [self.poly1 setTextWidth:20];
+        [self.poly1 setTextKern:10];
+        ts = 60;
+    }
+    [self.poly1 addText:@"Touch to advance" atX:0 atY:0];
+    [self.poly1 addText:@"to next example." atX:0 atY:ts];
 
     do {
         [self.poly1 setRandomColor];
@@ -413,13 +490,58 @@ static int tilemapOrdering[ 4 * 5 ] =
 	
     [(EAGLView *)self.view setFramebuffer];
     
+    // adjust for playState
+    
+    switch( playState & 0x03 ) {
+        case( 0 ):
+            self.sprite0.active = NO;
+            self.sprite1.active = NO;
+            self.sprite2.active = NO;
+            self.sprite3.active = NO;
+            self.backgroundTiles.active = NO;
+            self.backgroundTiles2.active = NO;
+            self.poly0.active = YES;
+            self.poly1.active = YES;
+            break;
+        case( 1 ):
+            self.sprite0.active = YES;
+            self.sprite1.active = YES;
+            self.sprite2.active = YES;
+            self.sprite3.active = YES;
+            self.backgroundTiles.active = NO;
+            self.backgroundTiles2.active = NO;
+            self.poly0.active = NO;
+            self.poly1.active = NO;
+            break;
+        case( 2 ):
+            self.sprite0.active = NO;
+            self.sprite1.active = NO;
+            self.sprite2.active = NO;
+            self.sprite3.active = NO;
+            self.backgroundTiles.active = YES;
+            self.backgroundTiles2.active = YES;
+            self.poly0.active = NO;
+            self.poly1.active = NO;
+            break;
+        case( 3 ):
+        default:
+            self.sprite0.active = NO;
+            self.sprite1.active = NO;
+            self.sprite2.active = YES;
+            self.sprite3.active = NO;
+            self.backgroundTiles.active = YES;
+            self.backgroundTiles2.active = NO;
+            self.poly0.active = NO;
+            self.poly1.active = YES;
+            break;
+    }
+    
 	
 	// draw the tilemaps and sprites
 	[self.sprite0 setSpriteIndex:index>>3];
 	self.sprite0.spx = 100;
 	self.sprite0.spy = 100;
 	self.sprite0.scale = 1.0 + 2.0 + (2.0 * cos( an/8 ));
-	self.sprite0.active = YES;
 	
     EAGLView * v = (EAGLView *)self.view;
 	
@@ -442,7 +564,6 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.sprite1.spy = crocY;
 	self.sprite1.spx = crocX;
 	self.sprite1.scale = 2.0;
-	self.sprite1.active = YES;
 	
 	// sprite 2 will be the croc going the other way
 	[self.sprite2 setSpriteIndex:crocframe];
@@ -450,7 +571,6 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.sprite2.spx = v.framebufferWidth - crocX;
 	self.sprite2.scale = 1.0;
 	self.sprite2.flipX = YES;
-	self.sprite2.active = YES;
     
     
     // sprite 3 will show off the plist-based graphics
@@ -466,7 +586,6 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.sprite3.spx = 200;
     self.sprite3.spy = 100;
     self.sprite3.scale = 2.0;
-    self.sprite3.active = YES;
     
 	
 	// set up the background tilemap
@@ -488,8 +607,8 @@ static int tilemapOrdering[ 4 * 5 ] =
 	[self.backgroundTiles2 commitChanges];
     
     // polygon data
-    [self setupPoly0Data];
-    [self setupPoly1Data];
+    [self setupPoly0Data_FilledStuff];
+    [self setupPoly1Data_LineDrawStuff];
     
     // and draw it all!
 	[bl2de render];
@@ -504,6 +623,38 @@ static int tilemapOrdering[ 4 * 5 ] =
         fpsLabel.text = [NSString stringWithFormat:@"%0.1f fps", (float)frameCount/(float)(currentTime - startTime ) ];
     }
     frameCount++;
+}
+
+
+#pragma mark - Touch events
+
+- (void) handleTouchAtPoint:(CGPoint)pt
+{
+    //NSLog( @"Touch at %f %f", pt.x, pt.y );
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CGPoint pt = [[touches anyObject] locationInView:self.view];
+    [self handleTouchAtPoint:pt];
+    
+    playState++;
+}
+
+- (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CGPoint pt = [[touches anyObject] locationInView:self.view];
+    [self handleTouchAtPoint:pt];
+}
+
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CGPoint pt = [[touches anyObject] locationInView:self.view];
+    [self handleTouchAtPoint:pt];
+}
+
+- (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
 }
 
 

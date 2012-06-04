@@ -34,6 +34,7 @@
 #import <OpenGLES/ES1/glext.h>
 
 #import "BL2DRenderable.h"
+#import "BL2DTurtle.h"
 
 // the basic unit of measure for this is a single triangle.
 // in the future, this will be settable as triangle, lines, triangle strip, points. etc.
@@ -49,6 +50,8 @@
     float lastX,lastY;
     unsigned char lastR,lastG,lastB,lastA;
     
+    BL2DTurtle * turtle;
+    
     bool useAlpha;
     
     // for text
@@ -62,8 +65,11 @@
 @property (nonatomic, assign) float textKern;
 @property (nonatomic, assign) float textWidth;
 @property (nonatomic, assign) float textHeight;
+@property (nonatomic, retain) BL2DTurtle * turtle;
 
 - (id) initWithMaxVerts:(int)max;
+- (id) initWithMaxVerts:(int)max withDrawMode:(GLenum)pMode;
+
 
 // "primitives"
 - (void) clearData;
@@ -96,6 +102,10 @@ typedef struct BL2DVectorFontLines
 extern BL2DVectorFontLines * theVectorFont;
 -(int) addChar:(char)c atX:(float)px atY:(float)py;
 -(int) addText:(NSString *)txt atX:(float)px atY:(float)py;
+-(float) getTextSize;
+-(void) setTextSize:(float)ptSize;
 
+
+#pragma mark - turtle
 
 @end

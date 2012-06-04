@@ -24,13 +24,14 @@
 		5E1AA631156ADB9A00CC1D87 /* graphics1c.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62D156ADB9A00CC1D87 /* graphics1c.png */; };
 		5E1AA632156ADB9A00CC1D87 /* graphics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62E156ADB9A00CC1D87 /* graphics2.png */; };
 		5E1AA633156ADB9A00CC1D87 /* graphics2c.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E1AA62F156ADB9A00CC1D87 /* graphics2c.png */; };
+		5EB86BBE1579C36500B7710B /* BL2DTilemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB86BBD1579C36500B7710B /* BL2DTilemap.m */; };
+		5EB86BC11579C38A00B7710B /* BL2DTurtle.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB86BC01579C37D00B7710B /* BL2DTurtle.m */; };
 		5EC73E2B156EC72B0085B731 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5EC73E29156EC72B0085B731 /* LICENSE.txt */; };
 		5EC73E2C156EC72B0085B731 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5EC73E2A156EC72B0085B731 /* README.txt */; };
 		5EC73E38156EC8E60085B731 /* BL2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E2F156EC8E60085B731 /* BL2D.m */; };
 		5EC73E39156EC8E60085B731 /* BL2DGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E31156EC8E60085B731 /* BL2DGraphics.m */; };
 		5EC73E3A156EC8E60085B731 /* BL2DRenderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E33156EC8E60085B731 /* BL2DRenderable.m */; };
 		5EC73E3B156EC8E60085B731 /* BL2DSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E35156EC8E60085B731 /* BL2DSprite.m */; };
-		5EC73E3C156EC8E60085B731 /* BL2DTilemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EC73E37156EC8E60085B731 /* BL2DTilemap.m */; };
 		5EDBFD1E12834F5F0070976E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */; };
 		5EE96A631576966000A7CCC8 /* test_sprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5EE96A611576966000A7CCC8 /* test_sprites.plist */; };
 		5EE96A641576966000A7CCC8 /* test_sprites.png in Resources */ = {isa = PBXBuildFile; fileRef = 5EE96A621576966000A7CCC8 /* test_sprites.png */; };
@@ -60,6 +61,9 @@
 		5E1AA62D156ADB9A00CC1D87 /* graphics1c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics1c.png; sourceTree = "<group>"; };
 		5E1AA62E156ADB9A00CC1D87 /* graphics2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics2.png; sourceTree = "<group>"; };
 		5E1AA62F156ADB9A00CC1D87 /* graphics2c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphics2c.png; sourceTree = "<group>"; };
+		5EB86BBD1579C36500B7710B /* BL2DTilemap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DTilemap.m; sourceTree = "<group>"; };
+		5EB86BBF1579C37D00B7710B /* BL2DTurtle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BL2DTurtle.h; sourceTree = "<group>"; };
+		5EB86BC01579C37D00B7710B /* BL2DTurtle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BL2DTurtle.m; sourceTree = "<group>"; };
 		5EC73E29156EC72B0085B731 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE.txt; path = ../../../../LICENSE.txt; sourceTree = "<group>"; };
 		5EC73E2A156EC72B0085B731 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = ../../../../README.txt; sourceTree = "<group>"; };
 		5EC73E2E156EC8E60085B731 /* BL2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2D.h; sourceTree = "<group>"; };
@@ -71,7 +75,6 @@
 		5EC73E34156EC8E60085B731 /* BL2DSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DSprite.h; sourceTree = "<group>"; };
 		5EC73E35156EC8E60085B731 /* BL2DSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DSprite.m; sourceTree = "<group>"; };
 		5EC73E36156EC8E60085B731 /* BL2DTilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BL2DTilemap.h; sourceTree = "<group>"; };
-		5EC73E37156EC8E60085B731 /* BL2DTilemap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BL2DTilemap.m; sourceTree = "<group>"; };
 		5EDBFD1D12834F5F0070976E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5EE96A611576966000A7CCC8 /* test_sprites.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = test_sprites.plist; sourceTree = "<group>"; };
 		5EE96A621576966000A7CCC8 /* test_sprites.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_sprites.png; sourceTree = "<group>"; };
@@ -200,7 +203,9 @@
 				5EC73E34156EC8E60085B731 /* BL2DSprite.h */,
 				5EC73E35156EC8E60085B731 /* BL2DSprite.m */,
 				5EC73E36156EC8E60085B731 /* BL2DTilemap.h */,
-				5EC73E37156EC8E60085B731 /* BL2DTilemap.m */,
+				5EB86BBD1579C36500B7710B /* BL2DTilemap.m */,
+				5EB86BBF1579C37D00B7710B /* BL2DTurtle.h */,
+				5EB86BC01579C37D00B7710B /* BL2DTurtle.m */,
 				5EE96A6E1578029900A7CCC8 /* BL2DPoly.h */,
 				5EE96A6F1578029900A7CCC8 /* BL2DPoly.m */,
 			);
@@ -283,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EB86BC11579C38A00B7710B /* BL2DTurtle.m in Sources */,
 				5EE96A701578066C00A7CCC8 /* BL2DPoly.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ___PACKAGENAME___AppDelegate.m in Sources */,
@@ -292,7 +298,7 @@
 				5EC73E39156EC8E60085B731 /* BL2DGraphics.m in Sources */,
 				5EC73E3A156EC8E60085B731 /* BL2DRenderable.m in Sources */,
 				5EC73E3B156EC8E60085B731 /* BL2DSprite.m in Sources */,
-				5EC73E3C156EC8E60085B731 /* BL2DTilemap.m in Sources */,
+				5EB86BBE1579C36500B7710B /* BL2DTilemap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

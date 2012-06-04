@@ -36,31 +36,46 @@
 
 @implementation BL2DPoly
 
-@synthesize drawMode, useAlpha;
+@synthesize drawMode, useAlpha, turtle;
 
 #pragma mark - classy stuff
 
+- (void) initialSetup
+{
+    vertexMesh = NULL;
+    colorMesh = NULL;
+    usedVerts = 0;
+    useAlpha = NO;
+    
+    [self setTextSize:20.0];
+    
+    vertexMesh = (GLfloat *) calloc( maxVerts * 2, sizeof( GLfloat ));  // X,Y
+    colorMesh = (GLubyte *) calloc( maxVerts * 4, sizeof( GLubyte ));   // R,G,B,A
+    
+    self.turtle = [[BL2DTurtle alloc] initWithPoly:self];
+    [self clearData];
+}
 
-- (id) initWithMaxVerts:(int)parammax
+- (id) initWithMaxVerts:(int)pMax
 {
 	self = [super init];
 	if (self)
     {
-		vertexMesh = NULL;
-		colorMesh = NULL;
-        maxVerts = parammax;
-        usedVerts = 0;
+        maxVerts = pMax;
+        [self initialSetup];
         drawMode = GL_TRIANGLES;
-        useAlpha = NO;
-        
-        textKern = 5.0;
-        textWidth = 10.0;
-        textHeight = 20.0;
-        
-        vertexMesh = (GLfloat *) calloc( maxVerts * 2, sizeof( GLfloat ));  // X,Y
-        colorMesh = (GLubyte *) calloc( maxVerts * 4, sizeof( GLubyte ));   // R,G,B,A
-        
-        [self clearData];
+	}
+	return self;
+}
+
+- (id) initWithMaxVerts:(int)pMax withDrawMode:(GLenum)pMode
+{
+	self = [super init];
+	if (self)
+    {
+        maxVerts = pMax;
+        [self initialSetup];
+        drawMode = pMode;
 	}
 	return self;
 }
@@ -69,6 +84,8 @@
 
 - (void)dealloc
 {
+    self.turtle = nil;
+    
 	if( vertexMesh ) free( vertexMesh );
 	vertexMesh = NULL;
 	
@@ -84,7 +101,8 @@
 
 - (void) render
 {
-    if( usedVerts < 3 ) return;
+    if( !active ) return;
+    if( usedVerts < 2 ) return;
     glDisable(GL_DEPTH_TEST);
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -131,6 +149,7 @@
     lastB = 0.0;
     
     // does not kill the buffers, just resets draw stuff.
+    [self.turtle reset];
 }
 
 
@@ -508,6 +527,18 @@ BL2DVectorFontLines __internalVectorFont[] = {
 
 BL2DVectorFontLines * theVectorFont = __internalVectorFont;
 
+
+-(float) getTextSize
+{
+    return textHeight;
+}
+
+-(void) setTextSize:(float)ptSize
+{
+    textHeight = ptSize;
+    textWidth = textHeight/2;
+    textKern = textHeight/4;
+}
 
 -(int) addChar:(char)c atX:(float)px atY:(float)py
 {

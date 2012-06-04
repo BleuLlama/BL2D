@@ -40,6 +40,7 @@
  This will instantiate BL2DGraphics objects containing info about the GL Texturemaps
  This will instantiate BL2DSprite objects to manage/render sprites
  This will instantiate BL2DTilemap objects to manage/render tilemaps
+ This will instantiate BL2DPoly objects to manage/render nontextured triangles or lines
  
  Sprite and Tilemaps both implement BL2DRenderable, (adding -render; )
  
@@ -83,6 +84,8 @@
 - (BL2DSprite *) addSprite:(BL2DGraphics *)gfx;
 
 - (BL2DPoly *) addPoly:(int)maxVerts;
+- (BL2DPoly *) addPoly:(int)maxVerts withDrawMode:(GLenum)pMode;
+
 
 ////////////////////////////////////////////
 

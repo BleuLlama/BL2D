@@ -52,6 +52,8 @@
     long startTime;
     long frameCount;
     IBOutlet UILabel * fpsLabel;
+    
+    int playState;
 }
 
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
