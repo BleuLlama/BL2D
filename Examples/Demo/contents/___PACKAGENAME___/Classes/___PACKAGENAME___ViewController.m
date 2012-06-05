@@ -27,8 +27,6 @@ enum {
 
 @interface ___PACKAGENAME___ViewController ()
 @property (nonatomic, retain) EAGLContext *context;
-- (void)setupPoly0Data_FilledStuff;
-- (void)setupPoly1Data_LineDrawStuff;
 // GLES2 shader stuff we don't use
 - (BOOL)loadShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
@@ -79,10 +77,13 @@ static int tilemapOrdering[ 4 * 5 ] =
 @synthesize poly0, poly1;
 
 
+#pragma mark - BL2D Setup
+
 - (void)startupBL2DEngine
 {
-	// BL2D addition - create our BL2D instance
 	EAGLView * v = (EAGLView *)self.view;
+    
+	// BL2D addition - create our BL2D instance
 	bl2de = [[BL2D alloc] initWithEffectiveScreenWidth:v.framebufferWidth
 												Height:v.framebufferHeight];
 	[bl2de retain];
@@ -91,12 +92,11 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.tilegfx = [bl2de addPNGGraphics:@"graphics1" tilesWide:32 tilesHigh:8];
 	self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
     self.builtgfx = [bl2de addPlistGraphics:@"test_sprites"];
-
+    
 	// now load the tilemap to be used
-
     int tw, th;
     float sp;
-    if( v.contentScaleFactor < 2.0 ) {
+    if( !isRetina && !isPad ) {
         // old
         tw = v.framebufferWidth/8;
         th = v.framebufferHeight/8;
@@ -119,186 +119,20 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.backgroundTiles = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
 													 tilesWide:tilemapWidth 
 													 tilesHigh:tilemapHeight];
-
-	// and the sprite to be used
-	self.sprite0 = [bl2de addSprite:self.spritegfx];
-	self.sprite1 = [bl2de addSprite:self.spritegfx];
-	self.sprite2 = [bl2de addSprite:self.spritegfx];
     
-	self.sprite3 = [bl2de addSprite:self.builtgfx];
+	// and the sprite to be used
+	self.sprite0 = [bl2de addSprite:self.spritegfx]; // from gridded texture
+	self.sprite1 = [bl2de addSprite:self.spritegfx]; // from gridded texture
+	self.sprite2 = [bl2de addSprite:self.spritegfx]; // from gridded texture
+	self.sprite3 = [bl2de addSprite:self.builtgfx];  // from plist-texture
     
     // and try out some polygon stuff
-
-    self.poly0 = [bl2de addPoly:30];
-    [self setupPoly0Data_FilledStuff];
     
-    self.poly1 = [bl2de addPoly:260 withDrawMode:GL_LINES];
-    [self setupPoly1Data_LineDrawStuff];
+    self.poly0 = [bl2de addPoly:30];                        // filled triangles
+    self.poly1 = [bl2de addPoly:260 withDrawMode:GL_LINES]; // line segments
 }
 
-
-- (void)setupPoly0Data_FilledStuff
-{
-    // only do this every few frames.
-    static int polyCountDown = 0;
-    
-    if( polyCountDown >= 0 ) {
-        polyCountDown--;
-        return;
-    }
-    
-    polyCountDown = 2;
-    
-    // okay! have at it!
-    EAGLView * v = (EAGLView *)self.view;
-    
-    [self.poly0 clearData];
-    [self.poly0 setUseAlpha:NO];
-    
-    self.poly0.spy = v.framebufferHeight/2;
-
-    int p=0;
-
-    // fill the background with a gradient.
-    [self.poly0 setColorR:0 G:0 B:0];
-    p += [self.poly0 addX:0 Y:0];
-    [self.poly0 setColorR:[self.poly0 rand255] G:[self.poly0 rand255] B:[self.poly0 rand255]];
-    p += [self.poly0 addX:0 Y:v.framebufferHeight];
-    p += [self.poly0 addX:v.framebufferWidth Y:v.framebufferHeight];
-    
-    p += [self.poly0 addX:v.framebufferWidth Y:v.framebufferHeight];
-    [self.poly0 setColorR:0 G:0 B:0];
-    p += [self.poly0 addX:v.framebufferWidth Y:0];
-    p += [self.poly0 addX:0 Y:0];
-    
-    // manually add a square
-#define kBoxSz  60
-    // use the point functions
-    [self.poly0 setColorR:255 G:0 B:0];
-    p += [self.poly0 addX:20 Y:20];
-    [self.poly0 setColorR:255 G:255 B:0];
-    p += [self.poly0 addX:20 Y:20+kBoxSz];
-    [self.poly0 setColorR:0 G:0 B:255];
-    p += [self.poly0 addX:20+kBoxSz Y:20+kBoxSz];
-    
-    // use the triangle function
-    [self.poly0 setColorR:255 G:255 B:255];
-    p += [self.poly0 addTriangleX0:20 Y0:20 X1:20+kBoxSz Y1:20+kBoxSz X2:20+kBoxSz Y2:20];
-    
-    // and the rect.  Why not!
-    [self.poly0 setColorR:0 G:255 B:255];
-    p += [self.poly0 addRectangleX0:120 Y0:20 X1:120+kBoxSz Y1:20+kBoxSz];
-
-        
-    // add in some turtle fanciness
-    
-    [self.poly0.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
-    [self.poly0.turtle set_angle:-frameCount/2]; // make the whole thing rotate
-    
-    [self.poly0.turtle push];  // store the center?
-    // we're making triangles, so we need 3 points
-    [self.poly0.turtle set_colorR:1.0 G:0.0 B:1.0];
-    [self.poly0.turtle applyPoint];
-    
-    [self.poly0.turtle move:200];
-    [self.poly0.turtle set_colorR:0.0 G:1.0 B:1.0];
-    [self.poly0.turtle applyPoint];
-    [self.poly0.turtle turn:78];
-    [self.poly0.turtle move:142];
-    [self.poly0.turtle set_colorR:0.0 G:1.0 B:0.0];
-    [self.poly0.turtle applyPoint];
-    
-    
-    // next, draw as many random triangles as we can
-    do {
-        [self.poly0 setRandomColor];
-    } while ( [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2] > 0 );
-/*
-     for( ; p<=(kTestNVerts-4) ; p+= 3 ) {        
-        [self.poly0 setRandomColor];
-        [self.poly0 setColorR:255 G:255 B:0];
-        [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
-        [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
-        [self.poly0 setRandomColor];
-        [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
-    }
- */
-}
-
-- (void)setupPoly1Data_LineDrawStuff
-{
-    // only do this every few frames.
-    static int polyCountDown = 0;
-    
-    if( polyCountDown >= 0 ) {
-        polyCountDown--;
-        return;
-    }
-    
-    polyCountDown = 3;
-    
-    // okay! have at it!
-    EAGLView * v = (EAGLView *)self.view;
-    
-    [self.poly1 clearData];
-    [self.poly1 setUseAlpha:NO];
-    [self.poly1 setUseSmoothing:NO]; // doesn't look right anyway
-    
-    self.poly1.spy = v.framebufferHeight/4;
-    
-    // experiment with the turtle
-    
-    [self.poly1.turtle set_colorR:1.0 G:1.0 B:0.0 A:1.0];
-
-    
-    [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
-    for( int xx = 0; xx < 20 ; xx++ ) {
-        [self.poly1.turtle set_angle:frameCount]; // make the whole thing rotate
-        
-        [self.poly1.turtle applyPoint];
-        
-        [self.poly1.turtle push]; // use the stack here, for fun.
-        
-        [self.poly1.turtle turn:xx*(360/20)];
-        [self.poly1.turtle move:100.0];
-        [self.poly1.turtle applyPoint];
-        
-        [self.poly1.turtle pop];        
-    }
-    
-    // and a "point north" for the heck of it
-    [self.poly1.turtle reset];
-    [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
-    [self.poly1.turtle set_colorR:0.0 G:0.0 B:0.0];
-    [self.poly1.turtle applyPoint];
-    [self.poly1.turtle set_colorR:1.0 G:1.0 B:1.0];
-    [self.poly1.turtle move:100];
-    [self.poly1.turtle applyPoint];
-    
-    // now do some direct stuff.
-    
-    [self.poly1 setColorR:255 G:frameCount&255 B:[self.poly1 rand255]];
-    
-    int ts = 30;
-    if( v.contentScaleFactor < 2.0 ) {
-        [self.poly1 setTextSize:20];
-        ts = 30;
-    } else {
-        // show that we can set this all by hand if we want to also
-        [self.poly1 setTextHeight:40];
-        [self.poly1 setTextWidth:20];
-        [self.poly1 setTextKern:10];
-        ts = 60;
-    }
-    [self.poly1 addText:@"Touch to advance" atX:0 atY:0];
-    [self.poly1 addText:@"to next example." atX:0 atY:ts];
-
-    do {
-        [self.poly1 setRandomColor];
-    } while ( [self.poly1 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2] > 0 );
-
-}
-
+/////////////////////////////////////////////////////////
 
 #pragma mark -
 #pragma mark view startup and shutdown stuff
@@ -327,6 +161,18 @@ static int tilemapOrdering[ 4 * 5 ] =
     if ([context API] == kEAGLRenderingAPIOpenGLES2)
         [self loadShaders];
 	
+    EAGLView * v = (EAGLView *)self.view;
+    // set up our sizing flags
+    isPad = NO;
+    isRetina = NO;
+    if( v.contentScaleFactor >= 2.0 ) {
+        isRetina = YES;
+    }
+    if( v.framebufferHeight == 1024 && v.framebufferWidth == 768 ) { isPad = YES; }
+    if( v.framebufferHeight == 1024*2 && v.framebufferWidth == 768*2 ) { isPad = YES; }
+
+    
+    
 	// BL2D - start the engine
 	[self startupBL2DEngine];
     
@@ -347,6 +193,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     startTime = 0l;
     frameCount = 0l;
 }
+
 
 - (void)dealloc
 {	
@@ -476,69 +323,102 @@ static int tilemapOrdering[ 4 * 5 ] =
     }
 }
 
+
 #pragma mark -
 #pragma mark render graphics to the screen and stuff
 
+- (void)drawState0
+{
+    self.sprite0.active = NO;
+    self.sprite1.active = NO;
+    self.sprite2.active = NO;
+    self.sprite3.active = NO;
+    self.backgroundTiles.active = NO;
+    self.backgroundTiles2.active = NO;
+    self.poly0.active = NO;
+    self.poly1.active = YES;
+    
+    
+    // okay! have at it!
+    EAGLView * v = (EAGLView *)self.view;
+    
+    [self.poly1 clearData];
+    [self.poly1 setUseAlpha:NO];
+    [self.poly1 setUseSmoothing:NO]; // doesn't look right anyway
+    
+    //self.poly1.spy = v.framebufferHeight/4;
+    
+    // experiment with the turtle
+    
+    [self.poly1.turtle set_colorR:1.0 G:1.0 B:0.0 A:1.0];
+    
+    
+    [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/2];
+    for( int xx = 0; xx < 20 ; xx++ ) {
+        [self.poly1.turtle set_angle:frameCount]; // make the whole thing rotate
+        
+        [self.poly1.turtle applyPoint];
+        
+        [self.poly1.turtle push]; // use the stack here, for fun.
+        
+        [self.poly1.turtle turn:xx*(360/20)];
+        [self.poly1.turtle move:100.0];
+        [self.poly1.turtle applyPoint];
+        
+        [self.poly1.turtle pop];        
+    }
+    
+    // and a "point north" for the heck of it
+    [self.poly1.turtle reset];
+    [self.poly1.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/4];
+    [self.poly1.turtle set_colorR:0.0 G:0.0 B:0.0];
+    [self.poly1.turtle applyPoint];
+    [self.poly1.turtle set_colorR:1.0 G:1.0 B:1.0];
+    [self.poly1.turtle move:100];
+    [self.poly1.turtle applyPoint];
+    
+    // now do some direct stuff.
+    
+    [self.poly1 setColorR:255 G:frameCount&255 B:[self.poly1 rand255]];
+    
+    int ts = 30;
+    if( v.contentScaleFactor < 2.0 ) {
+        [self.poly1 setTextSize:20];
+        ts = 30;
+    } else {
+        // show that we can set this all by hand if we want to also
+        [self.poly1 setTextHeight:40];
+        [self.poly1 setTextWidth:20];
+        [self.poly1 setTextKern:10];
+        ts = 60;
+    }
+    [self.poly1 addText:@"Touch to advance" atX:0 atY:0];
+    [self.poly1 addText:@"to next example." atX:0 atY:ts];
+
+    do {
+        [self.poly1 setRandomColor];
+    } while ( [self.poly1 addRandomPointW:v.framebufferWidth H:v.framebufferHeight] > 0 );
+}
 
 
-- (void)drawFrame
-{	
-	static float an;
+- (void)drawState1
+{
+    static float an;
 	static long index = 0;
 	
 	index++;
 	an+= 0.5;
-	
-    [(EAGLView *)self.view setFramebuffer];
+
+    self.sprite0.active = YES;
+    self.sprite1.active = YES;
+    self.sprite2.active = YES;
+    self.sprite3.active = YES;
+    self.backgroundTiles.active = NO;
+    self.backgroundTiles2.active = NO;
+    self.poly0.active = NO;
+    self.poly1.active = NO;
     
-    // adjust for playState
-    
-    switch( playState & 0x03 ) {
-        case( 0 ):
-            self.sprite0.active = NO;
-            self.sprite1.active = NO;
-            self.sprite2.active = NO;
-            self.sprite3.active = NO;
-            self.backgroundTiles.active = NO;
-            self.backgroundTiles2.active = NO;
-            self.poly0.active = YES;
-            self.poly1.active = YES;
-            break;
-        case( 1 ):
-            self.sprite0.active = YES;
-            self.sprite1.active = YES;
-            self.sprite2.active = YES;
-            self.sprite3.active = YES;
-            self.backgroundTiles.active = NO;
-            self.backgroundTiles2.active = NO;
-            self.poly0.active = NO;
-            self.poly1.active = NO;
-            break;
-        case( 2 ):
-            self.sprite0.active = NO;
-            self.sprite1.active = NO;
-            self.sprite2.active = NO;
-            self.sprite3.active = NO;
-            self.backgroundTiles.active = YES;
-            self.backgroundTiles2.active = YES;
-            self.poly0.active = NO;
-            self.poly1.active = NO;
-            break;
-        case( 3 ):
-        default:
-            self.sprite0.active = NO;
-            self.sprite1.active = NO;
-            self.sprite2.active = YES;
-            self.sprite3.active = NO;
-            self.backgroundTiles.active = YES;
-            self.backgroundTiles2.active = NO;
-            self.poly0.active = NO;
-            self.poly1.active = YES;
-            break;
-    }
-    
-	
-	// draw the tilemaps and sprites
+    // draw the tilemaps and sprites
 	[self.sprite0 setSpriteIndex:index>>3];
 	self.sprite0.spx = 100;
 	self.sprite0.spy = 100;
@@ -560,7 +440,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 	// keep the crocodile on screen
 	if( crocY < 140 ) crocY = 140;
 	if( crocY > 340 ) crocY = 340;
-
+    
 	[self.sprite1 setSpriteIndex:crocframe];
 	self.sprite1.spy = crocY;
 	self.sprite1.spx = crocX;
@@ -587,14 +467,27 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.sprite3.spx = 200;
     self.sprite3.spy = 100;
     self.sprite3.scale = 2.0;
+}
+
+
+- (void)drawState2
+{
+    self.sprite0.active = NO;
+    self.sprite1.active = NO;
+    self.sprite2.active = NO;
+    self.sprite3.active = NO;
     
-	
-	// set up the background tilemap
+    self.backgroundTiles.active = YES;
+    self.backgroundTiles2.active = YES;
+    self.poly0.active = NO;
+    self.poly1.active = NO;
+
+    // set up the background tilemap
 	[self.backgroundTiles copyNewTilesBuffer:tilemapArray];
 	
     [self.backgroundTiles commitChanges];	// regenerate the tilemap
 	self.backgroundTiles.scale = 4.0;
-	
+    
     // random chars
 	[self.backgroundTiles2 fillWithRandom];
     // render text
@@ -602,15 +495,113 @@ static int tilemapOrdering[ 4 * 5 ] =
     [self.backgroundTiles2 drawTextAtX:2 atY:30 txt:@"Hello!"];
     
     [self.backgroundTiles2 drawCenteredTextAt:3 txt:@"Centered."];
-
+    
     [self.backgroundTiles2 drawLeftTextAtX:1 atY:5 txt:@"Left!"];
-
+    
 	[self.backgroundTiles2 commitChanges];
+}
+
+
+- (void)drawState3
+{
+    self.sprite0.active = NO;
+    self.sprite1.active = NO;
+    self.sprite2.active = NO;
+    self.sprite3.active = NO;
+    self.backgroundTiles.active = NO;
+    self.backgroundTiles2.active = NO;
+    self.poly0.active = YES;
+    self.poly1.active = NO;
     
-    // polygon data
-    [self setupPoly0Data_FilledStuff];
-    [self setupPoly1Data_LineDrawStuff];
     
+    // okay! have at it!
+    EAGLView * v = (EAGLView *)self.view;
+    
+    [self.poly0 clearData];
+    [self.poly0 setUseAlpha:NO];
+        
+    int p=0;
+    
+    // fill the background with a gradient.
+    [self.poly0 setColorR:0 G:0 B:0];
+    p += [self.poly0 addX:0 Y:0];
+    [self.poly0 setColorR:[self.poly0 rand255] G:[self.poly0 rand255] B:[self.poly0 rand255]];
+    p += [self.poly0 addX:0 Y:v.framebufferHeight];
+    p += [self.poly0 addX:v.framebufferWidth Y:v.framebufferHeight];
+    
+    p += [self.poly0 addX:v.framebufferWidth Y:v.framebufferHeight];
+    [self.poly0 setColorR:0 G:0 B:0];
+    p += [self.poly0 addX:v.framebufferWidth Y:0];
+    p += [self.poly0 addX:0 Y:0];
+    
+    // manually add a square
+#define kBoxSz  60
+    // use the point functions
+    [self.poly0 setColorR:255 G:0 B:0];
+    p += [self.poly0 addX:20 Y:20];
+    [self.poly0 setColorR:255 G:255 B:0];
+    p += [self.poly0 addX:20 Y:20+kBoxSz];
+    [self.poly0 setColorR:0 G:0 B:255];
+    p += [self.poly0 addX:20+kBoxSz Y:20+kBoxSz];
+    
+    // use the triangle function
+    [self.poly0 setColorR:255 G:255 B:255];
+    p += [self.poly0 addTriangleX0:20 Y0:20 X1:20+kBoxSz Y1:20+kBoxSz X2:20+kBoxSz Y2:20];
+    
+    // and the rect.  Why not!
+    [self.poly0 setColorR:0 G:255 B:255];
+    p += [self.poly0 addRectangleX0:120 Y0:20 X1:120+kBoxSz Y1:20+kBoxSz];
+    
+    
+    // add in some turtle fanciness
+    
+    [self.poly0.turtle set_posX:v.framebufferWidth/2 Y:v.framebufferHeight/2];
+    [self.poly0.turtle set_angle:-frameCount/2]; // make the whole thing rotate
+    
+    [self.poly0.turtle push];  // store the center?
+    // we're making triangles, so we need 3 points
+    [self.poly0.turtle set_colorR:1.0 G:0.0 B:1.0];
+    [self.poly0.turtle applyPoint];
+    
+    [self.poly0.turtle move:200];
+    [self.poly0.turtle set_colorR:0.0 G:1.0 B:1.0];
+    [self.poly0.turtle applyPoint];
+    [self.poly0.turtle turn:78];
+    [self.poly0.turtle move:142];
+    [self.poly0.turtle set_colorR:0.0 G:1.0 B:0.0];
+    [self.poly0.turtle applyPoint];
+    
+    // next, draw as many random triangles as we can
+    do {
+        [self.poly0 setRandomColor];
+    } while ( [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight] > 0 );
+    /*
+     for( ; p<=(kTestNVerts-4) ; p+= 3 ) {        
+     [self.poly0 setRandomColor];
+     [self.poly0 setColorR:255 G:255 B:0];
+     [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+     [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+     [self.poly0 setRandomColor];
+     [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
+     }
+     */
+}
+
+
+- (void)drawFrame
+{	
+	
+    [(EAGLView *)self.view setFramebuffer];
+    
+    // adjust for playState
+    
+    switch( playState & 0x03 ) {
+        case( 0 ): [self drawState0]; break;
+        case( 1 ): [self drawState1]; break;
+        case( 2 ): [self drawState2]; break;
+        case( 3 ): [self drawState3]; break;
+    }
+	
     // and draw it all!
 	[bl2de render];
     [(EAGLView *)self.view presentFramebuffer];

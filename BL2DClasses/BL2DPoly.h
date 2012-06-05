@@ -107,7 +107,4 @@ extern BL2DVectorFontLines * theVectorFont;
 -(float) getTextSize;
 -(void) setTextSize:(float)ptSize;
 
-
-#pragma mark - turtle
-
 @end

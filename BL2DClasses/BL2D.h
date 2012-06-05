@@ -86,7 +86,6 @@
 - (BL2DPoly *) addPoly:(int)maxVerts;
 - (BL2DPoly *) addPoly:(int)maxVerts withDrawMode:(GLenum)pMode;
 
-
 ////////////////////////////////////////////
 
 - (void) renderPrep;	// per-frame prep

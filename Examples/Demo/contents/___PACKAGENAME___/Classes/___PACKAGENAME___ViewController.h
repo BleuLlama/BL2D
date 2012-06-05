@@ -32,6 +32,9 @@
 	 */
     id displayLink;
     NSTimer *animationTimer;
+    
+    bool isRetina;
+    bool isPad;
 	
 	// BL2D stuff
 	BL2D * bl2de;
