@@ -379,23 +379,15 @@
 	glBindTexture(GL_TEXTURE_2D, glHandle);
     
     if( isLiveEditable && changed ) {
-        
-//        static int i = 0;
-        
-//        if( i == 0 ) {
-            // works but is slow
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                         image_width, image_height, 
-                         0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                     image_width, image_height, 
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 #ifdef NEVER
-        i++;
-        } else {
-            
-            glTexSubImage2D(GL_TEXTURE_2D, 0, 
-                            0, 0, 
-                            image_width, image_height, 
-                            GL_BGRA, GL_UNSIGNED_BYTE, imageData);
-        }
+        /// Theoretically, this is faster, but I can't get it to work. :(
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 
+                        0, 0, 
+                        image_width, image_height, 
+                        GL_BGRA, GL_UNSIGNED_BYTE, imageData);
 #endif
         changed = NO;
     }
