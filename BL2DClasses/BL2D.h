@@ -63,7 +63,6 @@
 
 @interface BL2D : NSObject {
 	NSMutableArray * renderLayers;
-	// id <BL2DRenderable> aRenderableLayer
 	float  screenW, screenH;
 }
 @property (nonatomic, retain) NSMutableArray * renderLayers;
@@ -76,6 +75,7 @@
 - (BL2DGraphics *) addPNGGraphics:(NSString *)filenameWithoutPNGExtenstion tilesWide:(int)acrs tilesHigh:(int)slurp;
 - (BL2DGraphics *) addPlistGraphics:(NSString *)filenameWithoutPlistExtenstion;
 
+- (BL2DGraphics *) addRawGraphicsW:(int)w H:(int)h;
 
 - (BL2DTilemap *) addTilemapLayerUsingGraphics:(BL2DGraphics *)gfx 
 									 tilesWide:(int)w 

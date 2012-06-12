@@ -60,6 +60,8 @@
 @property (nonatomic) BOOL active;
 @property (nonatomic) float viewW;
 @property (nonatomic) float viewH;
+@property (nonatomic, assign) BL2DGraphics * gfx;
+
 //@property (nonatomic, retain) BL2DTurtle * turtle;
 
 - (id) initWithGraphics:(BL2DGraphics *)gfx;

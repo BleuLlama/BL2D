@@ -43,6 +43,7 @@
 @synthesize pxHeight, pxWidth;
 @synthesize tilesWide, tilesHigh;
 @synthesize sourceWidthP, sourceHeightP;
+@synthesize isLiveEditable, changed, image_width, image_height, imageData;
 
 #pragma mark -
 #pragma mark classy stuff
@@ -137,6 +138,76 @@
     return self;
 }
 
+- (id) initWithRawW:(int)wid H:(int)hig
+{
+    self = [super init];
+    if( self )
+    {
+        // create the framebuffer
+        // adjust the width and height
+        
+        sourceWidth = wid;
+        sourceHeight = hig;
+        
+        image_width = [self nextPowerOfTwo:sourceWidth];
+        image_height = [self nextPowerOfTwo:sourceHeight];
+        
+        sourceWidthP = image_width/sourceWidth;
+        sourceHeightP = image_height/sourceHeight;
+        
+        // hack the tiles
+        isTiled = NO;
+        tilesWide = 1;
+        tilesHigh = 1;
+        
+        geom = (BL2D_tilegeom *) calloc( 2, sizeof(BL2D_tilegeom) );
+        geom[0].idx = 0;
+        geom[0].x = 0;
+        geom[0].y = 0;
+        geom[0].w = sourceWidth;
+        geom[0].h = sourceHeight;
+        geom[1].idx = -1; // terminator
+        
+        
+        imageData = (GLubyte *) malloc( image_width * image_height * 4 ); // RGBA
+
+        // GL prep
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_SRC_COLOR);
+        //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // use for png
+        
+        // make texture name
+        GLuint texture[1];
+        glGenTextures(1, &texture[0]);
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        
+#ifdef kPixellyScaleups	// for pixelly scale-ups
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);	
+#else
+        // configure (for smooth scaleups)
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+#endif
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
+                     image_width, image_height, 
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+        
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glHandle = texture[0];
+        
+        // and set the 
+        isLiveEditable = YES;
+        changed = YES;
+    }
+    return self;
+}
+
 - (void)dealloc
 {
 	// free up our allocated space
@@ -144,12 +215,16 @@
 	if( percentsH ) free( percentsH );
     
     if( geom ) free( geom );
+    
+    if( imageData ) free(imageData);
+
 	
 	// and free the image texture
 	glDeleteTextures( 1, &glHandle );
 	
 	[super dealloc];
 }
+
 
 #pragma mark -
 #pragma mark the important stuff
@@ -247,7 +322,9 @@
 	
 	// okay.  now, let's load that in to a GL Texture
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    void *imageData = malloc( height * width * 4 );
+    
+    imageData = malloc( height * width * 4 );
+    
     CGContextRef context = CGBitmapContextCreate( imageData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );
     CGColorSpaceRelease( colorSpace );
     CGContextClearRect( context, CGRectMake( 0, 0, width, height ) );
@@ -258,7 +335,6 @@
 	
     CGContextRelease(context);
 	
-    free(imageData);
     [image release];
     [texData release];
 	
@@ -300,7 +376,29 @@
 - (void) glActivate
 {	
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, glHandle);	
+	glBindTexture(GL_TEXTURE_2D, glHandle);
+    
+    if( isLiveEditable && changed ) {
+        
+//        static int i = 0;
+        
+//        if( i == 0 ) {
+            // works but is slow
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                         image_width, image_height, 
+                         0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+#ifdef NEVER
+        i++;
+        } else {
+            
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 
+                            0, 0, 
+                            image_width, image_height, 
+                            GL_BGRA, GL_UNSIGNED_BYTE, imageData);
+        }
+#endif
+        changed = NO;
+    }
 }
 
 - (void) glDeactivate

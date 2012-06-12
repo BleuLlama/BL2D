@@ -37,6 +37,7 @@
 @implementation BL2DRenderable
 
 @synthesize spx, spy, angle, scale, flipX, flipY, viewW, viewH, active;
+@synthesize gfx;
 //@synthesize turtle;
 
 #pragma mark -

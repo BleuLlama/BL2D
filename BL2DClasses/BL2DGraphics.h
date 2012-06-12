@@ -69,7 +69,13 @@ typedef struct BL2D_tilegeom {
 	
 	int pxHeight;
 	int pxWidth;
+    
+    // for live-editable stuff
+    bool isLiveEditable;
+    bool changed;
+    GLubyte * imageData;
 }
+
 @property (nonatomic, readonly) GLuint glHandle;
 @property (nonatomic, readonly) int pxHeight;
 @property (nonatomic, readonly) int pxWidth;
@@ -77,6 +83,12 @@ typedef struct BL2D_tilegeom {
 @property (nonatomic, readonly) int tilesHigh;
 @property (nonatomic, readonly) float sourceWidthP;
 @property (nonatomic, readonly) float sourceHeightP;
+@property (nonatomic, assign) bool isLiveEditable;
+@property (nonatomic, assign) bool changed;
+@property (nonatomic, assign) GLubyte * imageData;
+@property (nonatomic, assign) size_t image_width;
+@property (nonatomic, assign) size_t image_height;
+
 
 // create a new instance, with the PNG selected. (needs to be pow2 x pow2
 - (id) initWithPNG:(NSString *)filenameWithoutPNGExtenstion 
@@ -86,6 +98,9 @@ typedef struct BL2D_tilegeom {
 // create a new instance, with the PLIST selected.
 //  the plist specifies a plist and sprite geometries
 - (id) initWithPlist:(NSString *)plist;
+
+// create a new instance, but with a bare framebuffer
+- (id) initWithRawW:(int)wid H:(int)hig;
 
 
 // enable our texture with GL.

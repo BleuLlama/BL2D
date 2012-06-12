@@ -72,6 +72,12 @@
     return gfx;
 }
 
+- (BL2DGraphics *) addRawGraphicsW:(int)w H:(int)h
+{
+    BL2DGraphics * gfx = [[BL2DGraphics alloc] initWithRawW:w H:h];
+    return gfx;
+}
+
 
 - (BL2DTilemap *) addTilemapLayerUsingGraphics:(BL2DGraphics *)gfx
 									 tilesWide:(int)w

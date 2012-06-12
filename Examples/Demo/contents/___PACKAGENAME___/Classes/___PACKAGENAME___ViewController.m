@@ -71,8 +71,8 @@ static int tilemapOrdering[ 4 * 5 ] =
 #pragma mark -
 #pragma mark BL2D interface stuff
 
-@synthesize tilegfx, spritegfx, builtgfx;
-@synthesize backgroundTiles, backgroundTiles2;
+@synthesize tilegfx, spritegfx, builtgfx, rawgfx;
+@synthesize backgroundTiles, backgroundTiles2, raw;
 @synthesize sprite0, sprite1, sprite2, sprite3;
 @synthesize poly0, poly1;
 
@@ -92,6 +92,7 @@ static int tilemapOrdering[ 4 * 5 ] =
 	self.tilegfx = [bl2de addPNGGraphics:@"graphics1" tilesWide:32 tilesHigh:8];
 	self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
     self.builtgfx = [bl2de addPlistGraphics:@"test_sprites"];
+    self.rawgfx = [bl2de addRawGraphicsW:150 H:256];
     
 	// now load the tilemap to be used
     int tw, th;
@@ -130,6 +131,8 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     self.poly0 = [bl2de addPoly:30];                        // filled triangles
     self.poly1 = [bl2de addPoly:260 withDrawMode:GL_LINES]; // line segments
+    
+    self.raw = [bl2de addSprite:rawgfx];
 }
 
 /////////////////////////////////////////////////////////
@@ -337,6 +340,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.backgroundTiles2.active = NO;
     self.poly0.active = NO;
     self.poly1.active = YES;
+    self.raw.active = NO;
     
     
     // okay! have at it!
@@ -417,6 +421,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.backgroundTiles2.active = NO;
     self.poly0.active = NO;
     self.poly1.active = NO;
+    self.raw.active = NO;
     
     // draw the tilemaps and sprites
 	[self.sprite0 setSpriteIndex:index>>3];
@@ -481,6 +486,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.backgroundTiles2.active = YES;
     self.poly0.active = NO;
     self.poly1.active = NO;
+    self.raw.active = NO;
 
     // set up the background tilemap
 	[self.backgroundTiles copyNewTilesBuffer:tilemapArray];
@@ -499,6 +505,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     [self.backgroundTiles2 drawLeftTextAtX:1 atY:5 txt:@"Left!"];
     
 	[self.backgroundTiles2 commitChanges];
+    
 }
 
 
@@ -512,6 +519,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.backgroundTiles2.active = NO;
     self.poly0.active = YES;
     self.poly1.active = NO;
+    self.raw.active = NO;
     
     
     // okay! have at it!
@@ -587,6 +595,46 @@ static int tilemapOrdering[ 4 * 5 ] =
      */
 }
 
+- (void)drawState4
+{
+    self.sprite0.active = NO;
+    self.sprite1.active = NO;
+    self.sprite2.active = NO;
+    self.sprite3.active = NO;
+    self.backgroundTiles.active = NO;
+    self.backgroundTiles2.active = NO;
+    self.poly0.active = NO;
+    self.poly1.active = NO;
+    self.raw.active = YES;
+    
+	self.raw.spy = 50;
+	self.raw.spx = 50;
+	self.raw.scale = 1.0;
+
+    // some stuff to hack with the framebuffer on it
+    int iw = self.raw.gfx.image_width;
+    int ih = self.raw.gfx.image_height;
+    GLubyte * imageData = self.raw.gfx.imageData;
+    
+    for( int y = 0 ; y < ih ; y++ )
+    {
+        int rv = [self.raw rand255];
+        for( int x=0 ; x < iw ; x++ )
+        {
+            int p = ((y * iw) + x ) *4;
+            imageData[p+0] = (frameCount * 2) & 0x0ff; // R
+            imageData[p+1] = (x+y)&0x0ff; // G
+            imageData[p+2] = rv; // B
+            imageData[p+3] = 0x0ff; // A
+            
+            p += 4;
+        }
+    }
+    self.raw.gfx.isLiveEditable = YES;
+    self.raw.gfx.changed = YES;
+
+}
+
 
 - (void)drawFrame
 {	
@@ -594,12 +642,12 @@ static int tilemapOrdering[ 4 * 5 ] =
     [(EAGLView *)self.view setFramebuffer];
     
     // adjust for playState
-    
-    switch( playState & 0x03 ) {
+    switch( playState % 5 ) {
         case( 0 ): [self drawState0]; break;
         case( 1 ): [self drawState1]; break;
         case( 2 ): [self drawState2]; break;
         case( 3 ): [self drawState3]; break;
+        case( 4 ): [self drawState4]; break;
     }
 	
     // and draw it all!
