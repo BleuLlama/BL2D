@@ -67,8 +67,8 @@ typedef struct BL2D_tilegeom {
 	float *percentsW;		// precomputed percentages across
 	float *percentsH;		// precomputed percentages down
 	
-	int pxHeight;
-	int pxWidth;
+	long pxHeight;
+	long pxWidth;
     
     // for live-editable stuff
     bool isLiveEditable;
@@ -77,8 +77,8 @@ typedef struct BL2D_tilegeom {
 }
 
 @property (nonatomic, readonly) GLuint glHandle;
-@property (nonatomic, readonly) int pxHeight;
-@property (nonatomic, readonly) int pxWidth;
+@property (nonatomic, readonly) long pxHeight;
+@property (nonatomic, readonly) long pxWidth;
 @property (nonatomic, readonly) int tilesWide;
 @property (nonatomic, readonly) int tilesHigh;
 @property (nonatomic, readonly) float sourceWidthP;

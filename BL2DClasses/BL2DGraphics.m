@@ -192,7 +192,7 @@
 #endif
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
-                     image_width, image_height, 
+                     (int)image_width, (int)image_height,
                      0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
         
         glDisable(GL_TEXTURE_2D);
@@ -290,8 +290,8 @@
 	
 	
 	// doublecheck that it's a power of two in dimensions
-	sourceWidth = CGImageGetWidth(originalImage.CGImage);
-	sourceHeight = CGImageGetHeight(originalImage.CGImage);
+	sourceWidth = (GLuint)CGImageGetWidth(originalImage.CGImage);
+	sourceHeight = (GLuint)CGImageGetHeight(originalImage.CGImage);
 	
 	GLuint width = sourceWidth;
 	GLuint height = sourceHeight;
@@ -380,7 +380,8 @@
     
     if( isLiveEditable && changed ) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                     image_width, image_height, 
+                     (GLsizei)image_width,
+                     (GLsizei)image_height,
                      0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 #ifdef NEVER
         /// Theoretically, this is faster, but I can't get it to work. :(

@@ -152,13 +152,13 @@
 - (void)drawCenteredTextAt:(int)y txt:(NSString *)txt
 {
 
-    int x = (nWide/2) - ([txt length]/2);
+    int x = (int)(nWide/2) - ((int)[txt length]/2);
     [self drawTextAtX:x atY:y txt:txt]; // XXXXX FIX
 }
 
 - (void)drawLeftTextAtX:(int)x atY:(int)y txt:(NSString *)txt
 {
-    [self drawTextAtX:(nWide - [txt length] - x) atY:y txt:txt];
+    [self drawTextAtX:(int)(nWide - [txt length] - x) atY:y txt:txt];
 }
 
 

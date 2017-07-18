@@ -101,7 +101,7 @@
 #pragma mark - random stuff
 - (void)srandNormal
 {
-    srand( time(NULL) );
+    srand( (unsigned int) time(NULL) );
 }
 
 - (void)srandFixed
