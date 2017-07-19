@@ -30,6 +30,10 @@
  */ 
 
 #import "BL2DGraphics.h"
+#import "UIKit/UIImage.h"
+#import "UIKit/UIKit.h"
+
+
 @interface BL2DGraphics()
 - (void) computePercentages;
 - (void) loadPng:(NSString *)fn;
@@ -222,7 +226,7 @@
 	// and free the image texture
 	glDeleteTextures( 1, &glHandle );
 	
-	[super dealloc];
+	// not anymore [super dealloc];
 }
 
 
@@ -310,8 +314,7 @@
 		UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		
-		[originalImage release];
-		[newImage retain];
+		originalImage = nil;
 		
 		image = newImage;
 	} else {
@@ -335,8 +338,8 @@
 	
     CGContextRelease(context);
 	
-    [image release];
-    [texData release];
+    image = nil;
+    texData = nil;
 	
 	glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);

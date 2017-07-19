@@ -92,7 +92,7 @@
 	if( colorMesh ) free( colorMesh );
 	colorMesh = NULL;
 	
-	[super dealloc];
+	// not anymore [super dealloc];
 }
 
 

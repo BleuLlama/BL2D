@@ -51,7 +51,7 @@
 
 - (void)dealloc
 {
-	[super dealloc];
+	// not anymore [super dealloc];
 }
 
 
@@ -66,13 +66,13 @@
 
 - (void) render
 {
-	if( !self.active  || !gfx ) return;
+	if( !self.active  || !self.gfx ) return;
 	
 	glPushMatrix();
 	glTranslatef( self.spx, self.spy, 0.0 );
 	glScalef( scale, scale, 1.0 );
 	glRotatef( angle, 0.0, 0.0, 1.0 );
-	[gfx renderSingle:index flipX:self.flipX flipY:self.flipY];
+	[self.gfx renderSingle:index flipX:self.flipX flipY:self.flipY];
 	glPopMatrix();
 }
 

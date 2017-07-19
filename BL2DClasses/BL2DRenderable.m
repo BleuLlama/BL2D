@@ -79,7 +79,7 @@
 - (void)dealloc
 {
 //    self.turtle = nil;
-	[super dealloc];
+// not anymore	[super dealloc];
 }
 
 

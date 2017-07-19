@@ -85,7 +85,7 @@ void init_sine_table(void)
 
 -(void) dealloc
 {
-	[super dealloc];
+	// not anymore [super dealloc];
 }
 
 -(NSString *)description

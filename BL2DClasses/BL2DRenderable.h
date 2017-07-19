@@ -42,9 +42,7 @@
 	BOOL flipX;
 	BOOL flipY;
 	BOOL active;
-	
-	BL2DGraphics * gfx;	
-	
+
 	float viewW;
 	float viewH;
     

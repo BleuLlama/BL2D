@@ -65,7 +65,7 @@
 	if( texturePoints ) free( texturePoints );
 	texturePoints = NULL;
 	
-	[super dealloc];
+	// not anymore [super dealloc];
 }
 
 - (void) setTilesWide:(int)w tilesHigh:(int)h
@@ -134,7 +134,7 @@
 {
 	for( int item = 0; item < nWide * nHigh ; item++ )
 	{
-		tilesBuffer[ item ] = rand() % ( gfx.tilesWide * gfx.tilesHigh );
+		tilesBuffer[ item ] = rand() % ( self.gfx.tilesWide * self.gfx.tilesHigh );
 	}
 }
 
@@ -213,17 +213,17 @@
 	//	then bot left, then top right, then bot right
 	
 	// top left
-	buffer[0] = c * gfx.pxWidth;		// x0
-	buffer[1] = r * gfx.pxHeight;		// y0
+	buffer[0] = c * self.gfx.pxWidth;		// x0
+	buffer[1] = r * self.gfx.pxHeight;		// y0
 	buffer[2] = 0.0;
 	
 	// bottom left
 	buffer[3] = buffer[0];				// x1
-	buffer[4] = buffer[1]+gfx.pxHeight;	// y1
+	buffer[4] = buffer[1]+self.gfx.pxHeight;	// y1
 	buffer[5] = 0.0;
 	
 	// top right
-	buffer[6] = buffer[0]+gfx.pxWidth;	// x2
+	buffer[6] = buffer[0]+self.gfx.pxWidth;	// x2
 	buffer[7] = buffer[1];				// x3
 	buffer[8] = 0.0;
 	
@@ -271,7 +271,7 @@
 			[self fillQuadIn:&screenMesh[idx] forRow:row forCol:col];
 			
 			int idxtx = ((row * nWide) + col) * kTextureQuadCount;
-			[gfx fillQuadIn:&texturePoints[idxtx] forTile:tilesBuffer[tileidx++]];
+			[self.gfx fillQuadIn:&texturePoints[idxtx] forTile:tilesBuffer[tileidx++]];
 
 		}
 	}
@@ -307,7 +307,7 @@
 - (void) render
 {
 	if( !tilesBuffer || !active ) return;
-	[gfx glActivate];
+	[self.gfx glActivate];
 
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_DEPTH_TEST);
@@ -327,7 +327,7 @@
 	glPushMatrix();
 	glTranslatef( self.spx, self.spy, 0.0 );
 	if( self.fillScreen ) {
-		glScalef( viewW/gfx.pxWidth, viewH/gfx.pxHeight, 1.0 );// gfx.pxHeight * gfx.sourceHeightP, 1.0 );
+		glScalef( viewW/self.gfx.pxWidth, viewH/self.gfx.pxHeight, 1.0 );// gfx.pxHeight * gfx.sourceHeightP, 1.0 );
 	} else {
 		glScalef( scale, scale, 1.0 );
 	}
@@ -343,7 +343,7 @@
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	// unbind
-	[gfx glDeactivate];
+	[self.gfx glDeactivate];
 }
 
 #pragma mark - debug

@@ -50,7 +50,7 @@
 - (void)dealloc
 {
 	self.renderLayers = nil;
-	[super dealloc];
+	// not anymore [super dealloc];
 }
 
 // load in a graphics source, returns a handle to the graphics
