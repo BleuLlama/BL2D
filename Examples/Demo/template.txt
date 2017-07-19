@@ -9,7 +9,7 @@ name==Basic BL2D Project
 
 # description
 #	A brief description of what the template project is.
-description==Bare minimum changes from the iOS 4.0 GLES template
+description==Simplified GLES project for iOS 10
 
 
 ########################################

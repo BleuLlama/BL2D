@@ -2,8 +2,8 @@
 //  EAGLView.m
 //  ___PACKAGENAME___
 //
-//  Created by Scott Lawrence on 9/18/10.
-//  Copyright 2010-2012 __MyCompanyName__. All rights reserved.
+//  Created by Scott Lawrence on 9/18/10 - 7/18/17
+//  Copyright 2010-2017 __MyCompanyName__. All rights reserved.
 //
 
 #import <QuartzCore/QuartzCore.h>
@@ -18,7 +18,9 @@
 @implementation EAGLView
 
 @synthesize framebufferWidth, framebufferHeight;
-@dynamic context;
+@synthesize context;
+@synthesize defaultFramebuffer;
+@synthesize colorRenderbuffer;
 
 // You must implement this method
 + (Class)layerClass
@@ -57,25 +59,18 @@
 
 - (void)dealloc
 {
-    [self deleteFramebuffer];    
-    [context release];
-    
-    [super dealloc];
+    [self deleteFramebuffer];
+    //[super dealloc]; // compiler does this now
 }
 
-- (EAGLContext *)context
-{
-    return context;
-}
 
-- (void)setContext:(EAGLContext *)newContext
+- (void)setTheContext:(EAGLContext *)newContext
 {
-    if (context != newContext)
+    if (self.context != newContext)
     {
         [self deleteFramebuffer];
         
-        [context release];
-        context = [newContext retain];
+        self.context = newContext;
         
         [EAGLContext setCurrentContext:nil];
     }
@@ -83,22 +78,28 @@
 
 - (void)createFramebuffer
 {
-    if (context && !defaultFramebuffer)
+    GLuint temp;
+    
+    if (self.context && !self.defaultFramebuffer)
     {
-        [EAGLContext setCurrentContext:context];
+        [EAGLContext setCurrentContext:self.context];
         
         // Create default framebuffer object.
-        glGenFramebuffers(1, &defaultFramebuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
+        temp = self.defaultFramebuffer;
+        glGenFramebuffers(1, &temp);
+        self.defaultFramebuffer = temp;
+        glBindFramebuffer(GL_FRAMEBUFFER, self.defaultFramebuffer);
         
         // Create color render buffer and allocate backing store.
-        glGenRenderbuffers(1, &colorRenderbuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+        temp = self.colorRenderbuffer;
+        glGenRenderbuffers(1, &temp);
+        self.colorRenderbuffer = temp;
+        glBindRenderbuffer(GL_RENDERBUFFER, self.colorRenderbuffer);
         [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer *)self.layer];
         glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &framebufferWidth);
         glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &framebufferHeight);
         
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, self.colorRenderbuffer);
         
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
             NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
@@ -107,20 +108,24 @@
 
 - (void)deleteFramebuffer
 {
+    GLuint temp;
+    
     if (context)
     {
         [EAGLContext setCurrentContext:context];
         
-        if (defaultFramebuffer)
+        if (self.defaultFramebuffer)
         {
-            glDeleteFramebuffers(1, &defaultFramebuffer);
-            defaultFramebuffer = 0;
+            temp = self.defaultFramebuffer;
+            glDeleteFramebuffers(1, &temp);
+            self.defaultFramebuffer = 0;
         }
         
-        if (colorRenderbuffer)
+        if (self.colorRenderbuffer)
         {
-            glDeleteRenderbuffers(1, &colorRenderbuffer);
-            colorRenderbuffer = 0;
+            temp = self.colorRenderbuffer;
+            glDeleteRenderbuffers(1, &temp);
+            self.colorRenderbuffer = 0;
         }
     }
 }
@@ -131,10 +136,10 @@
     {
         [EAGLContext setCurrentContext:context];
         
-        if (!defaultFramebuffer)
+        if (!self.defaultFramebuffer)
             [self createFramebuffer];
         
-        glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, self.defaultFramebuffer);
         
         glViewport(0, 0, framebufferWidth, framebufferHeight);
     }
@@ -148,7 +153,7 @@
     {
         [EAGLContext setCurrentContext:context];
         
-        glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, self.colorRenderbuffer);
         
         success = [context presentRenderbuffer:GL_RENDERBUFFER];
     }

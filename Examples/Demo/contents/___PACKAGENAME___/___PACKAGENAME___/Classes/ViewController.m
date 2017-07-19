@@ -1,15 +1,16 @@
 //
-//  ___PACKAGENAME___ViewController.m
+//  ViewController.m
 //  ___PACKAGENAME___
 //
-//  Created by Scott Lawrence on 9/18/10.
-//  Copyright 2010-2012 __MyCompanyName__. All rights reserved.
+//  Created by Scott Lawrence on 7/14/17.
+//  Copyright © 2017 Scott Lawrence. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
-
-#import "___PACKAGENAME___ViewController.h"
+#import "ViewController.h"
+#import "BL2D.h"
 #import "EAGLView.h"
+
+#define kPreferredFPS (60)
 
 // Uniform index.
 enum {
@@ -25,18 +26,37 @@ enum {
     NUM_ATTRIBUTES
 };
 
-@interface ___PACKAGENAME___ViewController ()
-@property (nonatomic, retain) EAGLContext *context;
-// GLES2 shader stuff we don't use
-- (BOOL)loadShaders;
-- (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
-- (BOOL)linkProgram:(GLuint)prog;
-- (BOOL)validateProgram:(GLuint)prog;
+
+@interface ViewController ()
+
 @end
 
-@implementation ___PACKAGENAME___ViewController
 
-@synthesize animating, context;
+@implementation ViewController
+
+@synthesize statusText;
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    //[self.view setBackgroundColor:[UIColor redColor]];
+    [self.statusText setText:@"Ready!"];
+    
+    
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+
+@synthesize bl2de, animating;
+
 
 #pragma mark -
 #pragma mark BL2D various data
@@ -44,26 +64,26 @@ enum {
 static int tilemapWidth = 4;
 static int tilemapHeight = 5;
 
-static int tilemapArray[4 * 5] = 
+static int tilemapArray[4 * 5] =
 {
-	// this is the simulated contents of memory - tilemap data 
-	'S', 'C', 'O', 'T',
-	'T',   5,   6,   7,
-	10,   11,  12,  13,
-	14,   15,  16,  17,
-	18,   19,  20,  21
+    // this is the simulated contents of memory - tilemap data
+    'S', 'C', 'O', 'T',
+    'T',   5,   6,   7,
+    10,   11,  12,  13,
+    14,   15,  16,  17,
+    18,   19,  20,  21
 };
 
 #ifdef NEVER
-static int tilemapOrdering[ 4 * 5 ] = 
+static int tilemapOrdering[ 4 * 5 ] =
 {
-	// this is how the memory gets mapped to the screen
-	// this should not reference outside of 0..[4*6] or segfault
-	3,	12,	6,	0,
-	3,	13,	7,	1,
-	3,	14,	8,	2,
-	3,	15,	9,	3,
-	0,	 1,	2,	4
+    // this is how the memory gets mapped to the screen
+    // this should not reference outside of 0..[4*6] or segfault
+    3,	12,	6,	0,
+    3,	13,	7,	1,
+    3,	14,	8,	2,
+    3,	15,	9,	3,
+    0,	 1,	2,	4
 };
 #endif
 
@@ -81,20 +101,19 @@ static int tilemapOrdering[ 4 * 5 ] =
 
 - (void)startupBL2DEngine
 {
-	EAGLView * v = (EAGLView *)self.view;
+    EAGLView * v = (EAGLView *)self.view;
     
-	// BL2D addition - create our BL2D instance
-	bl2de = [[BL2D alloc] initWithEffectiveScreenWidth:v.framebufferWidth
-												Height:v.framebufferHeight];
-	[bl2de retain];
-	
-	// load the two graphics banks.  (only two banks for now.)
-	self.tilegfx = [bl2de addPNGGraphics:@"graphics1" tilesWide:32 tilesHigh:8];
-	self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
+    // BL2D addition - create our BL2D instance
+    self.bl2de = [[BL2D alloc] initWithEffectiveScreenWidth:v.framebufferWidth
+                                                Height:v.framebufferHeight];
+    
+    // load the two graphics banks.  (only two banks for now.)
+    self.tilegfx = [bl2de addPNGGraphics:@"graphics1" tilesWide:32 tilesHigh:8];
+    self.spritegfx = [bl2de addPNGGraphics:@"graphics2" tilesWide:16 tilesHigh:4];
     self.builtgfx = [bl2de addPlistGraphics:@"test_sprites"];
     self.rawgfx = [bl2de addRawGraphicsW:150 H:256];
     
-	// now load the tilemap to be used
+    // now load the tilemap to be used
     int tw, th;
     float sp;
     if( !isRetina && !isPad ) {
@@ -111,21 +130,21 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     // background tiles 2 is bottom layer
     self.backgroundTiles2 = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
-													  tilesWide:tw
-													  tilesHigh:th];
+                                                      tilesWide:tw
+                                                      tilesHigh:th];
     self.backgroundTiles2.spx = sp; // adjust start point
     self.backgroundTiles2.spy = sp; // adjust start point
-	
-    // next is the tilemap above that
-	self.backgroundTiles = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
-													 tilesWide:tilemapWidth 
-													 tilesHigh:tilemapHeight];
     
-	// and the sprite to be used
-	self.sprite0 = [bl2de addSprite:self.spritegfx]; // from gridded texture
-	self.sprite1 = [bl2de addSprite:self.spritegfx]; // from gridded texture
-	self.sprite2 = [bl2de addSprite:self.spritegfx]; // from gridded texture
-	self.sprite3 = [bl2de addSprite:self.builtgfx];  // from plist-texture
+    // next is the tilemap above that
+    self.backgroundTiles = [bl2de addTilemapLayerUsingGraphics:self.tilegfx
+                                                     tilesWide:tilemapWidth
+                                                     tilesHigh:tilemapHeight];
+    
+    // and the sprite to be used
+    self.sprite0 = [bl2de addSprite:self.spritegfx]; // from gridded texture
+    self.sprite1 = [bl2de addSprite:self.spritegfx]; // from gridded texture
+    self.sprite2 = [bl2de addSprite:self.spritegfx]; // from gridded texture
+    self.sprite3 = [bl2de addSprite:self.builtgfx];  // from plist-texture
     
     // and try out some polygon stuff
     
@@ -142,7 +161,10 @@ static int tilemapOrdering[ 4 * 5 ] =
 
 - (void)awakeFromNib
 {
-	// BL2D - Force an OpenGLES 1 context
+    [super awakeFromNib];
+    
+    NSLog( @"%s", __FUNCTION__ );
+    // BL2D - Force an OpenGLES 1 context
     EAGLContext *aContext = nil; // [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
     if (!aContext)
@@ -155,15 +177,14 @@ static int tilemapOrdering[ 4 * 5 ] =
     else if (![EAGLContext setCurrentContext:aContext])
         NSLog(@"Failed to set ES context current");
     
-	self.context = aContext;
-	[aContext release];
-	
-    [(EAGLView *)self.view setContext:context];
+    self.context = aContext;
+    
+    [(EAGLView *)self.view setContext:self.context];
     [(EAGLView *)self.view setFramebuffer];
     
-    if ([context API] == kEAGLRenderingAPIOpenGLES2)
+    if ([self.context API] == kEAGLRenderingAPIOpenGLES2)
         [self loadShaders];
-	
+    
     EAGLView * v = (EAGLView *)self.view;
     // set up our sizing flags
     isPad = NO;
@@ -173,20 +194,20 @@ static int tilemapOrdering[ 4 * 5 ] =
     }
     if( v.framebufferHeight == 1024 && v.framebufferWidth == 768 ) { isPad = YES; }
     if( v.framebufferHeight == 1024*2 && v.framebufferWidth == 768*2 ) { isPad = YES; }
-
     
     
-	// BL2D - start the engine
-	[self startupBL2DEngine];
     
-    animating = FALSE;
+    // BL2D - start the engine
+    [self startupBL2DEngine];
+    
+    self.animating = FALSE;
     displayLinkSupported = FALSE; // probably unnecessary aince we're 3.1+
     animationFrameInterval = 1;
     displayLink = nil;
     animationTimer = nil;
     
     // Use of CADisplayLink requires iOS version 3.1 or greater.
-	// The NSTimer object is used as fallback when it isn't available.
+    // The NSTimer object is used as fallback when it isn't available.
     NSString *reqSysVer = @"3.1";
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
     if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
@@ -199,23 +220,21 @@ static int tilemapOrdering[ 4 * 5 ] =
 
 
 - (void)dealloc
-{	
-	// BL2D addition
-	[bl2de release];
-	
-	if (program)
+{
+    // BL2D addition
+    self.bl2de = nil;
+    
+    if (program)
     {
         glDeleteProgram(program);
         program = 0;
     }
     
     // Tear down context.
-    if ([EAGLContext currentContext] == context)
+    if ([EAGLContext currentContext] == self.context)
         [EAGLContext setCurrentContext:nil];
     
-    [context release];
-    
-    [super dealloc];
+    self.context = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -234,27 +253,18 @@ static int tilemapOrdering[ 4 * 5 ] =
 
 - (void)viewDidUnload
 {
-	[super viewDidUnload];
-	
+    [super viewDidUnload];
+    
     if (program)
     {
         glDeleteProgram(program);
         program = 0;
     }
-
-    // Tear down context.
-    if ([EAGLContext currentContext] == context)
-        [EAGLContext setCurrentContext:nil];
-	self.context = nil;	
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
     
-    // Release any cached data, images, etc. that aren't in use.
+    // Tear down context.
+    if ([EAGLContext currentContext] == self.context)
+        [EAGLContext setCurrentContext:nil];
+    self.context = nil;
 }
 
 
@@ -270,9 +280,9 @@ static int tilemapOrdering[ 4 * 5 ] =
 - (void)setAnimationFrameInterval:(NSInteger)frameInterval
 {
     /*
-	 Frame interval defines how many display frames must pass between each time the display link fires.
-	 The display link will only fire 30 times a second when the frame internal is two on a display that refreshes 60 times a second. The default frame interval setting of one will fire 60 times a second when the display refreshes at 60 times a second. A frame interval setting of less than one results in undefined behavior.
-	 */
+     Frame interval defines how many display frames must pass between each time the display link fires.
+     The display link will only fire 30 times a second when the frame internal is two on a display that refreshes 60 times a second. The default frame interval setting of one will fire 60 times a second when the display refreshes at 60 times a second. A frame interval setting of less than one results in undefined behavior.
+     */
     if (frameInterval >= 1)
     {
         animationFrameInterval = frameInterval;
@@ -292,10 +302,11 @@ static int tilemapOrdering[ 4 * 5 ] =
         if (displayLinkSupported)
         {
             /*
-			 CADisplayLink is API new in iOS 3.1. Compiling against earlier versions will result in a warning, but can be dismissed if the system version runtime check for CADisplayLink exists in -awakeFromNib. The runtime check ensures this code will not be called in system versions earlier than 3.1.
-            */
+             CADisplayLink is API new in iOS 3.1. Compiling against earlier versions will result in a warning, but can be dismissed if the system version runtime check for CADisplayLink exists in -awakeFromNib. The runtime check ensures this code will not be called in system versions earlier than 3.1.
+             */
             displayLink = [NSClassFromString(@"CADisplayLink") displayLinkWithTarget:self selector:@selector(drawFrame)];
-            [displayLink setFrameInterval:animationFrameInterval];
+            //[displayLink setFrameInterval:animationFrameInterval];
+            [displayLink setPreferredFramesPerSecond:kPreferredFPS];
             
             // The run loop will retain the display link on add.
             [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -369,7 +380,7 @@ static int tilemapOrdering[ 4 * 5 ] =
         [self.poly1.turtle move:100.0];
         [self.poly1.turtle applyPoint];
         
-        [self.poly1.turtle pop];        
+        [self.poly1.turtle pop];
     }
     
     // and a "point north" for the heck of it
@@ -398,7 +409,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     }
     [self.poly1 addText:@"Touch to advance" atX:0 atY:0];
     [self.poly1 addText:@"to next example." atX:0 atY:ts];
-
+    
     do {
         [self.poly1 setRandomColor];
     } while ( [self.poly1 addRandomPointW:v.framebufferWidth H:v.framebufferHeight] > 0 );
@@ -408,11 +419,11 @@ static int tilemapOrdering[ 4 * 5 ] =
 - (void)drawState1
 {
     static float an;
-	static long index = 0;
-	
-	index++;
-	an+= 0.5;
-
+    static long index = 0;
+    
+    index++;
+    an+= 0.5;
+    
     self.sprite0.active = YES;
     self.sprite1.active = YES;
     self.sprite2.active = YES;
@@ -424,39 +435,39 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.raw.active = NO;
     
     // draw the tilemaps and sprites
-	[self.sprite0 setSpriteIndex:index>>3];
-	self.sprite0.spx = 100;
-	self.sprite0.spy = 100;
-	self.sprite0.scale = 1.0 + 2.0 + (2.0 * cos( an/8 ));
-	
-    EAGLView * v = (EAGLView *)self.view;
-	
-	// draw the walking crocodile
-	static int crocFrameTimer = 3;
-	static unsigned int crocframe = 21;
-	static float crocX = -16.0, crocY = 240;
-	if( crocFrameTimer-- <= 0 ) {
-		crocframe++; if ( crocframe > 23 ) { crocframe = 21; }
-		crocFrameTimer = 3;
-	}
-	crocX += 3; if ( crocX > v.framebufferWidth + 20 ) { crocX = -16; }
-	crocY += -2 + rand() % 5;
-	
-	// keep the crocodile on screen
-	if( crocY < 140 ) crocY = 140;
-	if( crocY > 340 ) crocY = 340;
+    [self.sprite0 setSpriteIndex:((int)index)>>3];
+    self.sprite0.spx = 100;
+    self.sprite0.spy = 100;
+    self.sprite0.scale = 1.0 + 2.0 + (2.0 * cos( an/8 ));
     
-	[self.sprite1 setSpriteIndex:crocframe];
-	self.sprite1.spy = crocY;
-	self.sprite1.spx = crocX;
-	self.sprite1.scale = 2.0;
-	
-	// sprite 2 will be the croc going the other way
-	[self.sprite2 setSpriteIndex:crocframe];
-	self.sprite2.spy = crocY + 50;
-	self.sprite2.spx = v.framebufferWidth - crocX;
-	self.sprite2.scale = 1.0;
-	self.sprite2.flipX = YES;
+    EAGLView * v = (EAGLView *)self.view;
+    
+    // draw the walking crocodile
+    static int crocFrameTimer = 3;
+    static unsigned int crocframe = 21;
+    static float crocX = -16.0, crocY = 240;
+    if( crocFrameTimer-- <= 0 ) {
+        crocframe++; if ( crocframe > 23 ) { crocframe = 21; }
+        crocFrameTimer = 3;
+    }
+    crocX += 3; if ( crocX > v.framebufferWidth + 20 ) { crocX = -16; }
+    crocY += -2 + rand() % 5;
+    
+    // keep the crocodile on screen
+    if( crocY < 140 ) crocY = 140;
+    if( crocY > 340 ) crocY = 340;
+    
+    [self.sprite1 setSpriteIndex:crocframe];
+    self.sprite1.spy = crocY;
+    self.sprite1.spx = crocX;
+    self.sprite1.scale = 2.0;
+    
+    // sprite 2 will be the croc going the other way
+    [self.sprite2 setSpriteIndex:crocframe];
+    self.sprite2.spy = crocY + 50;
+    self.sprite2.spx = v.framebufferWidth - crocX;
+    self.sprite2.scale = 1.0;
+    self.sprite2.flipX = YES;
     
     
     // sprite 3 will show off the plist-based graphics
@@ -487,15 +498,15 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.poly0.active = NO;
     self.poly1.active = NO;
     self.raw.active = NO;
-
+    
     // set up the background tilemap
-	[self.backgroundTiles copyNewTilesBuffer:tilemapArray];
-	
+    [self.backgroundTiles copyNewTilesBuffer:tilemapArray];
+    
     [self.backgroundTiles commitChanges];	// regenerate the tilemap
-	self.backgroundTiles.scale = 4.0;
+    self.backgroundTiles.scale = 4.0;
     
     // random chars
-	[self.backgroundTiles2 fillWithRandom];
+    [self.backgroundTiles2 fillWithRandom];
     // render text
     [self.backgroundTiles2 drawTextAtX:1 atY:1 txt:@"Hello!"];
     [self.backgroundTiles2 drawTextAtX:2 atY:30 txt:@"Hello!"];
@@ -504,7 +515,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     [self.backgroundTiles2 drawLeftTextAtX:1 atY:5 txt:@"Left!"];
     
-	[self.backgroundTiles2 commitChanges];
+    [self.backgroundTiles2 commitChanges];
     
 }
 
@@ -527,7 +538,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     [self.poly0 clearData];
     [self.poly0 setUseAlpha:NO];
-        
+    
     int p=0;
     
     // fill the background with a gradient.
@@ -584,7 +595,7 @@ static int tilemapOrdering[ 4 * 5 ] =
         [self.poly0 setRandomColor];
     } while ( [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight] > 0 );
     /*
-     for( ; p<=(kTestNVerts-4) ; p+= 3 ) {        
+     for( ; p<=(kTestNVerts-4) ; p+= 3 ) {
      [self.poly0 setRandomColor];
      [self.poly0 setColorR:255 G:255 B:0];
      [self.poly0 addRandomPointW:v.framebufferWidth H:v.framebufferHeight/2];
@@ -607,13 +618,13 @@ static int tilemapOrdering[ 4 * 5 ] =
     self.poly1.active = NO;
     self.raw.active = YES;
     
-	self.raw.spy = 50;
-	self.raw.spx = 50;
-	self.raw.scale = 1.0;
-
+    self.raw.spy = 50;
+    self.raw.spx = 50;
+    self.raw.scale = 1.0;
+    
     // some stuff to hack with the framebuffer on it
-    int iw = self.raw.gfx.image_width;
-    int ih = self.raw.gfx.image_height;
+    size_t iw = self.raw.gfx.image_width;
+    size_t ih = self.raw.gfx.image_height;
     GLubyte * imageData = self.raw.gfx.imageData;
     
     for( int y = 0 ; y < ih ; y++ )
@@ -621,7 +632,7 @@ static int tilemapOrdering[ 4 * 5 ] =
         int rv = [self.raw rand255];
         for( int x=0 ; x < iw ; x++ )
         {
-            int p = ((y * iw) + x ) *4;
+            unsigned long p = ((y * iw) + x ) * 4;
             imageData[p+0] = (frameCount * 2) & 0x0ff; // R
             imageData[p+1] = (x+y)&0x0ff; // G
             imageData[p+2] = rv; // B
@@ -632,13 +643,13 @@ static int tilemapOrdering[ 4 * 5 ] =
     }
     self.raw.gfx.isLiveEditable = YES;
     self.raw.gfx.changed = YES;
-
+    
 }
 
 
 - (void)drawFrame
-{	
-	
+{
+    
     [(EAGLView *)self.view setFramebuffer];
     
     // adjust for playState
@@ -649,9 +660,9 @@ static int tilemapOrdering[ 4 * 5 ] =
         case( 3 ): [self drawState3]; break;
         case( 4 ): [self drawState4]; break;
     }
-	
+    
     // and draw it all!
-	[bl2de render];
+    [bl2de render];
     [(EAGLView *)self.view presentFramebuffer];
     
     
@@ -857,5 +868,7 @@ static int tilemapOrdering[ 4 * 5 ] =
     
     return TRUE;
 }
+
+
 
 @end
